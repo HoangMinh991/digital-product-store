@@ -32,7 +32,8 @@ public class Product implements Serializable {
     private Long id;
     private String img;
     private String name;
-    private double price;
+    private double priceNew;
+    private double priceOld;
     @OneToOne
     @PrimaryKeyJoinColumn
     private ProductDetail productDetail;
@@ -40,6 +41,7 @@ public class Product implements Serializable {
     private Platforms platforms;
     @ManyToOne
     private Type type;
+    private boolean best;
     @OneToMany(mappedBy ="product")
     private List<CodeGiftCard> listCodeGiftCard;
     @CreationTimestamp

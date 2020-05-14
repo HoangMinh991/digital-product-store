@@ -27,4 +27,7 @@ public class PaymentDetail implements Serializable {
     private String bankNumber;
     @OneToOne(mappedBy = "paymentDetail")
     private Payment payment;
+
+    
+    
 }

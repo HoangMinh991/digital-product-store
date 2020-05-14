@@ -5,7 +5,7 @@
  */
 package com.ivietech.demo.dao;
 
-import com.ivietech.demo.entity.Accounts;
+import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.OrderDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface OrderrDetailRepository  extends JpaRepository<OrderDetails, Integer> {
+public interface OrderrDetailRepository  extends JpaRepository<OrderDetails, Long> {
     
 }

@@ -23,10 +23,11 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Data
-public class CodeGiftCard implements Serializable {
+public class CodeGiftCard  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String code;
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;

@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface TypeRepository extends JpaRepository<Type, Integer> {
+public interface TypeRepository extends JpaRepository<Type, Long> {
     
 }

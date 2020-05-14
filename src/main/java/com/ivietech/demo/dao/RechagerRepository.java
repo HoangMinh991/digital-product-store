@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface RechagerRepository extends JpaRepository<Rechager, Integer> {
+public interface RechagerRepository extends JpaRepository<Rechager, Long> {
     
 }

@@ -5,9 +5,12 @@
  */
 package com.ivietech.demo.dao;
 
-import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +18,27 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("SELECT p FROM Product p WHERE p.best = 1")
+    public Page<Product> findAllByBestTrue(PageRequest of);
     
+    @Query("SELECT p FROM Product p WHERE p.type.name = ?1")
+    public Page<Product> findAllByType(String nametype,PageRequest of);
+    
+    @Query("SELECT p FROM Product p WHERE p.platforms.name = ?1")
+    public Page<Product> findAllByPlatforms(String namePlatforms,PageRequest of);
+    
+    @Query("SELECT p FROM Product p WHERE p.platforms.name = ?2 AND p.type.name=?1")
+    public Page<Product> findAllByTypeAndPlatforms(String nametype,String namePlatforms,PageRequest of);
+    
+    @Query("SELECT p FROM Product p WHERE p.priceNew > ?1 AND p.priceNew < ?2")
+    public Page<Product> findAllByPrice(long priceLow,long priceHigh,PageRequest of);
+    
+    @Query("SELECT p FROM Product p WHERE p.name like %?1%")
+    public Page<Product> findAllByName(String nameProduct,PageRequest of);
+    
+    
+    
+
 }
