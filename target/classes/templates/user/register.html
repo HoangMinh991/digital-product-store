@@ -2,25 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <meta charset="utf-8"/>
-    <meta property="og:title" content="Đăng Ký"/>
-    <meta property="og:description" content="Trang đăng ký tài khoản"/>
-    <meta property="og:type" content="article"/>    
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Đăng Kí Tài Khoản</title>
-    <!-- js-->
-    <link rel="stylesheet" th:href="@{css/normalize.min.css}"/>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <!-- css-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
-    <!-- <link rel="stylesheet" href="./css/bootstrap.min.css" />-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <link rel="stylesheet" th:href="@{css/normalize.min.css}"/>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <!-- import-->
-    <link rel="stylesheet" th:href="@{css/common.css}" />
+    <head th:replace = "~{fragment/fragment ::head}">
+
+    </head>
     <style>
         body.login .container-div {
             padding-top:0;
@@ -90,7 +74,6 @@
                         <span><a th:href="@{/}">Trở về trang chủ</a> <i class="fas fa-angle-right"></i></span>
                     </div>
                     <hr style="width: 80%; margin-top: 45px">
-
                         <div class="other-login">
                             <p>Hoặc đăng nhập thông qua MXH</p>
 
@@ -110,11 +93,8 @@
                                 </a>
                             </div>
                         </div>
-
                 </form>
             </div>
         </div>
-
-
     </body>
 </html>

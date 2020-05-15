@@ -33,20 +33,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login/**",
                         "/resetPassword/**", "/passwordResetConfirm/**",
                         "/registrationConfirm/**", "/register/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/account/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/updatePassword/**",
                         "/user/changePassword/**")
                 .hasAuthority("CHANGE_PASSWORD_PRIVILEGE");
 
-        
         http
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login-error")
+                .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .permitAll();
 
     }
 

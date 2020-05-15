@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, String logout) {
         return "user/login";
     }
 
@@ -35,9 +35,11 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            System.out.println("abc");
         }
         return "redirect:/";
     }
