@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Data
-public class Orders {
+public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,13 +36,10 @@ public class Orders {
     @ManyToOne
     private Payment payment;
     @ManyToOne
-    private User user;
+    private Accounts accounts;
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails;
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;
-
-    
-    
 }

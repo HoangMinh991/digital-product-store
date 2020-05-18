@@ -23,7 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Data
-public class CodeGiftCard  {
+public class CodeGiftCard implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -21,7 +21,7 @@ import lombok.Data;
  */
 @Entity
 @Data
-public class OrderDetails {
+public class OrderDetails implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

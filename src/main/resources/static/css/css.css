@@ -312,7 +312,12 @@ and open the template in the editor.
 .cropper-disabled .cropper-point {
     cursor: not-allowed;
 }
-
+.banner-home .menu-2 .header-menu div.nav-menu {
+    display: none;
+    height: auto;
+    margin: auto;
+    width: 100%;
+}
 @media (min-width: 1200px) {
     .fix-margin {
         margin-left: -15px;

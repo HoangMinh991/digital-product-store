@@ -5,9 +5,8 @@
  */
 package com.ivietech.demo.dao;
 
-import com.ivietech.demo.entity.User;
+import com.ivietech.demo.entity.Accounts;
 import com.ivietech.demo.entity.Balance;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface BalanceRepository  extends JpaRepository<Balance, Long> {
-
-    public Optional<Balance> findById(long id);
+public interface BalanceRepository  extends JpaRepository<Balance, Integer> {
     
 }

@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface CodeGiiftCardRepository  extends JpaRepository<CodeGiftCard, Long> {
+public interface CodeGiiftCardRepository  extends JpaRepository<CodeGiftCard, Integer> {
     
 }
