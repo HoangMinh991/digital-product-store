@@ -48,7 +48,7 @@ public class User {
 
     public User() {
         super();
-        this.enabled = true;
+        this.enabled = false;
     }
 
     public long getId() {

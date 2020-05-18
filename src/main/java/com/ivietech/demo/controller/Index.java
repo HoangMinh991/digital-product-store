@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.ProductCount;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
@@ -56,9 +57,10 @@ public class Index {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-
+        Page<Product> listSteamProduct = productRepository.findAllByTypeAndPlatforms("Gift card","Steam", PageRequest.of(page, size));
+        Page<Product> listGameProduct = productRepository.findAllByType("Game", PageRequest.of(page, size));
         Page<Product> listBestProduct = productRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
-        model.addAttribute("listBestProduct", listBestProduct);
+        Page<ProductCount> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
 
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!"anonymousUser".equals(userName)) {
@@ -70,6 +72,10 @@ public class Index {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
+        model.addAttribute("listBestProduct", listBestProduct);
+        model.addAttribute("listSteamProduct", listSteamProduct);
+        model.addAttribute("listGameProduct", listSteamProduct);
+        model.addAttribute("listBestSellProduct", listBestSellProduct);
         return "index";
     }
 }

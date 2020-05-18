@@ -44,6 +44,8 @@ public class Product implements Serializable {
     private boolean best;
     @OneToMany(mappedBy ="product")
     private List<CodeGiftCard> listCodeGiftCard;
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetails> listOrderDetail;
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;

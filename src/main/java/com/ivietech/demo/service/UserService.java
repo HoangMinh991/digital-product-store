@@ -3,11 +3,11 @@ package com.ivietech.demo.service;
 
 import com.ivietech.demo.dao.RoLeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dao.VerificationTokenRepository;
 import com.ivietech.demo.dto.UserDto;
-import com.ivietech.demo.entity.Balance;
-
 import com.ivietech.demo.entity.Role;
 import com.ivietech.demo.entity.User;
+import com.ivietech.demo.entity.VerificationToken;
 import java.util.HashSet;
 import java.util.Set;
 import javax.transaction.Transactional;
@@ -28,6 +28,9 @@ public class UserService implements IUserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
    
+    @Autowired
+    VerificationTokenRepository verificationTokenRepository;
+    
     @Autowired
     BalanceService balanceService;
 
@@ -72,6 +75,17 @@ public class UserService implements IUserService {
     public void changeMobilePhone(User user, String phone) {
         user.setPhone(phone);
         userRepository.save(user);
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        verificationTokenRepository.save(myToken);
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String VerificationToken) {
+           return verificationTokenRepository.findByToken(VerificationToken);
     }
 
 }

@@ -3,6 +3,7 @@ package com.ivietech.demo.service;
 import com.ivietech.demo.dto.UserDto;
 import com.ivietech.demo.entity.Balance;
 import com.ivietech.demo.entity.User;
+import com.ivietech.demo.entity.VerificationToken;
 
 
 
@@ -13,6 +14,9 @@ public interface IUserService {
 
     void saveRegisteredUser(User user);
    
+    void createVerificationToken(User user, String token);
+
+    VerificationToken getVerificationToken(String VerificationToken);
     
     void changeUserPassword(User user, String password);
     

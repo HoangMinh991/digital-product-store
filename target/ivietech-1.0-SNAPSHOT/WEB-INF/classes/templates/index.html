@@ -37,56 +37,109 @@
     <div class="container padd-0">
         <div class="list-title">
             <h2>Sản phẩm nổi bật</h2>
-            <a th:href="@{/detail?=}">Xem chi tiết</a>
+            <a th:href="@{/detail?bestproduct=1}">Xem chi tiết</a>
         </div>
-        <div class="list-container">
+        <div class="list-container bestproduct">
             <div class="row service">
                 <th:block th:replace = "~{fragment/fragment ::listProduct(${listBestProduct})}">
 
                 </th:block>
             </div>
         </div>
-
-        <a class="view-more btn-aqua" id="loadMoreProduct1" th:href="@{/?query=bestProduct&size={id}(id=${listBestProduct.getSize()+4})}" >Tải thêm sản phẩm</a>
+        <div style="hiden" id="pagenumber" value="0"></div>
+        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1', 'bestproduct')">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
         <div class="list-title">
             <h2>Sản phẩm bán chạy</h2>
-            <a href="https://divineshop.vn/index.php?route=product/detail_product/feature">Xem chi tiết</a>
+            <a href="">Xem chi tiết</a>
         </div>
         <div class="list-container">
-            <div class="row service">
-                <th:block th:replace = "~{fragment/fragment ::listProduct(${listBestProduct})}">
+            <div class="row service bestSell">
+                <th:block th:each="product :${listBestSellProduct}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
+                        <div class="item-game-wrapper">
+                            <div class="img">
+                                <a href="">
+                                    <img class="check_img_errs" th:src="${product.product.img}" th:alt="${product.product.name}" th:title="${product.product.name}" />
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title">
+                                    <a href="" th:text="${product.product.name}"></a>
+                                </div>
 
+                                <div class="item-price">
+                                    <p class="price">
+                                        <span class="cur-p" th:text="${#numbers.formatDecimal(product.product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                        <th:block th:if ="${product.product.priceNew < product.product.priceOld}">
+                                            <span class="old-p" th:text="${#numbers.formatDecimal(product.product.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                            <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-product.product.priceNew / product.product.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                        </th:block>
+
+                                    </p>
+                                    <p class="price">
+
+                                    </p>
+                                </div>
+                                <div class="item-btn-a">
+                                    <a href="javascript:void(0);" onclick="cart.add('9819', '1', this);"><i class="fas fa-shopping-cart"></i></a>
+                                </div>
+                                <th:block th:if="${#lists.size(product.product.listCodeGiftCard)}">
+                                    <div class="item-btn" onclick="cart.buyNow('9819', '1', this);" style="margin-top: 10px">Mua ngay</div>
+                                </th:block>
+                                <th:block th:unless="${#lists.size(product.product.listCodeGiftCard)}">
+                                    <div class="out_of_stock">Hết hàng</div>
+                                </th:block>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </th:block>
             </div>
         </div>
 
-        <div class="view-more btn-aqua" id="loadMoreProduct1" th:href="@{/f?query=bestProduct&size={id}(id=${listBestProduct.getSize()+4})}" >Tải thêm sản phẩm</div>
+        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1', '1', 'bestSell')">Tải thêm sản phẩm</div>
         <hr>
     </div>
 
     <div class="container padd-0">
         <div class="list-title">
             <h2>Steam wallet</h2>
-            <a href="https://divineshop.vn/index.php?route=product/detail_product/feature">Xem chi tiết</a>
+            <a th:href="@{/detail(type='Gift card',flatform='steam')}">Xem chi tiết</a>
         </div>
-        <div class="list-container">
+        <div class="list-container giftcardsteam">
             <div class="row service">
-                <th:block th:replace = "~{fragment/fragment ::listProduct(${listBestProduct})}">
+                <th:block th:replace = "~{fragment/fragment ::listProduct(${listSteamProduct})}">
+
+                </th:block>
+            </div>
+        </div>
+        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', 'Gift card', 'Steam', '', 'giftcardsteam')">Tải thêm sản phẩm</div>
+        <hr>
+    </div>
+    <div class="container padd-0">
+        <div class="list-title">
+            <h2>Game</h2>
+            <a th:href="@{/detail(type='Game')}">Xem chi tiết</a>
+        </div>
+        <div class="list-container game">
+            <div class="row service">
+                <th:block th:replace = "~{fragment/fragment ::listProduct(${listGameProduct})}">
 
                 </th:block>
             </div>
         </div>
 
-        <a class="view-more btn-aqua" id="loadMoreProduct1" th:href="@{/?query=bestProduct&size={id}(id=${listBestProduct.getSize()+4})}" >Tải thêm sản phẩm</a>
+        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', 'Game', '', '', 'game')">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
         <div class="list-title">
             <h2>Sản phẩm khuyến mãi</h2>
-            <a href="https://divineshop.vn/index.php?route=product/detail_product/feature">Xem chi tiết</a>
+            <a href="">Xem chi tiết</a>
         </div>
         <div class="list-container">
             <div class="row service">
@@ -95,18 +148,13 @@
                 </th:block>
             </div>
         </div>
-
-        <a class="view-more btn-aqua" id="loadMoreProduct1" th:href="@{/?query=bestProduct&size={id}(id=${listBestProduct.getSize()+4})}" >Tải thêm sản phẩm</a>
+        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1', 'bestproduct')">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <footer th:replace = "~{fragment/fragment ::footer}">
 
 
     </footer>
-
-    <a id="messenger-button" href="https://m.me/Divine.Shop.Steam" alt="Hỗ Trợ DivineShop" title="Hỗ Trợ DivineShop">
-        <img style="position: fixed;bottom: 35px;right: 25px;z-index:2;" src="https://awqu8whgvy.vcdn.com.vn/image/banner_v2/messager.svg">
-    </a>
 
 </body>
 </html>

@@ -10,8 +10,8 @@ import com.ivietech.demo.dao.OrderRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
+import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.entity.Product;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,18 +19,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.entity.Platforms;
-import com.ivietech.demo.entity.Type;
-import com.ivietech.demo.entity.User;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  *
  * @author HoangMinh
  */
 @Controller
-public class Detail {
+public class Loadmore {
 
     @Autowired
     private UserRepository accountRepository;
@@ -45,9 +40,10 @@ public class Detail {
     @Autowired
     private PlaformRepository plaformRepository;
 
-    @GetMapping("/detail")
-    public String index(Model model, HttpServletRequest request) {
+   @GetMapping("api/detail")
+    public String getProduct(HttpServletRequest request ,Model model) {
         Page<Product> listProduct = null;
+
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 4; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
@@ -65,21 +61,10 @@ public class Detail {
             listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
         }
         if (request.getParameter("bestproduct") != null && !request.getParameter("bestproduct").isEmpty()) {
-            String typeName = request.getParameter("bestProduct");
             listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
         }
-        
         model.addAttribute("listProduct", listProduct);
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = accountRepository.findByUserName(userName);
-            model.addAttribute("user", user);
-
-        }
-        List<Platforms> listPlatforms = plaformRepository.findAll();
-        List<Type> listType = typeRepository.findAll();
-        model.addAttribute("listPlatforms", listPlatforms);
-        model.addAttribute("listType", listType);
-        return "detail";
+        return "product";
     }
+
 }

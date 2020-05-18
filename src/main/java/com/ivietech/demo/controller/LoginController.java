@@ -39,7 +39,6 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
-            System.out.println("abc");
         }
         return "redirect:/";
     }

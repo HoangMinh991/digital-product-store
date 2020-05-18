@@ -528,28 +528,20 @@ $(document).delegate('.agree', 'click', function (e) {
     }
 })(window.jQuery);
 
-function loadMore(page, category, el, limit, search, filter_price_from, filter_price_to, filter_tag, path, sort, order) {
+function loadMore(page, type, platform, bestproduct, bestSell,position) {
     $.ajax({
         method: 'get',
-        url: 'index.php?route=common/home/loadMore',
+        url: '/api/detail',
         data: {
-            category: category,
+            type: type,
             page: page,
-            limit: limit,
-            search: search,
-            filter_price_from: filter_price_from,
-            filter_price_to: filter_price_to,
-            tag: filter_tag,
-            path: path,
-            sort: sort,
-            order: order,
+            platform: platform,
+            bestproduct: bestproduct,
+            bestsell: bestSell
         },
         success: function (data) {
-            $(el).parent().find('.list-container .row').append(data);
-            if (data.trim() == '') {
-                $('.list-container .row').html(`<div style='font-family: \"Roboto-Condensed-Bold\"' " +
-                    "onclick='location.href=\"index.php?route=product/product/steam&search=<?php echo str_replace("'","\'" , $search)?>\"'> Xem thêm game từ steam </div>`);
-            }
+            var po ='.'+position+ ' .row';
+           $(po).append(data);
         }
     });
 }

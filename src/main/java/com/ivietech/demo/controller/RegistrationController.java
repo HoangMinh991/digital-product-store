@@ -7,9 +7,11 @@ package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dto.UserDto;
 import com.ivietech.demo.entity.User;
+import com.ivietech.demo.entity.VerificationToken;
+import com.ivietech.demo.event.RegistrationCompleteEvent;
 import com.ivietech.demo.service.IUserService;
 import com.ivietech.demo.validation.RegValidator;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -55,8 +58,33 @@ public class RegistrationController {
             return "user/register";
         }
         User registered = new User();
-        registered = userService.registerNewUserAccount(userDto);
+        try {
+            registered = userService.registerNewUserAccount(userDto);
+            String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            eventPublisher.publishEvent(new RegistrationCompleteEvent(appUrl, registered, this));
+
+        } catch (RuntimeException ex) {
+            return ("user/register");
+        }
         return "redirect:/";
+    }
+    @GetMapping("/registrationConfirm")
+    public String confirmRegistration( Model model, @RequestParam("token") String token) {
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+        if (verificationToken == null) {
+            model.addAttribute("message", "auth.message.invalidToken");
+            return "/user/badUser";
+        }
+        
+        User user = verificationToken.getUser();
+        Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            model.addAttribute("message", "auth.message.expired");
+            return "/user/badUser";
+        }
+        user.setEnabled(true);
+        userService.saveRegisteredUser(user);
+        return "/user/message";
     }
 
 }
