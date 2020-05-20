@@ -46,9 +46,7 @@ public class CartController {
     private BalanceRepository balanceRepository;
     @Autowired
     private ProductRepository productRepository;
-    
-    
-  
+   
     @Autowired
     private TypeRepository typeRepository;
     @Autowired

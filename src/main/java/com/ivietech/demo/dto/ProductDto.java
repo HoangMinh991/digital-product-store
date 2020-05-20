@@ -32,5 +32,6 @@ public class ProductDTO implements Serializable {
     private boolean best;
     private List<CodeGiftCard> listCodeGiftCard;
     private Date createdDatetime; 
+   
 
 }
