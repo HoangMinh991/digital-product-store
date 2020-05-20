@@ -41,6 +41,7 @@
         <script th:src="@{/js/common.js}"></script>
         <link rel="stylesheet" th:href="@{/css/css.css}"/>
         <link rel="stylesheet" th:href="@{/css/common.css}"/>
+        <link rel="stylesheet" th:href="@{/css/header.css}"/>
     </head>
 
     <header class="home-page fixed-header" th:fragment="header">
@@ -60,10 +61,10 @@
                                     </div>
                                     <div class="col-xs-10">
                                         <div class="text-white">
-                                            <a th:href="@{/acount/info}" class="text-white" style="text-transform: capitalize;"></a>
+                                            <a th:href="@{/user/info}" class="text-white" style="text-transform: capitalize;"></a>
                                         </div>
                                         <div class="text-white">
-                                            <a th:href="@{/account/info}" th:text="${'Số dư: ' + user.balance.money}" class="text-white">
+                                            <a th:href="@{/user/info}" th:text="${'Số dư: ' + user.balance.money}" class="text-white">
                                             </a>
                                             <i class="icon-coin-dollar" style="position: unset"></i>
                                         </div>
@@ -226,8 +227,8 @@
                         <th:block sec:authorize="isAuthenticated()">
                             <div class="dropdown home-mini-profile" style="width: 100%">
                                 <div class="avatar">
-                                    <a th:href="@{account/info}"><img class="header-avatar" id="header-avatar" th:src="@{/img/default.png}" alt="Avatar"></a>
-                                    <a th:href="@{account/info}" th:text='${user.name}' data-toggle="dropdown" class="dropdown-toggle text-white" id="dropdownMenuLink"
+                                    <a th:href="@{user/info}"><img class="header-avatar" id="header-avatar" th:src="@{/img/default.png}" alt="Avatar"></a>
+                                    <a th:href="@{user/info}" th:text='${user.name}' data-toggle="dropdown" class="dropdown-toggle text-white" id="dropdownMenuLink"
                                        aria-expanded="false" style="padding: 0 10px;text-transform: capitalize;"></a>
                                 </div>
                                 <div class="dropdown-menu drop-mini-profile" aria-labelledby="dropdownMenuLink">
@@ -249,7 +250,7 @@
                                         </div>
                                     </a>
 
-                                    <a th:href="@{/account/info}">
+                                    <a th:href="@{/user/info}">
                                         <div class="drop-link-menu-login">
                                             Thông tin tài khoản
                                         </div>
@@ -395,9 +396,7 @@
                                                 </li>
                                             </th:block>
                                         </ul>
-
                                     </li>
-
                                 </ul>
 
                             </div>
@@ -540,50 +539,39 @@
     </div>
 
     <div th:fragment="search">
-        <input type="hidden" value="63" id="path">
-            <div class="search-header" id="content">
-                <div class="row">
-                    <div class="col-lg-4 col-md-4 mb-15 col-filter-price">
-                        <input type="text" name="search" value="" placeholder="Nhập từ khóa tìm kiếm..." class="form-control">
-                    </div>
-                    <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select  class="form-control">
-                            <option value="0" selected>Tất cả danh mục</option>
-                            <option th:each="type : ${listType}"
-                                    th:value="${type.id}"
-                                    th:utext="${type.name}"/>
-                        </select>
-                    </div>
-                    <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select  class="form-control">
-                            <option value="0" selected>Tất cả danh mục</option>
-                            <option th:each="Platform : ${listPlatforms}"
-                                    th:value="${Platform.id}"
-                                    th:utext="${Platform.name}"/>
-                        </select>
-
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select id="input-sort" class="form-control">
-                            <option value="p.sort_order"  data-order="ASC">Mặc định</option>
-                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 1</option>
-                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 2</option>
-                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 3</option>
-                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 4</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 text-right col-filter-price">
-                        <select id="input-limit" style="font-weight: bold;color: #656262;" class="form-control">
-                            <option value="12">Hiện 12 sản phẩm</option>
-                            <option value="24" selected="selected">Hiện 24 sản phẩm</option>
-                            <option value="48">Hiện 48 sản phẩm</option>
-                            <option value="96">Hiện 96 sản phẩm</option>
-                        </select>
-                    </div>
+        <input type="hidden" value="63" id="path"/>
+        <div class="search-header" id="content">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 mb-15 col-filter-price">
+                    <input type="text" name="search" value="" placeholder="Nhập từ khóa tìm kiếm..." class="form-control">
+                </div>
+                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
+                    <select  class="form-control">
+                        <option value="0" selected>Tất cả danh mục</option>
+                        <option th:each="type : ${listType}"
+                                th:value="${type.id}"
+                                th:utext="${type.name}"/>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
+                    <select  class="form-control">
+                        <option value="0" selected>Tất cả danh mục</option>
+                        <option th:each="Platform : ${listPlatforms}"
+                                th:value="${Platform.id}"
+                                th:utext="${Platform.name}"/>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
+                    <select id="input-sort" class="form-control">
+                        <option value="p.sort_order"  data-order="ASC">Mặc định</option>
+                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 1</option>
+                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 2</option>
+                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 3</option>
+                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 4</option>
+                    </select>
                 </div>
             </div>
+        </div>
     </div>
 
     <th:block th:fragment="listProduct(listProduct)">
@@ -618,7 +606,7 @@
                                 <a th:href="@{/cart/buy(productId=${product.id})}"><i class="fas fa-shopping-cart"></i></a>
                             </div>
                         </th:block>
-                         <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
+                        <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
                             <div class="item-btn-a">
                                 <i class="fas fa-shopping-cart"></i>
                             </div>
@@ -638,6 +626,83 @@
         </th:block>
 
     </th:block>
+
+    <div class="container-header" style="top: 5px" th:fragment="user">
+        <div class="img" style="background-image: url('./assets/resources/bao-mat/banner.png?rand=477763'); background-position: center center;
+             background-size: cover; ">
+            <input type="file" id="cover" style="display: none;" onchange="getFileDataCover(this);" />
+            <div class="cover-img" style="height: 100%">
+                <div class="up-cover" id="up-cover" style="position: absolute; right: 15px; top: 5px;display: none">
+                    <i class="fa fa-camera fa-2x camera-cover"></i>
+                </div>
+
+                <div class="cover-hidden">
+                    <i class="fa fa-camera camera-cover-hidden"></i> &nbsp; Cập nhật ảnh bìa
+                </div>
+            </div>
+        </div>
+        <div class="account-title">
+            <input type="file" id="avatar" style="display: none;" />
+            <div class="account-img">
+                <div class="up-avatar" id="up-avatar"><i class="fa fa-camera"></i></div>
+                <img class="img-fit" id="avatar-profile" style="border-radius: 50%;" src="image/default.png?rand=522998">
+            </div>
+            <div class="account-name">
+                <div class="full-name" style="text-transform: capitalize;" th:text="${user.name}"></div>
+                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
+            </div>
+        </div>
+        <div class="account-info">
+            <div class="account-info-item">Username: <span style="text-transform: capitalize;" th:text="${user.userName}"></span></div>
+            <div class="account-info-item">Ngày đăng kí: <span  th:utext="${#dates.format(user.createdDatetime, 'dd-MM-yyyy HH:mm')}"></span></div>
+            <div class="account-info-item"><span >Member</span></div>
+            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar"></i></span></div>
+        </div>
+    </div>
+
+    <div class="container-body-side" th:fragment="menu-side">
+        <a class="side-item" th:href="@{user/info}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-info fa-2x"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Thông tin tài khoản</b>
+                </div>
+                <div>Quản lí thông tin cá nhân</div>
+            </div>
+        </a>
+        <a class="side-item"  th:href="@{user/order}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-shopping-cart fa-2x" style="color: #f4b844;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Lịch sử đơn hàng</b>
+                </div>
+                <div>Thông tin sản phẩm đã mua</div>
+            </div>
+        </a>
+        <a class="side-item"  th:href="@{user/transaction}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-dollar-sign fa-2x" style="color: #48a163;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Lịch sử giao dịch</b>
+                </div>
+                <div>Thông tin thanh toán</div>
+            </div>
+        </a>
+        <a class="side-item" th:href="@{user/password}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-key fa-2x" style="color: #ad4025;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Thay đổi mật khẩu</b>
+                </div>
+                <div>Cập nhật mật khẩu mới</div>
+            </div>
+        </a>
+    </div>
+
 
     <footer th:fragment="footer">
         <div class="footer-top" style="margin-top:20px;">
