@@ -19,15 +19,49 @@ import lombok.Data;
  * @author HoangMinh
  */
 @Entity
-@Data
-public class Balance implements Serializable {
-    private static final long serialVersionUID = -297553281792804396L;
+public class Balance {
+   
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int money;
     private long totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
-    private Accounts accounts;
+   private User user;
+
+    public Balance() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public long getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(long totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
 }

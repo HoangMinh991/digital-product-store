@@ -7,6 +7,7 @@
 
     <head th:fragment="head">
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <link href="https://divineshop.vn/Steam-wallet" rel="canonical" />
         <link href="https://awqu8whgvy.vcdn.com.vn/image/catalog/home/divine-esport-100x100.png" rel="icon" />
         <title>Steam wallet</title>
@@ -18,11 +19,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?t=1589267121" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
         <!-- js-->
+
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css?t=1589267121" />
         <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/slick-theme.css?t=1589267121" />
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js?t=1589267121"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js?t=1589267121" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/common.css?t=1589267121"/>
+
         <link href="https://awqu8whgvy.vcdn.com.vn/catalog/view/javascript/dcoin/style.css?t=1589267121"  rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Anton&display=swap&t=1589267121" rel="stylesheet"/>
         <link href="https://awqu8whgvy.vcdn.com.vn/catalog/view/theme/default/stylesheet/popupwindow/animate.css?t=1589267121" type="text/css" rel="stylesheet"
@@ -37,10 +39,11 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css?t=1589267121" rel="stylesheet" />
         <script th:src="@{/js/common.min.js}"></script>
         <script th:src="@{/js/common.js}"></script>
-        <link rel="stylesheet" th:href="@{/css/css.css}">
+        <link rel="stylesheet" th:href="@{/css/css.css}"/>
+        <link rel="stylesheet" th:href="@{/css/common.css}"/>
     </head>
 
-    <header class="home-page fixed-header" th:fragment="header1">
+    <header class="home-page fixed-header" th:fragment="header">
         <nav id="sidebar" class="navbar">
             <div id="dismiss">
                 <i class="fas fa-times"></i>
@@ -50,74 +53,160 @@
                 <ul id="menu-content" class="menu-content">
                     <li class="mt-0 collapsed" style="background-color: #4267B2">
                         <div class="header-btn text-white">
-                            <i class="fas fa-user-circle" style="font-size: 30px;"></i>
-                            <span class="text-white">
-                                <a href="https://divineshop.vn/index.php?route=account/login" class="text-white">Đăng nhập </a>
-                                <br>
-                                    <small style="margin: 40px;">Xem nhiều thông tin hơn</small>
-                            </span>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <div class="row">
+                                    <div class="col-xs-2 padd-0" style=" margin-top: 5px;">
+                                        <img class="img-fit" id="avatar-profile2" style="border-radius: 50%;" th:src="@{/img/default.png}">
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="text-white">
+                                            <a th:href="@{/acount/info}" class="text-white" style="text-transform: capitalize;"></a>
+                                        </div>
+                                        <div class="text-white">
+                                            <a th:href="@{/account/info}" th:text="${'Số dư: ' + user.balance.money}" class="text-white">
+                                            </a>
+                                            <i class="icon-coin-dollar" style="position: unset"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                            <th:block sec:authorize="!isAuthenticated()">
+                                <i class="fas fa-user-circle" style="font-size: 30px;"></i>
+                                <span class="text-white">
+                                    <a th:href="@{login}" class="text-white">Đăng nhập </a>
+                                    <br>
+                                        <small style="margin: 40px;">Xem nhiều thông tin hơn</small>
+                                </span>
+                            </th:block>
+
                         </div>
                     </li>
 
                     <li>
-                        <a href="index.php?route=common/home"><i class="fa fa-home icon-font18"></i>Trang chủ</a>
+                        <a th:href="@{/}"><i class="fa fa-home icon-font18"></i>Trang chủ</a>
                     </li>
 
+                    <li>
+                        <a th:href="@{/recharge}"><i class="fa fa-plus-circle icon-font18"></i>Nạp Tiền</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/account/order}"><i class="fa fa-shopping-cart icon-font18"></i>Lịch sử đơn hàng</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/account/transaction}"><i class="fa fa-search-dollar"></i>Lịch sử nạp tiền</a>
+                    </li>
 
                     <li data-toggle="collapse" data-target="#danh-muc" class="collapsed">
                         <a><i class="fa fa-bars icon-font18"></i>Danh mục sản phẩm <i class="fa fa-angle-down"></i></a>
                     </li>
                     <ul class="sub-menu collapse" id="danh-muc">
+                        <li>Loại hình</li>
                         <li>
-                            <a href="">
-                                <i class="fab fa-steam-symbol"></i>
-                                Game                </a>
+                            <ul>
+                                <th:block th:each="type:${listType}">
+                                    <li>
+                                        <a th:href="@{/detail?type={typeName}(typeName=${type.name})}"
+                                           th:text=${type.name}>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </ul>
+
                         </li>
+                        <li>Nền tảng</li>
                         <li>
-                            <a href="/index.php?route=product/category&amp;path=63&amp;filter_price_from=0&amp;filter_price_to=15000000&amp;sort=p.price&amp;order=ASC&amp;limit=24"/>
-                            <i class="fas fa-wallet"></i>
-                            Gift Card                </a>
-                        </li>
-                        <li>
-                            <a href="/index.php?route=product/search&amp;search=Gói%20nạp%20itunes"/>
-                            <i class="fab fa-itunes"></i>
-                            Gói nạp iTunes                </a>
-                        </li>
-                        <li>
-                            <a href="/index.php?route=product/search&amp;search=moiviec&amp;filter_price_from=0&amp;filter_price_to=15000000&amp;sort=p.sort_order&amp;order=ASC&amp;limit=48"/>
-                            <i class="fas fa-magic"></i>
-                            Tiện ích                </a>
+                            <ul>
+                                <th:block th:each="platform:${listPlatforms}">
+                                    <li>
+                                        <a th:href="@{/detail?platform={platformName}(platformName=${platform.name})}"
+                                           th:text=${platform.name}>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </ul>
+
                         </li>
                     </ul>
+                    <hr/>
+                    <li>
+                        <a th:href="@{/}"><i class="fab fa-hotjar"></i>Mua nhiều trong 24h</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="fas fa-award"></i>ĐANG KHUYẾN MẠI</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="far fa-credit-card"></i>Hình thức thanh toán</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="fas fa-gamepad"></i>Hướng dẫn mua hàng</a>
+                    </li>
 
-                    <hr>
+                    <hr/>
+                    <li style="margin: 0;"><a href="tel:1900633305" style="font-size: 17px;"><i class="fa fa-phone"></i>HOTLINE: 1900 633 305 </a></li>
+                    <hr/>
+                    <th:block sec:authorize="isAuthenticated()">
                         <li>
-                            <a href="/index.php?route=product/detail_product/bestsellers"><i class="fab fa-hotjar"></i>Mua nhiều trong 24h</a>
+                            <a th:href="@{/logout}"><i class="fa fa-sign-out-alt icon-font18"></i>Đăng xuất</a>
                         </li>
-                        <li>
-                            <a href="/index.php?route=product/detail_product/sale"><i class="fas fa-award"></i>ĐANG KHUYẾN MẠI</a>
-                        </li>
-                        <li>
-                            <a href="/index.php?route=account/topup"><i class="far fa-credit-card"></i>Hình thức thanh toán</a>
-                        </li>
-                        <li>
-                            <a href="https://help.divineshop.vn/huong-dan-mua-hang/huong-dan-tao-tai-khoan"><i class="fas fa-gamepad"></i>Hướng dẫn mua hàng</a>
-                        </li>
-                    </hr>
-
+                    </th:block>
 
                 </ul>
             </div>
         </nav>
         <div class="overlay"></div>
         <script src="https://awqu8whgvy.vcdn.com.vn/catalog/view/theme/bigshop/js/jquery.autocomplete.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#filter_name").autocomplete("getdata.php?lan=vi", {
+                    width: 450,
+                    resultsClass: "ac_results col-lg-7",
+                    matchContains: true
+                });
+
+                $("#home-cart").hover(
+                        function () {
+                            $('#dropdown-detail-cart').css("display", "block");
+                        }, function () {
+                    $('#dropdown-detail-cart').css("display", "none");
+                }
+                );
+
+                $(".home-mini-profile").hover(
+                        function () {
+                            $('.drop-mini-profile').css("display", "block");
+                        }, function () {
+                    $('.drop-mini-profile').css("display", "none");
+                }
+                );
+
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#dismiss, .overlay').on('click', function () {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                    $('body').css('position', 'unset');
+                });
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                    $('body').css('position', 'fixed');
+                });
+            });
+        </script>
 
         <div class="header-container container">
             <div id="sidebarCollapse" class="btn-menu">
                 <i class="fas fa-bars" style="font-size: 20px; vertical-align: middle"></i>
             </div>
-            <div class="logo"><a href="https://divineshop.vn/index.php?route=common/home"><img style="margin-right: 10px;width: 60px" src="assets/resources/logo_divine_pure_white.png" />
-                    <img style="width: 100px;" src="assets/resources/logo-1.png" /></a></div>
+            <div class="logo"><a th:href="@{/}"><h2 style="margin-right: 10px;width: 60px">IVIETTECH</h2>
+                    <div style="width: 100px;"></div></a></div>
             <div class="search-form">
                 <div class="search-control" id="search">
                     <input type="text" id="filter_name" class="search-box" name="search" value="" placeholder="Nhập sản phẩm cần tìm...">
@@ -128,15 +217,67 @@
             </div>
             <div class="cart-mobile">
                 <div class="align-items-center d-flex" id="update-cart-mobile">
-                    <a href="index.php?route=checkout/cart"><i class="fas fa-shopping-cart cart-size-mobile"></i> <span class="quantity_mobile"></span></a>
+                    <a th:href="@{/checkout/cart}"><i class="fas fa-shopping-cart cart-size-mobile"></i> <span class="quantity_mobile">0</span></a>
                 </div>
             </div>
             <div class="header-btn">
                 <div class="header-btn d-flex flex-row">
                     <div class="d-flex align-items-center ml-1">
-                        <a href="https://divineshop.vn/index.php?route=account/login" class="text-white">Đăng nhập </a>
-                        <span>/</span>
-                        <a href="https://divineshop.vn/index.php?route=account/register" class="text-white">Đăng kí</a>
+                        <th:block sec:authorize="isAuthenticated()">
+                            <div class="dropdown home-mini-profile" style="width: 100%">
+                                <div class="avatar">
+                                    <a th:href="@{account/info}"><img class="header-avatar" id="header-avatar" th:src="@{/img/default.png}" alt="Avatar"></a>
+                                    <a th:href="@{account/info}" th:text='${user.name}' data-toggle="dropdown" class="dropdown-toggle text-white" id="dropdownMenuLink"
+                                       aria-expanded="false" style="padding: 0 10px;text-transform: capitalize;"></a>
+                                </div>
+                                <div class="dropdown-menu drop-mini-profile" aria-labelledby="dropdownMenuLink">
+                                    <div class="menu-login-head">
+                                        <b>SỐ DƯ TÀI KHOẢN</b>
+                                        <br>
+                                            <div class="menu-login-head-wallet">
+                                                <div class="d-flex">
+                                                    <i class="icon-wallet icon-wallet-login"></i>
+                                                    <div class="balance"> <span th:text="${user.balance.money}" style="color: #000"> </span> <i class="icon-coin-dollar" style="color:#000;"></i></div>
+                                                </div>
+                                            </div>
+                                            <a th:href="@{/recharge}" class="btn btn_recharge">NẠP THÊM</a>
+
+                                    </div>
+                                    <a th:href="@{/account/order}">
+                                        <div class="drop-link-menu-login">
+                                            Lịch sử mua hàng
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{/account/info}">
+                                        <div class="drop-link-menu-login">
+                                            Thông tin tài khoản
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{/}" target="_blank">
+                                        <div class="drop-link-menu-login">
+                                            Liên hệ Fanpage <img src="assets/icon/icon-facebook-black.png" alt="">
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{/logout}">
+                                        <div class="menu-logout">
+                                            Đăng xuất
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-right" style="display: none;">
+                                <li><a th:href="@{/account/order}" style="color:black">Lịch sử đơn hàng</a></li>
+                                <li><a th:href="@{/account/transaction}" style="color:black">Giao dịch</a></li>
+                            </ul>
+                        </th:block>
+                        <th:block sec:authorize="!isAuthenticated()">
+                            <a th:href="@{/login}" class="text-white">Đăng nhập </a>
+                            <span>/</span>
+                            <a th:href="@{/register}" class="text-white">Đăng kí</a>
+                        </th:block>
                     </div>
                 </div>
 
@@ -151,17 +292,18 @@
                         <div class="text-cart-current">
                             Giỏ hàng hiện tại
                         </div>
+
                         <th:block th:if="${session.order}">
                             <li class="dropdown-item padding-table-cart">
                                 <table class="table" id="detail_cart">
                                     <tbody>
                                         <tr th:each="product: ${session.order.items}">
                                             <td class="text-left hide-text-option-cart">
-                                                <a href="https://divineshop.vn/index.php?route=product/product&product_id=" th:text="${product.product.name}"></a>
+                                                <a href="" th:text="${product.product.name}"></a>
 
                                             </td>
                                             <td class="text-right"><i style="color: black">Số lượng: <span style="color:darkolivegreen;font-weight:bold" th:text="${product.quantity}"></span></i></td>
-                                            <td class="text-right" th:text="${product.price}"></td>
+                                            <td class="text-right" th:text="${#numbers.formatDecimal(product.product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
                                             <td class="text-center"><button type="button"
                                                                             th:onclick="'window.location.href = \'' + @{/cart/remove(productId=${product.id})} + '\''" title="Loại bỏ"
                                                                             class="btn btn-danger btn-xs remove"><i class="fa fa-times text-remove"></i>
@@ -218,7 +360,7 @@
             </div>
         </div>
     </header>
-    <div th:fragment="menutop1">
+    <div th:fragment="menutop">
         <div class="home-page banner-home common-menu-top" style="background-color: #f7f7f7;margin-bottom: 15px;">
             <div class="menu-2" style="margin-top: 0">
                 <div class="container padd-0" style="margin-top: 6px;">
@@ -229,63 +371,50 @@
                             </div>
                             <div class="dropdown-menu drop-category nav-menu" aria-labelledby="dropdownMenuLink">
                                 <ul>
+                                    <li>Loại hình</li>
                                     <li>
-                                        <a href="/index.php?route=product/category&amp;path=59&amp;filter_price_from=0&amp;filter_price_to=15000000&amp;sort=op.quantity&amp;order=DESC&amp;limit=12"><i class="fab fa-steam-symbol"></i>
-                                            <span>Game trên Steam</span></a>
+                                        <ul>
+                                            <th:block th:each="type:${listType}">
+                                                <li>
+                                                    <a th:href="@{/detail (type=${type.name})}"
+                                                       th:text=${type.name}>
+                                                    </a>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+
                                     </li>
+                                    <li>Nền tảng</li>
                                     <li>
-                                        <a href="/index.php?route=product/search&amp;search=pubg"><i class="fas fa-trophy"></i>
-                                            <span>PUBG</span></a>
+                                        <ul>
+                                            <th:block th:each="platform:${listPlatforms}">
+                                                <li>
+                                                    <a th:href="@{/detail (platform=${platform.name})}"
+                                                       th:text=${platform.name}>
+                                                    </a>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+
                                     </li>
-                                    <li>
-                                        <a href="/Origin"><i class="icon icon-origin-svg"></i>
-                                            <span>Game trên Origin</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/battle-net"><i class="icon icon-battle-net-svg"></i>
-                                            <span>Game trên Battle.net</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/index.php?route=product/category&amp;path=63&amp;filter_price_from=0&amp;filter_price_to=15000000&amp;sort=p.price&amp;order=ASC&amp;limit=24"><i class="fas fa-wallet"></i>
-                                            <span>Steam Wallet</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/index.php?route=product/search&amp;search=Gói%20nạp%20itunes"><i class="fab fa-itunes"></i>
-                                            <span>Gói nạp iTunes</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/index.php?route=product/search&amp;tag=garena"><i class="icon icon-garena-svg"></i>
-                                            <span>Gói nạp Garena</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/index.php?route=product/search&amp;search=gift%20card"><i class="fab fa-google-play"></i>
-                                            <span>Google Play</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/index.php?route=product/search&amp;search=moiviec&amp;filter_price_from=0&amp;filter_price_to=15000000&amp;sort=p.sort_order&amp;order=ASC&amp;limit=48"><i class="fas fa-magic"></i>
-                                            <span>Tiện ích</span></a>
-                                    </li>
-                                    <li>
-                                        <a href="/Nintendo-Eshop-Prepaid-Card-20"><i class="fas fa-wallet"></i>
-                                            <span>Nintendo Eshop Card</span></a>
-                                    </li>
+
                                 </ul>
+
                             </div>
                         </div>
-
                         <div class="right-menu">
                             <div class="row menu-tab-all">
                                 <div class="quick-menu head-link">
-                                    <a href="/index.php?route=product/detail_product/bestsellers"><i class="fab fa-hotjar"></i><span>Mua nhiều trong 24h</span></a>
+                                    <a th:href="@{/}"><i class="fab fa-hotjar"></i><span>Mua nhiều trong 24h</span></a>
                                 </div>
                                 <div class="quick-menu head-link">
-                                    <a href="/index.php?route=product/detail_product/sale"><i class="fas fa-award"></i><span>ĐANG KHUYẾN MẠI</span></a>
+                                    <a th:href="@{/}"><i class="fas fa-award"></i><span>ĐANG KHUYẾN MẠI</span></a>
                                 </div>
                                 <div class="quick-menu head-link">
-                                    <a href="/index.php?route=account/topup"><i class="far fa-credit-card"></i><span>Hình thức thanh toán</span></a>
+                                    <a th:href="@{/}"><i class="far fa-credit-card"></i><span>Hình thức thanh toán</span></a>
                                 </div>
                                 <div class="quick-menu head-link">
-                                    <a href="https://help.divineshop.vn/huong-dan-mua-hang/huong-dan-tao-tai-khoan"><i class="fas fa-gamepad"></i><span>Hướng dẫn mua hàng</span></a>
+                                    <a th:href="@{/}"><i class="fas fa-gamepad"></i><span>Hướng dẫn mua hàng</span></a>
                                 </div>
                             </div>
                         </div>
@@ -294,6 +423,122 @@
             </div>
         </div>
     </div>
+
+    <div class="home-page banner-home" style="background-color: #f7f7f7" th:fragment="menuIndex">
+        <div class="menu-2" style="margin-top: 0">
+            <div class="container padd-0" style="margin-top: 6px;">
+                <div id="alert-position"></div>
+                <div class="menu-catalog">
+                    <div class="header-menu">
+                        <div class="bar-btn">
+                            <i class="fas fa-bars"></i><span>Danh mục sản phẩm</span>
+                        </div>
+                        <div class="nav-menu">
+                            <ul>
+                                <li>Loại hình</li>
+                                <li>
+                                    <ul>
+                                        <th:block th:each="type:${listType}">
+                                            <li>
+                                                <a th:href="@{/detail (type=${type.name})}"
+                                                   th:text=${type.name}>
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+
+                                </li>
+                                <li>Nền tảng</li>
+                                <li>
+                                    <ul>
+                                        <th:block th:each="platform:${listPlatforms}">
+                                            <li>
+                                                <a th:href="@{/detail (platform=${platform.name})}"
+                                                   th:text=${platform.name}>
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="right-menu">
+                        <div class="row menu-tab-all">
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fab fa-hotjar"></i><span>Mua nhiều trong 24h</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fas fa-award"></i><span>ĐANG KHUYẾN MẠI</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="far fa-credit-card"></i><span>Hình thức thanh toán</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fas fa-gamepad"></i><span>Hướng dẫn mua hàng</span></a>
+                            </div>
+                        </div>
+                        <div class="row slider-container" style="max-width: 797px;">
+                            <div class="col col-md-8 col-sm-12 col-xs-12 col-lg-8">
+                                <div class="home-slider">
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Adobe%201%20Month%20Deal-525x300.png" alt="Adobe"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Netflix-525x300.png" alt="Netflix"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Itunes%20WALLet-525x300.png" alt="Itunes"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Freepik%20-%201%20Month%20Banner%20-53-525x300.png" alt="Freepik"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Spotify%2092%20150000-525x300.png" alt="Spotify"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/cache/catalog/Anh/Artboard%201-525x300.png" alt="Steam wallet"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $('.home-slider').slick({
+                                    autoplay: true,
+                                    autoplaySpeed: 5000,
+                                    dots: true,
+                                    infinite: true,
+                                    speed: 500,
+                                    arrows: true,
+                                });
+                            </script>
+                            <div class="row sub-banner">
+                                <div class="col col-md-4 col-sm-6 col-xs-6 col-lg-4">
+                                    <a class="w-100" href=""><img class="check_img_errs" src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Nho/GARENA1.png" alt="Garena Bonus"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-6 col-xs-6 col-lg-4">
+                                    <a class="w-100" href=""><img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Nho/ITUNES1.png" class="height-banner-home check_img_errs img-banner" alt="Gói nạp Itunes"></a>
+                                </div>
+                            </div>
+                            <div class="row banner_bottom">
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href="/"><img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Nho/STEAM1.png" alt="Phân phối gói nạp Steam Wallet"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href=""><img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Nho/FREEPIK1.png" alt="Tài khoản"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href=""><img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Adobe full apps.png" alt="Adobe"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div th:fragment="search">
         <input type="hidden" value="63" id="path">
             <div class="search-header" id="content">
@@ -302,41 +547,30 @@
                         <input type="text" name="search" value="" placeholder="Nhập từ khóa tìm kiếm..." class="form-control">
                     </div>
                     <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select name="category_id" class="form-control">
-                            <option value="0">Tất cả danh mục</option>
-                            <option value="64">Account Steam </option>
-                            <option value="61">Battle.net</option>
-                            <option value="65">CD key</option>
-                            <option value="66">Flash Sale</option>
-                            <option value="60">Origins</option>
-                            <option value="59">Steam</option>
-                            <option value="63">Steam wallet</option>
+                        <select  class="form-control">
+                            <option value="0" selected>Tất cả danh mục</option>
+                            <option th:each="type : ${listType}"
+                                    th:value="${type.id}"
+                                    th:utext="${type.name}"/>
                         </select>
                     </div>
                     <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select id="input-sort" class="form-control">
-                            <option value="p.sort_order"  data-order="ASC">Mặc định</option>
-                            <option value="op.quantity"  data-order="DESC">Phổ biến nhất</option>
-                            <option value="p.date_modified"  data-order="DESC">Mới cập nhật</option>
-                            <option value="p.price" selected="selected" data-order="ASC">Giá (Thấp &gt; Cao)</option>
-                            <option value="p.price"  data-order="DESC">Giá (Cao &gt; Thấp)</option>
-                            <option value="pd.name"  data-order="ASC">Tên (A - Z)</option>
-                            <option value="pd.name"  data-order="DESC">Tên (Z - A)</option>
+                        <select  class="form-control">
+                            <option value="0" selected>Tất cả danh mục</option>
+                            <option th:each="Platform : ${listPlatforms}"
+                                    th:value="${Platform.id}"
+                                    th:utext="${Platform.name}"/>
                         </select>
+
                     </div>
 
                     <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                        <select id="input-tag" class="form-control" name="filter_tag">
-                            <option value="">---- Tag ---</option>
-                            <option value="steam wallet">steam wallet</option>
-                            <option value="wallet code">wallet code</option>
-                            <option value="wallet">wallet</option>
-                            <option value="steam">steam</option>
-                            <option value="5RM">5RM</option>
-                            <option value="3tl">3tl</option>
-                            <option value="50tb">50tb</option>
-                            <option value="5tl">5tl</option>
-                            <option value="goinapwallet">goinapwallet</option>
+                        <select id="input-sort" class="form-control">
+                            <option value="p.sort_order"  data-order="ASC">Mặc định</option>
+                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 1</option>
+                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 2</option>
+                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 3</option>
+                            <option value="p.sort_order"  data-order="ASC">Sắp xếp option 4</option>
                         </select>
                     </div>
 
@@ -351,6 +585,60 @@
                 </div>
             </div>
     </div>
+
+    <th:block th:fragment="listProduct(listProduct)">
+        <th:block th:each="product :${listProduct}">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
+                <div class="item-game-wrapper">
+                    <div class="img">
+                        <a href="">
+                            <img class="check_img_errs" th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
+                        </a>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-title">
+                            <a href="" th:text="${product.name}"></a>
+                        </div>
+
+                        <div class="item-price">
+                            <p class="price">
+                                <span class="cur-p" th:text="${#numbers.formatDecimal(product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                <th:block th:if ="${product.priceNew < product.priceOld}">
+                                    <span class="old-p" th:text="${#numbers.formatDecimal(product.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                    <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-product.priceNew / product.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                </th:block>
+
+                            </p>
+                            <p class="price">
+
+                            </p>
+                        </div>
+                        <th:block th:if="${#lists.size(product.listCodeGiftCard)}">
+                            <div class="item-btn-a">
+                                <a th:href="@{/cart/buy(productId=${product.id})}"><i class="fas fa-shopping-cart"></i></a>
+                            </div>
+                        </th:block>
+                         <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
+                            <div class="item-btn-a">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </th:block>
+
+                        <th:block th:if="${#lists.size(product.listCodeGiftCard)}">
+                            <div class="item-btn" onclick="cart.buyNow('9819', '1', this);" style="margin-top: 10px">Mua ngay</div>
+                        </th:block>
+                        <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
+                            <div class="out_of_stock">Hết hàng</div>
+                        </th:block>
+
+
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+    </th:block>
+
     <footer th:fragment="footer">
         <div class="footer-top" style="margin-top:20px;">
             <div class="container mt-0">

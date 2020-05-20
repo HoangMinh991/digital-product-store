@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,14 +6,18 @@
  */
 package com.ivietech.demo.controller;
 
-import com.ivietech.demo.dao.AccountRepository;
 import com.ivietech.demo.dao.BalanceRepository;
 import com.ivietech.demo.dao.OrderRepository;
+import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
+import com.ivietech.demo.dao.TypeRepository;
+import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.Item;
+import com.ivietech.demo.dto.Order;
+import com.ivietech.demo.dto.ProductDTO;
+import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
-import com.ivietech.demo.model.Item;
-import com.ivietech.demo.model.Order;
-import com.ivietech.demo.model.ProductDTO;
+import com.ivietech.demo.entity.Type;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +26,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -37,16 +39,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CartController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private BalanceRepository balanceRepository;
     @Autowired
     private ProductRepository productRepository;
+    
+    
+  
+    @Autowired
+    private TypeRepository typeRepository;
+    @Autowired
+    private PlaformRepository plaformRepository;
 
     @GetMapping("/viewCartDetail")
     public String viewCartDetail(Model model) {
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
         return "viewcarddetail";
     }
 
@@ -119,7 +132,10 @@ public class CartController {
     @GetMapping("/cart/remove")
     public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        System.out.println("dddd");
         Order order = (Order) session.getAttribute("order");
+        System.out.println(order.getTotal_order());
+        System.out.println("abc");
         List<Item> items = order.getItems();
         for (Item item : items) {
             if (item.getProduct().getId() == productId) {
@@ -144,7 +160,8 @@ public class CartController {
         long id;
         if (request.getParameter("productId") != null) {
             id = (int) Long.parseLong(request.getParameter("productId"));
-            Product product = productRepository.getProductById(id);
+            Product product = productRepository.findById(id).get();
+       
             if (product != null) {
                 ProductDTO product_model = new ProductDTO();
                 BeanUtils.copyProperties(product, product_model);
@@ -157,7 +174,7 @@ public class CartController {
                     List<Item> listItems = new ArrayList<Item>();
                     Item item = new Item();
                     item.setQuantity(quantity);
-                    item.setPrice((long) product_model.getPrice());
+                    item.setPriceNew( product_model.getPriceNew());
                     item.setProduct(product_model);
                     item.setId();
                     listItems.add(item);
@@ -181,7 +198,7 @@ public class CartController {
                         Item item = new Item();
                         item.setQuantity(quantity);
                         item.setProduct(product_model);
-                        item.setPrice((long) product_model.getPrice());
+                        item.setPriceNew(product_model.getPriceNew());
                         item.setId();
                         listItems.add(item);
                     }
@@ -190,11 +207,10 @@ public class CartController {
                     session.setAttribute("order", order);
 
                 }
+               Order order = (Order) session.getAttribute("order");
+                System.out.println(order.getTotal_quantity());
             }
-            //return "redirect:/";
-            //System.out.println(request.getAsyncContext());
-            System.out.println(request.getContextPath());
-            System.out.println(request.getHeader("Referer"));
+            
             return "redirect:/";
         } else {
             return "redirect:/";

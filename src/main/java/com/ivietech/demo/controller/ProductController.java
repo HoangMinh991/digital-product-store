@@ -5,12 +5,11 @@
  */
 package com.ivietech.demo.controller;
 
-import com.ivietech.demo.dao.AccountRepository;
 import com.ivietech.demo.dao.BalanceRepository;
 import com.ivietech.demo.dao.OrderRepository;
 import com.ivietech.demo.dao.ProductRepository;
+import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.entity.Product;
-import com.ivietech.demo.model.Item;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -37,8 +36,8 @@ public class ProductController {
     @GetMapping("/viewproduct")
     public String viewproduct(Model model,@RequestParam(value = "productId", required = false) Integer productId) {
         Long temp = new Long(productId);
-        Product product = productRepository.getProductById(temp);
-        model.addAttribute("product", product);
+   //     Product product = productRepository.getProductById(temp);
+       // model.addAttribute("product", product);
         return "ProductDetail";
     }
 }

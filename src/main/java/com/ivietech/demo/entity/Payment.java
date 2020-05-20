@@ -28,4 +28,6 @@ public class Payment implements Serializable {
     @OneToOne
     @PrimaryKeyJoinColumn
     private PaymentDetail paymentDetail;
+
+    
 }

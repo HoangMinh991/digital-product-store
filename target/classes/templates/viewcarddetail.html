@@ -13,11 +13,11 @@
             </div>
         </div>
 
-        <header th:replace = "~{fragment/fragment ::header1}"> 
+        <header th:replace = "~{fragment/fragment ::header}"> 
 
         </header>
 
-        <div th:replace = "~{fragment/fragment ::menutop1}">
+        <div th:replace = "~{fragment/fragment ::menutop}">
 
         </div>
 
@@ -66,7 +66,7 @@
                                         <a href="#" th:href="@{/viewCartDetail/cart/remove(productId=${product.id})}" style="color:red;" class="poiter">Xóa</a>
                                 </div>
                                 <div class="col-md-2 text-right">
-                                    <span style="font-size: 16px; margin-bottom: 5px; font-weight: bold" th:text="${product.quantity}*${product.price}">457.000 VNĐ</span><br>
+                                    <span style="font-size: 16px; margin-bottom: 5px; font-weight: bold" th:text="${product.quantity}*${product.priceNew}">457.000 VNĐ</span><br>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="quantity-block">
@@ -167,6 +167,7 @@
                         </form>
                 </div>
             </div>
+        </div>
 
             <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
             <script th:src="@{/js/test.js}"></script>

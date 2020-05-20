@@ -77,7 +77,6 @@
                                             <span class="old-p" th:text="${#numbers.formatDecimal(product.product.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
                                             <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-product.product.priceNew / product.product.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
                                         </th:block>
-
                                     </p>
                                     <p class="price">
 
