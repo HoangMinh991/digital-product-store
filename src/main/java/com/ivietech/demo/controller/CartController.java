@@ -14,10 +14,12 @@ import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dto.Item;
 import com.ivietech.demo.dto.Order;
-import com.ivietech.demo.dto.ProductDTO;
+import com.ivietech.demo.dto.ProductDto;
+import com.ivietech.demo.dto.UserDto;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.Type;
+import com.ivietech.demo.entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +49,7 @@ public class CartController {
     private BalanceRepository balanceRepository;
     @Autowired
     private ProductRepository productRepository;
-   
+
     @Autowired
     private TypeRepository typeRepository;
     @Autowired
@@ -54,10 +57,16 @@ public class CartController {
 
     @GetMapping("/viewCartDetail")
     public String viewCartDetail(Model model) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            model.addAttribute("user", user);
+        }
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
+        System.out.println("abcd");
         return "viewcarddetail";
     }
 
@@ -66,6 +75,14 @@ public class CartController {
         System.out.println("Remove" + productId);
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
         List<Item> items = order.getItems();
         for (Item item : items) {
             if (item.getProduct().getId() == productId) {
@@ -89,6 +106,14 @@ public class CartController {
     public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
         List<Item> items = order.getItems();
         for (Item item : items) {
             if (item.getProduct().getId() == productId) {
@@ -113,6 +138,14 @@ public class CartController {
     public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
         List<Item> items = order.getItems();
         for (Item item : items) {
             if (item.getProduct().getId() == productId) {
@@ -130,10 +163,15 @@ public class CartController {
     @GetMapping("/cart/remove")
     public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        System.out.println("dddd");
         Order order = (Order) session.getAttribute("order");
-        System.out.println(order.getTotal_order());
-        System.out.println("abc");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
         List<Item> items = order.getItems();
         for (Item item : items) {
             if (item.getProduct().getId() == productId) {
@@ -159,9 +197,9 @@ public class CartController {
         if (request.getParameter("productId") != null) {
             id = (int) Long.parseLong(request.getParameter("productId"));
             Product product = productRepository.findById(id).get();
-       
+
             if (product != null) {
-                ProductDTO product_model = new ProductDTO();
+                ProductDto product_model = new ProductDto();
                 BeanUtils.copyProperties(product, product_model);
                 if (request.getParameter("quantity") != null) {
                     quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -172,13 +210,22 @@ public class CartController {
                     List<Item> listItems = new ArrayList<Item>();
                     Item item = new Item();
                     item.setQuantity(quantity);
-                    item.setPriceNew( product_model.getPriceNew());
+                    item.setPriceNew(product_model.getPriceNew());
                     item.setProduct(product_model);
                     item.setId();
                     listItems.add(item);
                     order.setItems(listItems);
                     order.setTotal_quantity();
                     order.setTotal_order();
+                    String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+                    if (!"anonymousUser".equals(userName)) {
+                        User user = userRepository.findByUserName(userName);
+                        UserDto user_model = new UserDto();
+                        BeanUtils.copyProperties(user, user_model);
+                        order.setUser(user_model);
+                        System.out.println(user_model.getBalance().getMoney());
+                        model.addAttribute("user", user_model);
+                    }
                     session.setAttribute("order", order);
                     //model.addAttribute("total_hoadon", total_hoadon);
                     //model.addAttribute("total", total);
@@ -202,13 +249,18 @@ public class CartController {
                     }
                     order.setTotal_quantity();
                     order.setTotal_order();
+                    String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+                    if (!"anonymousUser".equals(userName)) {
+                        User user = userRepository.findByUserName(userName);
+                        UserDto user_model = new UserDto();
+                        BeanUtils.copyProperties(user, user_model);
+                        order.setUser(user_model);
+                        System.out.println(user_model.getBalance().getMoney());
+                        model.addAttribute("user", user_model);
+                    }
                     session.setAttribute("order", order);
-
                 }
-               Order order = (Order) session.getAttribute("order");
-                System.out.println(order.getTotal_quantity());
             }
-            
             return "redirect:/";
         } else {
             return "redirect:/";

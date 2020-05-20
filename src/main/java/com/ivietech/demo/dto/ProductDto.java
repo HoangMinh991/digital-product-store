@@ -19,7 +19,7 @@ import lombok.Data;
  * @author ADMIN
  */
 @Data
-public class ProductDTO implements Serializable {
+public class ProductDto implements Serializable {
 
     private long id;
     private String img;
