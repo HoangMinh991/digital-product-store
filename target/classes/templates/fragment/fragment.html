@@ -237,7 +237,7 @@
                                             <div class="menu-login-head-wallet">
                                                 <div class="d-flex">
                                                     <i class="icon-wallet icon-wallet-login"></i>
-                                                    <div class="balance"> <span th:text="${user.balance.money}" style="color: #000"> </span> <i class="icon-coin-dollar" style="color:#000;"></i></div>
+                                                    <div class="balance"> <span th:text="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'" style="color: #000"> </span> <i class="icon-coin-dollar" style="color:#000;"></i></div>
                                                 </div>
                                             </div>
                                             <a th:href="@{/recharge}" class="btn btn_recharge">NẠP THÊM</a>
@@ -318,11 +318,11 @@
                                         <tbody>
                                             <tr>
                                                 <td class="text-right"><strong>Thành tiền</strong></td>
-                                                <td class="text-right" th:text="${session.order.total_order}"></td>
+                                                <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-right"><strong>Tổng đơn hàng</strong></td>
-                                                <td class="text-right" th:text="${session.order.total_order}"></td>
+                                                <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
                                             </tr>
                                             <tr>
                                                 <td class="text-right"><strong>Tổng tiền phải nạp thêm</strong></td>

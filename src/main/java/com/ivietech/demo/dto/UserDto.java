@@ -5,6 +5,12 @@
  */
 package com.ivietech.demo.dto;
 
+import com.ivietech.demo.entity.Balance;
+import com.ivietech.demo.entity.Orders;
+import com.ivietech.demo.entity.Role;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +21,15 @@ import org.springframework.stereotype.Component;
 @Data
 public class UserDto {
 
-    private String name;
+    private long id;
     private String userName;
+    private String name;
     private String password;
-    private String passwordConfirm;
+    private boolean enabled;
     private String email;
-    private String phone;   
+    private String phone;
+    private Date createdDatetime;
+    private Set<Role> roles;
+    Balance balance;
+    private List<Orders> listOrder;
 }
