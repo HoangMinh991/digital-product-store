@@ -16,8 +16,6 @@
         <header th:replace = "~{fragment/fragment ::header}"> 
 
         </header>
-        <div th:replace = "~{fragment/fragment ::menutop}">
-        </div>
 
         <script th:src="@{/js/node.js}"></script>
 
@@ -37,9 +35,9 @@
         </style>
         <div class="container">
             <div th:replace = "~{fragment/fragment ::menutop}">
-        </div>
+            </div>
 
-            
+
             <style>
                 .banner-home .menu-2 .header-menu div.nav-menu {
                     display: none;
@@ -58,7 +56,7 @@
                 }
                 );
             </script>
-            
+
             <div class="container-header" style="top: 5px">
                 <div class="img" style="background-image: url('./assets/resources/bao-mat/banner.png?rand=217864'); background-position: center center;
                      background-size: cover; ">
@@ -80,15 +78,15 @@
                         <img class="img-fit" id="avatar-profile" style="border-radius: 50%;" src="image/default.png?rand=355341">
                     </div>
                     <div class="account-name">
-                        <div class="full-name" style="text-transform: capitalize;">Hoang Minh</div>
+                        <div class="full-name" style="text-transform: capitalize;"><span th:text="${user.name}"></span></div>
                         <div class="account-balance">Số dư hiện tại: <span>0 <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
                     </div>
                 </div>
                 <div class="account-info">
-                    <div class="account-info-item">Username: <span style="text-transform: capitalize;">hoangminh9119</span></div>
-                    <div class="account-info-item">Ngày đăng kí: <span>12-05-2020</span></div>
+                    <div class="account-info-item">Username: <span style="text-transform: capitalize;" th:text="${user.userName}">hoangminh9119</span></div>
+                    <div class="account-info-item">Ngày đăng kí: <span th:text="${#dates.format(user.createdDatetime, 'dd-MM-yyyy')}">12-05-2020</span></div>
                     <div class="account-info-item"><span>Member</span></div>
-                    <div class="account-info-item">Đã tích lũy: <span>13,000 <i class="icon-coin-dollar"></i></span></div>
+                    <div class="account-info-item">Đã tích lũy: <span th:text="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar"></i></span></div>
                 </div>
             </div>
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -181,7 +179,7 @@
                     <hr/>
                     <div class="form-group">
                         <label class="col-form-label">Email đăng nhập:</label>
-                        <div class="text info_detail">hhfeedxongout@gmail.com</div>
+                        <div class="text info_detail" th:text="${user.email}"></div>
                         <input type="text" value="hhfeedxongout@gmail.com" id="email" class="form-control info_edit" readonly/>
                         <input type="hidden" value="392062" id="address_id"/>
                         <input type="hidden" value="573049" id="customer_id"/>
@@ -190,19 +188,24 @@
 
                     <div class="form-group">
                         <label class="col-form-label"><span style="color: red" class="info_edit"> * </span> Username:</label>
-                        <div class="text info_detail" style="text-transform: capitalize;">hoangminh9119</div>
-
+                        <div class="text info_detail" style="text-transform: capitalize;" th:text="${user.userName}">hoangminh9119</div>
                         <input type="text" value="hoangminh9119" class="form-control info_edit" style="text-transform: capitalize;" readonly>
                     </div>
 
                     <div class="form-group">
                         <label class="col-form-label"> <span style="color: red" class="info_edit"> * </span> Họ và tên:</label>
-                        <div class="text info_detail">Hoang Minh</div>
+                        <div class="text info_detail" th:text="${user.name}">Hoang Minh</div>
                         <input type="text" value="Hoang Minh" id="fullname" class="form-control info_edit" placeholder="Nhập fullname">
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Số điện thoại:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
+                        <th:block th:unless="${user.phone}">
+                            <div class="text none info_detail">(Chưa có thông tin)</div>
+                        </th:block>
+                        <th:block if="${user.phone}">
+                            <div class="text info_detail" th:text="${user.phone}"></div>
+                        </th:block>
+
                         <input type="text" value="" id="phone" class="form-control info_edit">
                     </div>
                     <div class="form-group">

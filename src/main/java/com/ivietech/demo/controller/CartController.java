@@ -102,6 +102,36 @@ public class CartController {
         return "redirect:/viewCartDetail";
     }
 
+    @GetMapping("/cart/remove")
+    public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
+        List<Item> items = order.getItems();
+        for (Item item : items) {
+            if (item.getProduct().getId() == productId) {
+                items.remove(item);
+                if (items.isEmpty()) {
+                    System.out.println("Empty");
+                    session.removeAttribute("order");
+                    return "redirect:/";
+                }
+            }
+        }
+        //Set lại số lượng và total sau khi remove item
+        order.setTotal_quantity();
+        order.setTotal_order();
+        session.setAttribute("order", order);
+        return "redirect:/";
+    }
+
     @GetMapping("/cart/updateGiam")
     public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -158,36 +188,6 @@ public class CartController {
         order.setTotal_order();
         session.setAttribute("order", order);
         return "redirect:/viewCartDetail";
-    }
-
-    @GetMapping("/cart/remove")
-    public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
-                items.remove(item);
-                if (items.isEmpty()) {
-                    System.out.println("Empty");
-                    session.removeAttribute("order");
-                    return "redirect:/";
-                }
-            }
-        }
-        //Set lại số lượng và total sau khi remove item
-        order.setTotal_quantity();
-        order.setTotal_order();
-        session.setAttribute("order", order);
-        return "redirect:/";
     }
 
     @GetMapping("/cart/buy")

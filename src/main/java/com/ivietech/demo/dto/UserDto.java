@@ -32,4 +32,8 @@ public class UserDto {
     private Set<Role> roles;
     Balance balance;
     private List<Orders> listOrder;
+    
+    public String getPasswordConfirm(){
+        return "";
+    }
 }

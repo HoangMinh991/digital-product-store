@@ -11,10 +11,22 @@ import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.Order;
+import com.ivietech.demo.dto.UserDto;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.ivietech.demo.dao.CodeGiftCardRepository;
+import com.ivietech.demo.dto.Item;
+import com.ivietech.demo.dto.ProductDto;
+import com.ivietech.demo.entity.CodeGiftCard;
+import com.ivietech.demo.entity.User;
+import com.ivietech.demo.service.BalanceService;
+import java.util.List;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  *
@@ -31,15 +43,44 @@ public class CheckOutController {
     private BalanceRepository balanceRepository;
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private TypeRepository typeRepository;
     @Autowired
     private PlaformRepository plaformRepository;
-    
-    @RequestMapping("/checkout")
-    public String test(Model model){
-        System.out.println("abcd");
-        return "user/abc";
+    @Autowired
+    private CodeGiftCardRepository codeGiftCardRepository;
+    @Autowired
+    private BalanceService balanceService;
+
+    @GetMapping("/checkout")
+    public String test(Model model, HttpServletRequest request) throws Exception {
+        //Thuc hien xu ly 
+        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        List<Item> items = order.getItems();
+        for (Item item : items) {
+            int id = item.getId();
+            int quantity = item.getQuantity();
+            List<CodeGiftCard> code = codeGiftCardRepository.getCode(id, quantity);
+            ProductDto product = item.getProduct();
+            product.setListCodeGiftCard(code);
+            item.setProduct(product);
+            for (CodeGiftCard codeGiftCard : code) {
+                System.out.println(codeGiftCard.getCode());
+                codeGiftCardRepository.updateBlockGiftCode(codeGiftCard.getCode());
+            }
+        }
+        //Lay total_invoice + iduser
+
+        double total_order = order.getTotal_order();
+        //Thay doi vi tien cua user
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUserName(userName);
+        model.addAttribute("user", user);
+
+        balanceService.changeMoney(user.getId(), total_order);
+        return "user/viewCheckout";
+
     }
 }

@@ -325,11 +325,22 @@
                                                 <td class="text-right"><strong>Tổng đơn hàng</strong></td>
                                                 <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="text-right"><strong>Tổng tiền phải nạp thêm</strong></td>
-                                                <td class="text-right">
-                                                    457,000                        <i class="icon-coin-dollar" style="color: black"></i></td>
-                                            </tr>
+                                            <th:block th:if="${session.order.user}">
+                                                <th:block th:if="${session.order.total_order > session.order.user.balance.money}">
+                                                    <tr>
+                                                        <td class="text-right"><strong>Tổng tiền phải nạp thêm</strong></td>
+                                                        <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order - session.order.user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                            457,000                        <i class="icon-coin-dollar" style="color: black"></i></td>
+                                                    </tr>
+                                                </th:block>
+                                            </th:block>
+                                            <th:block th:unless="${session.order.user}">
+                                                <tr>
+                                                    <td class="text-right"><strong>Tổng tiền phải nạp thêm</strong></td>
+                                                    <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        457,000                        </td>
+                                                </tr>
+                                            </th:block>
                                         </tbody>
                                     </table>
                                     <p class="checkout">

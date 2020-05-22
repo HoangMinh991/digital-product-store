@@ -23,8 +23,8 @@ public class Balance {
    
     @Id
     private long id;
-    private int money;
-    private long totalMoney;
+    private double money;
+    private double totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
    private User user;
@@ -40,19 +40,19 @@ public class Balance {
         this.id = id;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 
-    public long getTotalMoney() {
+    public double getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(long totalMoney) {
+    public void setTotalMoney(double totalMoney) {
         this.totalMoney = totalMoney;
     }
 
