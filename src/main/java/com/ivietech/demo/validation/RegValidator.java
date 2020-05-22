@@ -1,7 +1,7 @@
 package com.ivietech.demo.validation;
 
 import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.dto.UserDto;
+import com.ivietech.demo.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -19,12 +19,12 @@ public class RegValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UserDto.class.equals(aClass);
+        return UserRegistrationDto.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        UserDto userDto = (UserDto) o;
+        UserRegistrationDto userDto = (UserRegistrationDto) o;
 
         if (userDto.getUserName() != null && userDto.getEmail() != null
                 && userDto.getPassword() != null && userDto.getPasswordConfirm() != null) {

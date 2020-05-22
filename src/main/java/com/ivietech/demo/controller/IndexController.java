@@ -15,16 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dto.ProductCount;
+import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
+import java.util.ArrayList;
 import java.util.List;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -32,7 +34,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author HoangMinh
  */
 @Controller
-public class Index {
+public class IndexController {
 
     @Autowired
     private UserRepository accountRepository;
@@ -57,11 +59,10 @@ public class Index {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Product> listSteamProduct = productRepository.findAllByTypeAndPlatforms("Gift card","Steam", PageRequest.of(page, size));
-        Page<Product> listGameProduct = productRepository.findAllByType("Game", PageRequest.of(page, size));
-        Page<Product> listBestProduct = productRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
-        Page<ProductCount> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
-
+        Page<ProductDto> listSteamProduct = productRepository.findAllByTypeAndPlatforms("Gift card","Steam", PageRequest.of(page, size));
+        Page<ProductDto> listGameProduct = productRepository.findAllByType("Game", PageRequest.of(page, size));
+        Page<ProductDto> listBestProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
+     //   Page<ProductDto> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!"anonymousUser".equals(userName)) {
             User user = accountRepository.findByUserName(userName);
@@ -75,7 +76,7 @@ public class Index {
         model.addAttribute("listBestProduct", listBestProduct);
         model.addAttribute("listSteamProduct", listSteamProduct);
         model.addAttribute("listGameProduct", listSteamProduct);
-        model.addAttribute("listBestSellProduct", listBestSellProduct);
+    //    model.addAttribute("listBestSellProduct", listBestSellProduct);
         return "index";
     }
 }

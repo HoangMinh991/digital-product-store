@@ -12,10 +12,9 @@ import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.dto.Item;
+import com.ivietech.demo.dto.ItemDto;
 import com.ivietech.demo.dto.Order;
 import com.ivietech.demo.dto.ProductDto;
-import com.ivietech.demo.dto.UserDto;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.Type;
@@ -66,36 +65,24 @@ public class CartController {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
-        System.out.println("abcd");
         return "viewcarddetail";
     }
 
     @GetMapping("/viewCartDetail/cart/remove")
     public String removeCartOnDetailPage(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
-        System.out.println("Remove" + productId);
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
+        List<ItemDto> items = order.getItems();
+        for (ItemDto item : items) {
+            if (item.getProductDto().getId() == productId) {
                 items.remove(item);
                 if (items.isEmpty()) {
-                    System.out.println("Empty");
                     session.removeAttribute("order");
                     return "redirect:/viewCartDetail";
                 }
                 break;
             }
         }
-        //Set lại số lượng và total sau khi remove item
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
@@ -107,16 +94,9 @@ public class CartController {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
+        List<ItemDto> items = order.getItems();
+        for (ItemDto item : items) {
+            if (item.getProductDto().getId() == productId) {
                 if (item.getQuantity() == 1) {
                     return "redirect:/viewCartDetail";
                 } else {
@@ -138,17 +118,9 @@ public class CartController {
     public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
+        List<ItemDto> items = order.getItems();
+        for (ItemDto item : items) {
+            if (item.getProductDto().getId() == productId) {
                 item.setQuantity(item.getQuantity() + 1);
                 break;
             }
@@ -164,17 +136,9 @@ public class CartController {
     public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
+        List<ItemDto> items = order.getItems();
+        for (ItemDto item : items) {
+            if (item.getProductDto().getId() == productId) {
                 items.remove(item);
                 if (items.isEmpty()) {
                     System.out.println("Empty");
@@ -183,7 +147,6 @@ public class CartController {
                 }
             }
         }
-        //Set lại số lượng và total sau khi remove item
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
@@ -191,79 +154,64 @@ public class CartController {
     }
 
     @GetMapping("/cart/buy")
-    public String addToCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String addToCart(Model model, HttpServletRequest request) {
         int quantity = 1;
         long id;
         if (request.getParameter("productId") != null) {
-            id = (int) Long.parseLong(request.getParameter("productId"));
+            id = Long.parseLong(request.getParameter("productId"));
             Product product = productRepository.findById(id).get();
-
             if (product != null) {
-                ProductDto product_model = new ProductDto();
-                BeanUtils.copyProperties(product, product_model);
+                ProductDto productDto = new ProductDto();
+                BeanUtils.copyProperties(product, productDto);
                 if (request.getParameter("quantity") != null) {
                     quantity = Integer.parseInt(request.getParameter("quantity"));
                 }
                 HttpSession session = request.getSession();
                 if (session.getAttribute("order") == null) {
                     Order order = new Order();
-                    List<Item> listItems = new ArrayList<Item>();
-                    Item item = new Item();
+                    List<ItemDto> listItems = new ArrayList<ItemDto>();
+                    ItemDto item = new ItemDto();
                     item.setQuantity(quantity);
-                    item.setPriceNew(product_model.getPriceNew());
-                    item.setProduct(product_model);
-                    item.setId();
+                    item.setPrice(productDto.getPriceNew() * quantity);
+                    item.setProductDto(productDto);
                     listItems.add(item);
                     order.setItems(listItems);
                     order.setTotal_quantity();
                     order.setTotal_order();
-                    String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-                    if (!"anonymousUser".equals(userName)) {
-                        User user = userRepository.findByUserName(userName);
-                        UserDto user_model = new UserDto();
-                        BeanUtils.copyProperties(user, user_model);
-                        order.setUser(user_model);
-                        System.out.println(user_model.getBalance().getMoney());
-                        model.addAttribute("user", user_model);
-                    }
                     session.setAttribute("order", order);
-                    //model.addAttribute("total_hoadon", total_hoadon);
-                    //model.addAttribute("total", total);
+
                 } else {
                     Order order = (Order) session.getAttribute("order");
-                    List<Item> listItems = order.getItems();
+                    List<ItemDto> listItems = order.getItems();
                     boolean check = false;
-                    for (Item item : listItems) {
-                        if (item.getProduct().getId() == product_model.getId()) {
+                    for (ItemDto item : listItems) {
+                        if (item.getProductDto().getId() == productDto.getId()) {
                             item.setQuantity(item.getQuantity() + 1);
                             check = true;
                         }
                     }
                     if (check == false) {
-                        Item item = new Item();
+                        ItemDto item = new ItemDto();
                         item.setQuantity(quantity);
-                        item.setProduct(product_model);
-                        item.setPriceNew(product_model.getPriceNew());
-                        item.setId();
+                        item.setProductDto(productDto);
+                        item.setPrice(quantity * productDto.getPriceNew());
                         listItems.add(item);
                     }
                     order.setTotal_quantity();
                     order.setTotal_order();
                     String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-                    if (!"anonymousUser".equals(userName)) {
-                        User user = userRepository.findByUserName(userName);
-                        UserDto user_model = new UserDto();
-                        BeanUtils.copyProperties(user, user_model);
-                        order.setUser(user_model);
-                        System.out.println(user_model.getBalance().getMoney());
-                        model.addAttribute("user", user_model);
-                    }
                     session.setAttribute("order", order);
                 }
             }
+           if( request.getParameter("fast") != null){
+               Long fast = Long.parseLong(request.getParameter("fast"));
+               if (fast==1) {
+                   return "redirect:/viewCartDetail";
+               }
+           }
             return "redirect:/";
         } else {
-            return "redirect:/";
+            return "error";
         }
     }
 }

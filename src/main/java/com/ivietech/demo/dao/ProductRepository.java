@@ -6,6 +6,7 @@
 package com.ivietech.demo.dao;
 
 import com.ivietech.demo.dto.ProductCount;
+import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Product;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -21,26 +22,34 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p WHERE p.best = 1")
-    public Page<Product> findAllByBestTrue(PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.best = 1 GROUP BY p.id")
+    public Page<ProductDto> findAllByBestTrue(PageRequest of);
 
-    @Query("SELECT p FROM Product p WHERE p.type.name = ?1")
-    public Page<Product> findAllByType(String nametype, PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.type.name=?1 GROUP BY p.id")
+    public Page<ProductDto> findAllByType(String nametype, PageRequest of);
 
-    @Query("SELECT p FROM Product p WHERE p.platforms.name = ?1")
-    public Page<Product> findAllByPlatforms(String namePlatforms, PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.platforms.name=?1 GROUP BY p.id")
+    public Page<ProductDto> findAllByPlatforms(String namePlatforms, PageRequest of);
 
-    @Query("SELECT p FROM Product p WHERE p.platforms.name = ?2 AND p.type.name=?1")
-    public Page<Product> findAllByTypeAndPlatforms(String nametype, String namePlatforms, PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.platforms.name = ?2 AND p.type.name=?1 GROUP BY p.id")
+    public Page<ProductDto> findAllByTypeAndPlatforms(String nametype, String namePlatforms, PageRequest of);
 
-    @Query("SELECT p FROM Product p WHERE p.priceNew > ?1 AND p.priceNew < ?2")
-    public Page<Product> findAllByPrice(long priceLow, long priceHigh, PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.priceNew > ?1 AND p.priceNew < ?2 GROUP BY p.id")
+    public Page<ProductDto> findAllByPrice(long priceLow, long priceHigh, PageRequest of);
 
-    @Query("SELECT p FROM Product p WHERE p.name like %?1%")
-    public Page<Product> findAllByName(String nameProduct, PageRequest of);
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.name like %?1%")
+    public Page<ProductDto> findAllByName(String nameProduct, PageRequest of);
 
-    @Query("SELECT new com.ivietech.demo.dto.ProductCount(o.product, COUNT(o.product) as c) "
-            + "FROM OrderDetails  AS o GROUP BY o.product ORDER BY c DESC")
-    public Page<ProductCount> findAllByBestSeller(PageRequest of);
+   
+
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.code)) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c WHERE p.type.name=?1 GROUP BY p.id")
+    public Page<ProductDto> findAllDto(String nameType, PageRequest of);
 
 }

@@ -11,6 +11,7 @@ import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Product;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class Loadmore {
 
    @GetMapping("api/detail")
     public String getProduct(HttpServletRequest request ,Model model) {
-        Page<Product> listProduct = null;
+        Page<ProductDto> listProduct = null;
 
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 4; //default page size is 10
@@ -61,10 +62,10 @@ public class Loadmore {
             listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
         }
         if (request.getParameter("bestproduct") != null && !request.getParameter("bestproduct").isEmpty()) {
-            listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
+        //    listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
         }
         model.addAttribute("listProduct", listProduct);
-        return "product";
+        return "fragment/product";
     }
 
 }

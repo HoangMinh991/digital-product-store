@@ -28,15 +28,13 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerName;
-    private String customerEmail;
-    private String customerPhone;
     private String codeOrder;
     private String status;
     @ManyToOne
     private Payment payment;
     @ManyToOne
     private User user;
+    private double totalMoney;
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails;
     @CreationTimestamp

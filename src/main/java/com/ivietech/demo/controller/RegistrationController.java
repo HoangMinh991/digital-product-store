@@ -5,7 +5,7 @@
  */
 package com.ivietech.demo.controller;
 
-import com.ivietech.demo.dto.UserDto;
+import com.ivietech.demo.dto.UserRegistrationDto;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.VerificationToken;
 import com.ivietech.demo.event.RegistrationCompleteEvent;
@@ -45,21 +45,21 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        UserDto userFrom = new UserDto();
+        UserRegistrationDto userFrom = new UserRegistrationDto();
         model.addAttribute("userForm", userFrom);
         return "user/register";
     }
 
     @PostMapping("/register")
-    public String registerUserAccount(@ModelAttribute("userForm") UserDto userDto,
+    public String registerUserAccount(@ModelAttribute("userForm") UserRegistrationDto userRegistrationDto,
             BindingResult bindingResult, HttpServletRequest request) {
-        regValidator.validate(userDto, bindingResult);
+        regValidator.validate(userRegistrationDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return "user/register";
         }
         User registered = new User();
         try {
-            registered = userService.registerNewUserAccount(userDto);
+            registered = userService.registerNewUserAccount(userRegistrationDto);
             String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             eventPublisher.publishEvent(new RegistrationCompleteEvent(appUrl, registered, this));
 
@@ -75,7 +75,6 @@ public class RegistrationController {
             model.addAttribute("message", "auth.message.invalidToken");
             return "/user/badUser";
         }
-        
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {

@@ -4,7 +4,7 @@ package com.ivietech.demo.service;
 import com.ivietech.demo.dao.RoLeRepository;
 import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dao.VerificationTokenRepository;
-import com.ivietech.demo.dto.UserDto;
+import com.ivietech.demo.dto.UserRegistrationDto;
 import com.ivietech.demo.entity.Role;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.VerificationToken;
@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     BalanceService balanceService;
 
     @Override
-    public User registerNewUserAccount(UserDto accountDto) {
+    public User registerNewUserAccount(UserRegistrationDto accountDto) {
         User user = new User();
         user.setUserName(accountDto.getUserName());
         user.setEmail(accountDto.getEmail());
@@ -51,7 +51,6 @@ public class UserService implements IUserService {
         return user;
     }
 
-   
 
     @Override
     public void saveRegisteredUser(User user) {

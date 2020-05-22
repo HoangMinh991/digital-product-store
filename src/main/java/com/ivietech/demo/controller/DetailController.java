@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
@@ -30,7 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * @author HoangMinh
  */
 @Controller
-public class Detail {
+public class DetailController {
 
     @Autowired
     private UserRepository accountRepository;
@@ -47,7 +48,7 @@ public class Detail {
 
     @GetMapping("/detail")
     public String index(Model model, HttpServletRequest request) {
-        Page<Product> listProduct = null;
+        Page<ProductDto> listProduct = null;
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 4; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {

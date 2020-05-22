@@ -20,174 +20,210 @@
         <div th:replace = "~{fragment/fragment ::menutop}">
 
         </div>
+        <style>
+            .banner-home .menu-2 .header-menu div.nav-menu {
+                display: none;
+                height: auto;
+                margin: auto;
+                width: 100%;
+            }
+        </style>
 
         <script th:src="@{/js/node.js}"></script>
         <div class="trang-sp">
             <div class="container">
                 <div id="alert-position"></div>
 
-                <div class="container-title" th:object="${session.order}">
-                    <h2 class="thanh-toan-title">Giỏ Hàng</h2><span class="count-san-pham" th:text="'(' + *{total_quantity} + ' sản phẩm)'">(1 sản phẩm)</span>
+                <div class="container-title">
+                    <h2 class="thanh-toan-title">Giỏ Hàng</h2><span class="count-san-pham" th:text="${session.order}?${session.order.total_quantity}:'0'"></span>
                     <div class="sort">
                         <a href="" th:href="@{/}"><div class="btn btn-aqua-bg">Tiếp tục mua hàng</div></a>
                     </div>
                 </div>
                 <hr/>
-
-                <form action="https://divineshop.vn/index.php?route=checkout/cart/edit" method="post" id="form-san-pham" enctype="multipart/form-data"/>
-
-                <div class="thanh-toan-container">
-                    <div class="border-cart-top"></div>
-                    <div class="row cart-detail">
-                        <th:block th:unless="${session.order}">
-                            <div class="container bao-tri">
-                                <div class="banner-baotri">
-                                    <img src="./assets/image/empty-cart.png">
-                                </div>
-                                <h2>OOPS! Giỏ hàng của bạn trống</h2>
-                                <hr>
-                                    <p></p>
-                            </div>
-                        </th:block>
-                    </div>
-                    <th:block th:each="product :${session.order.items}">
+                <form action="" method="post" id="form-san-pham" enctype="multipart/form-data">
+                    <div class="thanh-toan-container">
+                        <div class="border-cart-top"></div>
                         <div class="row cart-detail">
-                            <div class="col-md-12 hidden-sm hidden-xs item">
-                                <div class="col-md-3">
-                                    <a href="https://divineshop.vn/grand-theft-auto-v" target="_blank">
-                                        <img class="check_img_errs" th:src="${product.product.img}" th:alt="${product.product.name}" th:title="${product.product.name}" />
-                                    </a>
+                            <th:block th:unless="${session.order}">
+                                <div class="container bao-tri">
+                                    <div class="banner-baotri">
+                                        <img src="empty-cart.png">
+                                    </div>
+                                    <h2>OOPS! Giỏ hàng của bạn trống</h2>
+                                    <hr>
+                                        <p></p>
                                 </div>
-                                <div class="col-md-5">
-                                    <a href="https://divineshop.vn/grand-theft-auto-v" target="_blank" class="title"><span th:text="${product.product.name}"></span></a>
-                                    <br>
-                                        <div class="item-status">Tình trạng: <span class="con-hang">Còn hàng</span></div>
+                            </th:block>
+                        </div>
+                        <th:block th:each="item :${session.order.items}">
+                            <div class="row cart-detail">
+                                <div class="col-md-12 hidden-sm hidden-xs item">
+                                    <div class="col-md-3">
+                                        <a href="" target="_blank">
+                                            <img class="check_img_errs" th:src="${item.productDto.img}" th:alt="${item.productDto.name}" th:title="${item.productDto.name}" />
+                                        </a>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <a href="" target="_blank" class="title"><span th:text="${item.productDto.name}"></span></a>
+                                        <br>
+                                            <div class="item-status">Tình trạng: <span class="con-hang">Còn hàng</span></div>
 
-                                        <a href="#" th:href="@{/viewCartDetail/cart/remove(productId=${product.id})}" style="color:red;" class="poiter">Xóa</a>
-                                </div>
-                                <!--<div class="col-md-2 text-right">
-                                    <span style="font-size: 16px; margin-bottom: 5px; font-weight: bold" th:text="${product.quantity}*${product.priceNew}">457.000 VNĐ</span><br>
-                                </div>-->
-                                <div class="col-md-2 text-right">
-                                    <span style="font-size: 16px;margin-bottom: 5px;font-weight: bold;" th:text="${#numbers.formatDecimal(product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span><br>
-                                        <th:block th:if ="${product.product.priceNew < product.product.priceOld}">
-                                            <span class="sale"><s><i th:text="${#numbers.formatDecimal(product.product.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'" style="font-size:12px;"></i></s> | </span><span class="sale" style="color:red;" th:text="${'-' + #numbers.formatDecimal(100-product.product.priceNew / product.product.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
-                                        </th:block>
-                                </div>
+                                            <a href="#" th:href="@{/viewCartDetail/cart/remove(productId=${item.productDto.id})}" style="color:red;" class="poiter">Xóa</a>
+                                    </div>
 
-                                <div class="col-md-2">
-                                    <div class="quantity-block">
-                                        <div class="input-group bootstrap-touchspin">
-                                            <span class="input-group-btn">
-                                                <a th:href="@{/cart/updateGiam(productId=${product.id})}"><button class="btn btn-default bootstrap-touchspin-down btn-quantity" type="button">-</button></a>
-                                            </span>
-                                            <span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
-                                            <input name="quantity[2928687]" type="tel" class="form-control quantity-r2 quantity js-quantity-product quantity-input input-quantity-pc" min="0" data-js-qty="" th:value="${product.quantity}" style="display: block;text-align: center;">
-                                                <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                                    <div class="col-md-2 text-right">
+                                        <span style="font-size: 16px;margin-bottom: 5px;font-weight: bold;" th:text="${#numbers.formatDecimal(item.productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span><br>
+                                            <th:block th:if ="${item.productDto.priceNew < item.productDto.priceOld}">
+                                                <span class="sale"><s><i th:text="${#numbers.formatDecimal(item.productDto.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'" style="font-size:12px;"></i></s> | </span>
+                                                <span class="sale" style="color:red;" th:text="${'-' + #numbers.formatDecimal(100-item.productDto.priceNew / item.productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                            </th:block>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="quantity-block">
+                                            <div class="input-group bootstrap-touchspin">
                                                 <span class="input-group-btn">
-                                                    <a th:href="@{/cart/updateTang(productId=${product.id})}"><button class="btn btn-default bootstrap-touchspin-up btn-quantity" type="button">+</button></a>
+                                                    <a th:href="@{/cart/updateGiam(productId=${item.productDto.id})}"><button class="btn btn-default bootstrap-touchspin-down btn-quantity" type="button">-</button></a>
                                                 </span>
+                                                <span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
+                                                <input name="" type="tel" class="form-control quantity-r2 quantity js-quantity-product quantity-input input-quantity-pc" min="0" data-js-qty="" th:value="${item.quantity}" style="display: block;text-align: center;">
+                                                    <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
+                                                    <span class="input-group-btn">
+                                                        <a th:href="@{/cart/updateTang(productId=${item.productDto.id})}"><button class="btn btn-default bootstrap-touchspin-up btn-quantity" type="button">+</button></a>
+                                                    </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-
-                        </div>
-                    </th:block>
-                    <div class="mb15"></div>
-                    <div class="thanh-toan">
-                        <div class="row">
-                            <div class="col-md-12 col-xs-12 padd-0">
-                                <div class="col-md-6 col-xs-12 padd-0">
-                                    <div class="mb15"></div>
-                                </div>
-                                <div class="col-md-6 col-sm-12 col-xs-12 padd-0">
-                                    <th:block th:object="${session.order}">
-                                        <div class="order-total">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading" style="border-color: transparent;">
-                                                    <h4 class="panel-title"><strong>THÔNG TIN THANH TOÁN</strong></h4>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <!-- Thành Tiền -->
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
-                                                                <span class="text-gray">Thành tiền sản phẩm</span>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                                <span class="thanh-tien" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">457.000đ</span>
-                                                            </div>
-                                                        </div>
-                                                        <!-- Border Bottom Nét Đứt -->
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
-
-                                                        <!-- Tổng Tiền -->
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
-                                                                <div class="h16-md-26 text-gray-900">TỔNG TIỀN</div>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                                <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">457.000đ</span></div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Border Bottom Nét Đứt -->
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
-                                                                <span class="text-gray">Số dư hiện tại</span>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                                <span class="thanh-tien" th:text="${#numbers.formatDecimal(session.order.user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">0 <i class="icon-coin-dollar" style="color:#000;"></i></span>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Border Bottom Nét Đứt -->
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
-                                                        <!-- Số Tiền Cần Nạp Thêm -->
-                                                        <th:block th:if="${session.order.total_order > session.order.user.balance.money}">
+                        </th:block>
+                        <div class="mb15"></div>
+                        <div class="thanh-toan">
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 padd-0">
+                                    <div class="col-md-6 col-xs-12 padd-0">
+                                        <div class="mb15"></div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12 padd-0">
+                                        <th:block th:object="${session.order}">
+                                            <div class="order-total">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading" style="border-color: transparent;">
+                                                        <h4 class="panel-title"><strong>THÔNG TIN THANH TOÁN</strong></h4>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <!-- Thành Tiền -->
                                                             <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
                                                                 <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
-                                                                    <div class="h16-md-26 text-gray-900">SỐ TIỀN CẦN NẠP THÊM</div>
+                                                                    <span class="text-gray">Thành tiền sản phẩm</span>
                                                                 </div>
                                                                 <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                                    <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order - session.order.user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar" style="color:#000;"></i></span></div>
+                                                                    <span class="thanh-tien" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
                                                                 </div>
-                                                            </div>                                                                   
-                                                            <a href="index.php?route=account/recharge">
-                                                                <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
-                                                            </a>
-                                                        </th:block>
-                                                        <th:block th:if="${session.order.total_order < session.order.user.balance.money}">
-                                                            <a  th:href="@{checkout}">
-                                                                <button type="button" class="btn btn-success col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Thanh toán</strong></button>
-                                                            </a>
-                                                        </th:block>
+                                                            </div>
+                                                            <!-- Border Bottom Nét Đứt -->
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
+
+                                                            <!-- Tổng Tiền -->
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
+                                                                <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
+                                                                    <div class="h16-md-26 text-gray-900">TỔNG TIỀN</div>
+                                                                </div>
+                                                                <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
+                                                                    <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span></div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Border Bottom Nét Đứt -->
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
+                                                                <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
+                                                                    <span class="text-gray">Số dư hiện tại</span>
+                                                                </div>
+                                                                <th:block sec:authorize="isAuthenticated()">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
+                                                                        <span class="thanh-tien" th:text="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">0 <i class="icon-coin-dollar" style="color:#000;"></i></span>
+                                                                    </div>
+                                                                </th:block>
+                                                                <th:block sec:authorize="!isAuthenticated()">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
+                                                                        <span class="thanh-tien" th:text="${#numbers.formatDecimal(0, 0, 'POINT', 0, 'POINT')}+ ' đ'">0 <i class="icon-coin-dollar" style="color:#000;"></i></span>
+                                                                    </div>
+                                                                </th:block>
+
+                                                            </div>
+
+                                                            <!-- Border Bottom Nét Đứt -->
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
+                                                            <!-- Số Tiền Cần Nạp Thêm -->
+                                                            <th:block sec:authorize="isAuthenticated()">
+                                                                <th:block th:if="${session.order.total_order > user.balance.money}">
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
+                                                                        <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
+                                                                            <div class="h16-md-26 text-gray-900">SỐ TIỀN CẦN NẠP THÊM</div>
+                                                                        </div>
+
+                                                                        <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
+                                                                            <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order - user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar" style="color:#000;"></i></span></div>
+                                                                        </div>
+                                                                    </div>                                                                   
+                                                                    <a href="">
+                                                                        <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
+                                                                    </a>
+                                                                </th:block>
+                                                            </th:block>
+                                                            <th:block sec:authorize="!isAuthenticated()">
+
+                                                                <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
+                                                                        <div class="h16-md-26 text-gray-900">SỐ TIỀN CẦN NẠP THÊM</div>
+                                                                    </div>
+
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
+                                                                        <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar" style="color:#000;"></i></span></div>
+                                                                    </div>
+
+
+                                                                </div>                                                                   
+                                                                <a href="">
+                                                                    <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
+                                                                </a>
+
+                                                            </th:block>
+                                                            <th:block sec:authorize="isAuthenticated()">
+                                                                <th:block th:if="${session.order.total_order < user.balance.money}">
+                                                                    <a  th:href="@{/checkout}">
+                                                                        <button type="button" class="btn btn-success col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Thanh toán</strong></button>
+                                                                    </a>
+                                                                </th:block>
+                                                            </th:block>
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </th:block>
+                                        </th:block>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
+                        <hr/>
                         <div class="buttons clearfix">
                             <div class="pull-left"><a href="" th:href="@{/}" class="btn btn-default">Tiếp tục mua hàng</a></div>
-                            <div class="pull-right"><a th:href="@{checkout}" class="btn btn-primary">Thanh toán</a></div>
+                            <div class="pull-right"><a th:href="@{/checkout}" class="btn btn-primary">Thanh toán</a></div>
                         </div>
-                        </form>
-                </div>
+                </form>
             </div>
+        </div>
         </div>
 
         <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
         <script th:src="@{/js/test.js}"></script>
         <script th:src="@{/js/ranger_price.js}"></script>
         <footer th:replace = "~{fragment/fragment ::footer}">
-
 
         </footer>
     </body>
