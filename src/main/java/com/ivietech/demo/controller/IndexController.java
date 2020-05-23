@@ -62,6 +62,7 @@ public class IndexController {
         Page<ProductDto> listSteamProduct = productRepository.findAllByTypeAndPlatforms("Gift card","Steam", PageRequest.of(page, size));
         Page<ProductDto> listGameProduct = productRepository.findAllByType("Game", PageRequest.of(page, size));
         Page<ProductDto> listBestProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
+        Page<ProductDto> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
      //   Page<ProductDto> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!"anonymousUser".equals(userName)) {
@@ -69,14 +70,18 @@ public class IndexController {
             model.addAttribute("user", user);
 
         }
+        for (ProductDto productDto : listBestProduct) {
+            System.out.println(productDto.getId());
+            System.out.println(productDto.getNumberCode());
+        }
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
         model.addAttribute("listBestProduct", listBestProduct);
         model.addAttribute("listSteamProduct", listSteamProduct);
-        model.addAttribute("listGameProduct", listSteamProduct);
-    //    model.addAttribute("listBestSellProduct", listBestSellProduct);
+        model.addAttribute("listGameProduct", listGameProduct);
+        model.addAttribute("listBestSellProduct", listBestSellProduct);
         return "index";
     }
 }

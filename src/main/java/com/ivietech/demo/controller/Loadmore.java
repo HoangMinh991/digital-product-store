@@ -41,8 +41,8 @@ public class Loadmore {
     @Autowired
     private PlaformRepository plaformRepository;
 
-   @GetMapping("api/detail")
-    public String getProduct(HttpServletRequest request ,Model model) {
+    @GetMapping("api/detail")
+    public String getProduct(HttpServletRequest request, Model model) {
         Page<ProductDto> listProduct = null;
 
         int page = 0; //default page number is 0 (yes it is weird)
@@ -62,7 +62,7 @@ public class Loadmore {
             listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
         }
         if (request.getParameter("bestproduct") != null && !request.getParameter("bestproduct").isEmpty()) {
-        //    listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
+            listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
         }
         model.addAttribute("listProduct", listProduct);
         return "fragment/product";

@@ -66,9 +66,15 @@
                                     </div>
                                     <div class="col-md-5">
                                         <a href="" target="_blank" class="title"><span th:text="${item.productDto.name}"></span></a>
-                                        <br>
-                                            <div class="item-status">Tình trạng: <span class="con-hang">Còn hàng</span></div>
-
+                                        <br/>
+                                        <th:block th:if="${item.productDto.numberCode >= item.quantity}">
+                                            <div class="item-status">Tình trạng: <span class="con-hang">Còn hàng:( <span th:text='${item.productDto.numberCode}'></span> sản phẩm)</span></div>
+                                        </th:block>
+                                        
+                                        <th:block th:if="${item.productDto.numberCode <  item.quantity}">
+                                            <div class="item-status">Tình trạng: <span class="het-hang">Hết hàng</span></div>
+                                        </th:block>
+                                            
                                             <a href="#" th:href="@{/viewCartDetail/cart/remove(productId=${item.productDto.id})}" style="color:red;" class="poiter">Xóa</a>
                                     </div>
 
@@ -169,7 +175,8 @@
                                                                         <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
                                                                             <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order - user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar" style="color:#000;"></i></span></div>
                                                                         </div>
-                                                                    </div>                                                                   
+                                                                    </div>
+                                                                    
                                                                     <a href="">
                                                                         <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
                                                                     </a>
@@ -187,7 +194,7 @@
                                                                     </div>
 
 
-                                                                </div>                                                                   
+                                                                </div>                                                                
                                                                 <a href="">
                                                                     <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
                                                                 </a>

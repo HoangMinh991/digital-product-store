@@ -601,7 +601,7 @@
                 <div class="item-game-wrapper">
                     <div class="img">
                         <a th:href="@{/viewproduct(productId=${product.id})}">
-                            <img class="check_img_errs" th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
+                            <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
                         </a>
                     </div>
                     <div class="item-info">
@@ -627,7 +627,7 @@
                                 <a th:href="@{/cart/buy(productId=${product.id})}"><i class="fas fa-shopping-cart"></i></a>
                             </div>
                         </th:block>
-                        <th:block th:if="${product.numberCode < 0}">
+                        <th:block th:if="${product.numberCode == 0}">
                             <div class="item-btn-a">
                                 <i class="fas fa-shopping-cart"></i>
                             </div>
@@ -636,7 +636,7 @@
                         <th:block th:if="${product.numberCode > 0}">
                             <a class="item-btn" th:href="@{/cart/buy(productId=${product.id},fast=1)}"  style="margin-top: 10px">Mua ngay</a>
                         </th:block>
-                        <th:block th:if="${product.numberCode < 0}">
+                        <th:block th:if="${product.numberCode == 0}">
                             <div class="out_of_stock">Hết hàng</div>
                         </th:block>
 

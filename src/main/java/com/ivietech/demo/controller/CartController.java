@@ -22,6 +22,7 @@ import com.ivietech.demo.entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -159,10 +160,8 @@ public class CartController {
         long id;
         if (request.getParameter("productId") != null) {
             id = Long.parseLong(request.getParameter("productId"));
-            Product product = productRepository.findById(id).get();
-            if (product != null) {
-                ProductDto productDto = new ProductDto();
-                BeanUtils.copyProperties(product, productDto);
+            Optional<ProductDto> productDto = productRepository.findProductDtoById(id);
+            if (productDto.isPresent()) {
                 if (request.getParameter("quantity") != null) {
                     quantity = Integer.parseInt(request.getParameter("quantity"));
                 }
@@ -172,8 +171,8 @@ public class CartController {
                     List<ItemDto> listItems = new ArrayList<ItemDto>();
                     ItemDto item = new ItemDto();
                     item.setQuantity(quantity);
-                    item.setPrice(productDto.getPriceNew() * quantity);
-                    item.setProductDto(productDto);
+                    item.setPrice(productDto.get().getPriceNew() * quantity);
+                    item.setProductDto(productDto.get());
                     listItems.add(item);
                     order.setItems(listItems);
                     order.setTotal_quantity();
@@ -185,7 +184,7 @@ public class CartController {
                     List<ItemDto> listItems = order.getItems();
                     boolean check = false;
                     for (ItemDto item : listItems) {
-                        if (item.getProductDto().getId() == productDto.getId()) {
+                        if (item.getProductDto().getId() == productDto.get().getId()) {
                             item.setQuantity(item.getQuantity() + 1);
                             check = true;
                         }
@@ -193,8 +192,8 @@ public class CartController {
                     if (check == false) {
                         ItemDto item = new ItemDto();
                         item.setQuantity(quantity);
-                        item.setProductDto(productDto);
-                        item.setPrice(quantity * productDto.getPriceNew());
+                        item.setProductDto(productDto.get());
+                        item.setPrice(quantity * productDto.get().getPriceNew());
                         listItems.add(item);
                     }
                     order.setTotal_quantity();

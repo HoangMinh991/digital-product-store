@@ -47,15 +47,15 @@ public class RegistrationController {
     public String register(Model model) {
         UserRegistrationDto userFrom = new UserRegistrationDto();
         model.addAttribute("userForm", userFrom);
-        return "user/register";
+        return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public String registerUserAccount(@ModelAttribute("userForm") UserRegistrationDto userRegistrationDto,
             BindingResult bindingResult, HttpServletRequest request) {
         regValidator.validate(userRegistrationDto, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "user/register";
+            return "register";
         }
         User registered = new User();
         try {
@@ -64,7 +64,7 @@ public class RegistrationController {
             eventPublisher.publishEvent(new RegistrationCompleteEvent(appUrl, registered, this));
 
         } catch (RuntimeException ex) {
-            return ("user/register");
+            return ("register");
         }
         return "redirect:/";
     }
