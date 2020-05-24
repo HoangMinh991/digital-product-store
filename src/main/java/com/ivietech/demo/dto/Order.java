@@ -9,13 +9,56 @@ import lombok.Data;
  *
  * @author PTam
  */
-@Data
 public class Order implements Serializable {
 
     private User user;
     private List<ItemDto> items;
     private int status;
     private int total_quantity;
+
+    public Order() {
+    }
+    
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<ItemDto> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemDto> items) {
+        this.items = items;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getTotal_quantity() {
+        return total_quantity;
+    }
+
+    public void setTotal_quantity(int total_quantity) {
+        this.total_quantity = total_quantity;
+    }
+
+    public double getTotal_order() {
+        return total_order;
+    }
+
+    public void setTotal_order(double total_order) {
+        this.total_order = total_order;
+    }
     private double total_order;
 
   

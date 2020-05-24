@@ -10,7 +10,6 @@ import com.ivietech.demo.dao.OrderRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
-import com.ivietech.demo.entity.Product;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,14 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.dto.ProductCount;
 import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
-import java.util.ArrayList;
 import java.util.List;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**

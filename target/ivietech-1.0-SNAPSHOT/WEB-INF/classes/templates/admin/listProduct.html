@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace = "~{fragment/fragmentAdmin ::head}">
+    </head>
+    <body id="page-top">
+        <div id="wrapper">
+            <ul th:replace = "~{fragment/fragmentAdmin ::nav-info}">
+
+            </ul>
+            <div  id="content-wrapper" class="d-flex flex-column">
+                <div  id="content">
+                    <nav th:replace = "~{fragment/fragmentAdmin ::header}">
+
+                    </nav>
+                    <div class="container-fluid">
+                        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                        <p class="mb-4"></p>
+                    </div>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <div class="dataTables_wrapper dt-bootstrap4">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <a th:href="@{/admin/product/create}"/><button type="button" class="btn btn-primary">Tạo sản phẩm mới</button></a>
+                                            <table class="table table-bordered dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Ảnh sản phẩm</th>
+                                                        <th>Loại nổi bật</th>
+                                                        <th>Giá mới</th>
+                                                        <th>Giá cũ</th>
+                                                        <th>Loại hình</th>
+                                                        <th>Nền tảng</th>
+                                                        <th>Số lượng còn lại</th>
+                                                        <th>Số lượng đã bán</th>
+                                                        <th>Hành động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <th:block th:each="product, state :${listProduct}">
+                                                        <tr th:class="${state.odd}? 'hover_tr odd':'hover_tr even'" class=''>
+                                                            <td th:utext="${product.id}">
+
+                                                            </td>
+                                                            <td th:utext="${product.name}">
+
+                                                            </td>
+                                                            <td>
+                                                                <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" width="150" height="100"/>
+
+                                                            </td>
+
+                                                            <td>
+                                                                <input type="checkbox" th:checked="${product.best}"/>
+
+                                                            </td>
+                                                            <td th:utext="${product.priceNew}">
+
+                                                            </td>
+                                                            <td th:utext="${product.priceOld}">
+
+                                                            </td>
+                                                            <td th:utext="${product.typeName}">
+
+                                                            </td>
+                                                            <td th:utext="${product.platformsName}">
+
+                                                            </td>
+                                                            <td th:utext="${product.numberCode}">
+
+                                                            </td> 
+                                                            <td th:utext="${product.numberOrderCode}">
+
+                                                            </td> 
+                                                            <td>
+                                                                <a th:href="@{/admin/product/delete(id=${product.id})}">
+                                                                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button></a>
+                                                                <a th:href="@{/admin/product/edit(id=${product.id})}">
+                                                                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button></a>
+                                                            </td>
+
+                                                        </tr>
+                                                    </th:block>
+
+                                                </tbody>
+                                            </table>
+                                            <nav aria-label="Pagination" th:if="${listProduct.totalPages gt 0}">
+                                                <ul class="pagination justify-content-center font-weight-medium">
+                                                    <li class="page-item" th:classappend="${listProduct.number eq 0} ? 'disabled'">
+                                                        <a class="page-link svg-icon"
+                                                           th:href="@{/admin/product/list?page={id}(id=${listProduct.number lt 2 ? 1 : listProduct.number})}"
+                                                           aria-label="Previous">
+                                                            Lùi
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item" th:classappend="${i eq listProduct.number + 1} ? 'active'"
+                                                        th:each="i : ${#numbers.sequence( listProduct.number + 1, listProduct.totalPages > 10 + listProduct.number ? listProduct.number + 10 : listProduct.totalPages, 1)}">
+                                                        <a class="page-link" th:href="@{/admin/product/list?page={id}(id=${i})}" th:text="${i}"
+                                                           th:title="${'Page '+ i}"
+                                                           rel="tooltip"></a>
+                                                    </li>
+                                                    <li class="page-item disabled" th:if="${listProduct.number + 10 < listProduct.totalPages}">
+                                                        <a class="page-link svg-icon" href="#">
+                                                            <span data-feather="more-horizontal" width="20" height="20"></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item" th:classappend="${listProduct.number + 1 eq listProduct.totalPages} ? 'disabled'">
+                                                        <a class="page-link svg-icon" th:href="@{/admin/product/list?page={id}(id=${listProduct.number + 2})}"
+                                                           aria-label="Next"
+                                                           title="Next Page" rel="tooltip">
+                                                            Tới
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <footer th:replace = "~{fragment/fragmentAdmin ::footer}">
+
+                </footer>
+            </div>
+        </div>
+        <script th:src="@{/js/jquery.min.js}"></script>
+        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/js/jquery.easing.min.js}"></script>
+        <script th:src="@{/js/sb-admin-2.min.js}"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

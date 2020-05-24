@@ -49,8 +49,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c LEFT JOIN p.listOrderDetail AS o GROUP BY p.id HAVING COUNT(o.id) > 2 ORDER BY COUNT(o.id) DESC")
     public Page<ProductDto> findAllByBestSeller( PageRequest of);
     
-    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), COUNT(o.id)) "
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), COUNT(o.id),p.type.name,p.platforms.name,p.best) "
             + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c LEFT JOIN p.listOrderDetail AS o  WHERE p.id =?1  GROUP BY p.id")
     public Optional<ProductDto> findProductDtoById (Long id);
+    
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), COUNT(o.id),p.type.name,p.platforms.name, p.best) "
+            + "FROM Product AS p LEFT JOIN p.listCodeGiftCard AS c LEFT JOIN p.listOrderDetail AS o GROUP BY p.id")
+    public Page<ProductDto> findAllProductDto(PageRequest of);
 
 }

@@ -15,4 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PlaformRepository  extends JpaRepository<Platforms, Long> {
+
+    public Platforms findByName(String platformsName);
 }

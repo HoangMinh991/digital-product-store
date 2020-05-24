@@ -14,7 +14,6 @@ import lombok.Data;
  */
 @Data
 public class ItemDto implements Serializable{
-    private int id;
     private ProductDto productDto;
     private int quantity;
     private double price;

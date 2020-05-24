@@ -134,14 +134,16 @@ public class CartController {
     }
 
     @GetMapping("/cart/remove")
-    public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    public String removeCart(@RequestParam(value = "productId", required = false) long productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        List<ItemDto> items = order.getItems();
-        for (ItemDto item : items) {
-            if (item.getProductDto().getId() == productId) {
-                items.remove(item);
-                if (items.isEmpty()) {
+        List<ItemDto> items = new ArrayList<>();
+        items = order.getItems();
+        System.out.println(items.size());
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getProductDto().getId() == productId) {
+                order.getItems().remove(items.get(i));
+                if (order.getItems().isEmpty()) {
                     System.out.println("Empty");
                     session.removeAttribute("order");
                     return "redirect:/";
@@ -202,12 +204,12 @@ public class CartController {
                     session.setAttribute("order", order);
                 }
             }
-           if( request.getParameter("fast") != null){
-               Long fast = Long.parseLong(request.getParameter("fast"));
-               if (fast==1) {
-                   return "redirect:/viewCartDetail";
-               }
-           }
+            if (request.getParameter("fast") != null) {
+                Long fast = Long.parseLong(request.getParameter("fast"));
+                if (fast == 1) {
+                    return "redirect:/viewCartDetail";
+                }
+            }
             return "redirect:/";
         } else {
             return "error";
