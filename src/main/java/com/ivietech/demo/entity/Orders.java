@@ -28,13 +28,8 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerName;
-    private String customerEmail;
-    private String customerPhone;
     private String codeOrder;
     private String status;
-    @ManyToOne
-    private Payment payment;
     @ManyToOne
     private User user;
     @OneToMany(mappedBy = "order")
@@ -42,6 +37,7 @@ public class Orders {
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;
+    private double total_money;
 
     
     

@@ -19,12 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.ivietech.demo.dao.CodeGiftCardRepository;
+import com.ivietech.demo.dao.OrderrDetailRepository;
 import com.ivietech.demo.dto.Item;
 import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.CodeGiftCard;
+import com.ivietech.demo.entity.OrderDetails;
+import com.ivietech.demo.entity.Orders;
+import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.service.BalanceService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -39,6 +44,8 @@ public class CheckOutController {
     private UserRepository userRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrderrDetailRepository orderrDetailRepository;
     @Autowired
     private BalanceRepository balanceRepository;
     @Autowired
@@ -57,6 +64,18 @@ public class CheckOutController {
         //Thuc hien xu ly 
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
+        //add to DB orders
+        double total_order = order.getTotal_order();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        balanceService.changeMoney(user.getId(), total_order);
+        model.addAttribute("user", user);
+        Orders orders = new Orders();
+        orders.setStatus("OK");
+        orders.setUser(user);
+        orders.setTotal_money(total_order);
+        orderRepository.save(orders);
+        
         List<Item> items = order.getItems();
         for (Item item : items) {
             int id = item.getId();
@@ -69,17 +88,18 @@ public class CheckOutController {
                 System.out.println(codeGiftCard.getCode());
                 codeGiftCardRepository.updateBlockGiftCode(codeGiftCard.getCode());
             }
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.setOrder(orders);
+            Optional<Product> findById = productRepository.findById(product.getId());
+            orderDetails.setProduct(findById.get());
+            orderDetails.setListCodeGiftCard(code);
+            orderDetails.setQuanity(quantity);
+            orderrDetailRepository.save(orderDetails);
         }
         //Lay total_invoice + iduser
-
-        double total_order = order.getTotal_order();
         //Thay doi vi tien cua user
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository.findByUserName(userName);
+        session.removeAttribute("order");
         model.addAttribute("user", user);
-
-        balanceService.changeMoney(user.getId(), total_order);
         return "user/viewCheckout";
 
     }
