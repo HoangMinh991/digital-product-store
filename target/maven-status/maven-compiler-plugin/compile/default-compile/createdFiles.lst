@@ -6,7 +6,6 @@ com\ivietech\demo\dao\RoLeRepository.class
 com\ivietech\demo\service\IUserService.class
 com\ivietech\demo\entity\CodeGiftCard.class
 com\ivietech\demo\controller\CartController.class
-com\ivietech\demo\dto\ProductCount.class
 com\ivietech\demo\entity\User.class
 com\ivietech\demo\dao\PlaformRepository.class
 com\ivietech\demo\beansping\ResourceConfig.class
@@ -21,7 +20,6 @@ com\ivietech\demo\beansping\WebSecurityConfig.class
 com\ivietech\demo\dto\ProductDto.class
 com\ivietech\demo\validation\EmailValidator.class
 com\ivietech\demo\dto\UpdateUserDto.class
-.netbeans_automatic_build
 com\ivietech\demo\dao\TypeRepository.class
 com\ivietech\demo\dto\Order.class
 com\ivietech\demo\dao\ProductRepository.class
@@ -54,5 +52,6 @@ com\ivietech\demo\controller\DetailController.class
 com\ivietech\demo\utils\FormEmail.class
 com\ivietech\demo\dao\RechagerRepository.class
 com\ivietech\demo\security\MyUserDetailsService.class
+com\ivietech\demo\validation\ProductValidator.class
 com\ivietech\demo\dao\VerificationTokenRepository.class
 com\ivietech\demo\controller\Loadmore.class

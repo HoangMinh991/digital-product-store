@@ -6,6 +6,7 @@
 package com.ivietech.demo.entity;
 
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,7 @@ public class CodeGiftCard{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique=true)
     private String code;
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")

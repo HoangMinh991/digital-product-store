@@ -42,9 +42,9 @@ C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\en
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\event\RegistrationCompleteEvent.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\service\IUserService.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\PaymentRepository.java
-C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dto\ProductCount.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\entity\CodeGiftCard.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\controller\CheckOutController.java
+C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\validation\ProductValidator.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\entity\User.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\ProductDetailRepository.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\OrderRepository.java
