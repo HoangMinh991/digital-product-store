@@ -21,7 +21,7 @@ import lombok.Data;
 public class Balance implements Serializable{
     @Id
     private long id;
-    private int money;
+    private long money;
     private long totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
