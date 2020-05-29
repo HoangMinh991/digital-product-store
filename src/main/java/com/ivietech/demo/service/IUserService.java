@@ -1,6 +1,6 @@
 package com.ivietech.demo.service;
 
-import com.ivietech.demo.dto.UserDto;
+import com.ivietech.demo.dto.UserRegistrationDto;
 import com.ivietech.demo.entity.Balance;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.VerificationToken;
@@ -10,7 +10,7 @@ import com.ivietech.demo.entity.VerificationToken;
 
 public interface IUserService {
 
-    User registerNewUserAccount(UserDto accountDto);
+    User registerNewUserAccount(UserRegistrationDto userRegistrationDto);
 
     void saveRegisteredUser(User user);
    

@@ -46,7 +46,7 @@
                         <th:block th:each="i :${#numbers.sequence(1, listProduct.totalPages, 1)}">
                             <th:block th:if="${(i < (listProduct.number+5))&&(i > (listProduct.number-5))}">
                                 <li th:classappend="${i eq listProduct.number + 1} ? 'active'" class="page-item">
-                                    <a class="page-link" th:href="@{/detail (page=${i},platform=${param.platform},type=${param.type})}" th:text="${i}"></a></li>
+                                    <a class="page-link" th:href="@{/detail (page=${i},platform=${param.platform},type=${param.type}, bestproduct=${param.bestproduct})}" th:text="${i}"></a></li>
                             </th:block>
                         </th:block>
                         <li class="page-item"><a class="page-link" th:href="@{detail (page=${listProduct.number +2},platform=${param.platform},type=${param.type})}">Next</a></li>
@@ -56,7 +56,8 @@
         </div>
         <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
         <script th:src="@{/js/ranger_price.js}"></script>
-        <footer th:replace = "~{fragment/fragment ::footer}">
-        </footer>
+
     </body>
+    <footer th:replace = "~{fragment/fragment ::footer}">
+    </footer>
 </html>

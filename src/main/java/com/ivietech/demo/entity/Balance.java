@@ -7,8 +7,6 @@ package com.ivietech.demo.entity;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -19,16 +17,17 @@ import lombok.Data;
  * @author HoangMinh
  */
 @Entity
-public class Balance {
-   
+@Data
+public class Balance implements Serializable{
     @Id
     private long id;
     private double money;
     private double totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
-   private User user;
+    private User user;
 
+<<<<<<< HEAD
     public Balance() {
     }
 
@@ -64,4 +63,6 @@ public class Balance {
         this.user = user;
     }
     
+=======
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
 }

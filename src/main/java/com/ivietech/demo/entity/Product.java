@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class Product implements Serializable {
     private ProductDetail productDetail;
     @ManyToOne
     private Platforms platforms;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Type type;
     private boolean best;
     @OneToMany(mappedBy ="product")

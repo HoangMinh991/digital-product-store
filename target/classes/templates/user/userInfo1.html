@@ -91,33 +91,35 @@
                 <div class="container-body-container tai-khoan">
                     <h2>Thông tin cá nhân</h2>
                     <hr/>
-                    <div class="form-group">
-                        <label class="col-form-label">Email đăng nhập:</label>
-                        <div class="text info_detail" th:text="${user.email}"></div>
-                        <input type="text" th:value="${user.email}" id="email" class="form-control info_edit" readonly/>
-                        <span class="span_info"><a href="javascript:;" id="btn_edit"><i class="fas fa-edit"></i>Cập Nhật</a></span>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label"><span style="color: red" class="info_edit"> * </span> Username:</label>
-                        <div class="text info_detail" style="text-transform: capitalize;" th:text="${user.userName}"></div>
-                        <input type="text" th:value="${user.userName}" class="form-control info_edit" style="text-transform: capitalize;" readonly>
-                    </div>
+                    <form th:action="@{/user/update}" th:object="${user}" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label">Email đăng nhập:</label>
+                            <div class="text info_detail" th:text="${user.email}"></div>
+                            <input type="text" th:field="*{email}" id="email" class="form-control info_edit" readonly/>
+                            <span class="span_info"><a href="javascript:;" id="btn_edit"><i class="fas fa-edit"></i>Cập Nhật</a></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label"><span style="color: red" class="info_edit"> * </span> Username:</label>
+                            <div class="text info_detail" style="text-transform: capitalize;" th:text="${user.userName}"></div>
+                            <input type="text" th:field="*{userName}" class="form-control info_edit" style="text-transform: capitalize;" readonly>
+                        </div>
 
-                    <div class="form-group">
-                        <label class="col-form-label"> <span style="color: red" class="info_edit"> * </span> Họ và tên:</label>
+                        <div class="form-group">
+                            <label class="col-form-label"> <span style="color: red" class="info_edit"> * </span> Họ và tên:</label>
 
-                        <div class="text info_detail" th:text="${user.name}"></div>
-                        <input type="text" th:value="${user.name}" id="fullname" class="form-control info_edit" placeholder="Nhập fullname">
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label">Số điện thoại:</label>
-                        <div class="text info_detail" th:text="${user.phone}"> </div>
-                        <input type="text"  th:value="${user.phone}" id="phone" class="form-control info_edit">
-                    </div>
-                    <div class="btn-group btn_acction_edit">
-                        <div class="btn-aqua-bg" id="btn_update">Cập nhật</div>
-                        <div class="btn-aqua" id="btn_back">Quay Lại</div>
-                    </div>
+                            <div class="text info_detail" th:text="${user.name}"></div>
+                            <input type="text" th:field="*{name}" id="fullname" class="form-control info_edit" placeholder="Nhập fullname">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Số điện thoại:</label>
+                            <div class="text info_detail" th:text="${user.phone}"> </div>
+                            <input type="text"  th:field="*{phone}" id="phone" class="form-control info_edit">
+                        </div>
+                        <div class="btn-group btn_acction_edit">
+                            <button type="sumbit" class="btn-aqua-bg" id="btn_update">Cập nhật</button>
+                            <div class="btn-aqua" id="btn_back">Quay Lại</div>
+                        </div>
+                    </form>
                 </div>
             </div>
 

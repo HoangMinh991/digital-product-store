@@ -26,6 +26,7 @@ public class RegistrationListener {
 
  
     @EventListener
+    @Async
     public void confirmRegistration(RegistrationCompleteEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();

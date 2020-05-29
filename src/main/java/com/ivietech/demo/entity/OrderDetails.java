@@ -28,8 +28,7 @@ public class OrderDetails {
     @ManyToOne
     private Product product;
     @ManyToOne
-    private Orders order;
-    
+    private Orders order;  
     @OneToMany(mappedBy = "orderDetails")
     private List<CodeGiftCard> listCodeGiftCard;
     private int quanity;

@@ -42,6 +42,7 @@
         <link rel="stylesheet" th:href="@{/css/css.css}"/>
         <link rel="stylesheet" th:href="@{/css/common.css}"/>
         <link rel="stylesheet" th:href="@{/css/header.css}"/>
+        
     </head>
 
     <header class="home-page fixed-header" th:fragment="header">
@@ -298,17 +299,16 @@
                             <li class="dropdown-item padding-table-cart">
                                 <table class="table" id="detail_cart">
                                     <tbody>
-                                        <tr th:each="product: ${session.order.items}">
+                                        <tr th:each="iteam: ${session.order.items}">
                                             <td class="text-left hide-text-option-cart">
-                                                <a href="" th:text="${product.product.name}"></a>
+                                                <a href="" th:text="${iteam.productDto.name}"></a>
 
                                             </td>
-                                            <td class="text-right"><i style="color: black">Số lượng: <span style="color:darkolivegreen;font-weight:bold" th:text="${product.quantity}"></span></i></td>
-                                            <td class="text-right" th:text="${#numbers.formatDecimal(product.product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
-                                            <td class="text-center"><button type="button"
-                                                                            th:onclick="'window.location.href = \'' + @{/cart/remove(productId=${product.id})} + '\''" title="Loại bỏ"
-                                                                            class="btn btn-danger btn-xs remove"><i class="fa fa-times text-remove"></i>
-                                                </button></td>
+                                            <td class="text-right"><i style="color: black">Số lượng: <span style="color:darkolivegreen;font-weight:bold" th:text="${iteam.quantity}"></span></i></td>
+                                            <td class="text-right" th:text="${#numbers.formatDecimal(iteam.productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
+                                            <td class="text-center"><a th:href=" @{/cart/remove(productId=${iteam.productDto.id})}" title="Loại bỏ"
+                                                                       class="btn btn-danger btn-xs remove"><i class="fa fa-times text-remove"></i>
+                                                </a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -325,6 +325,7 @@
                                                 <td class="text-right"><strong>Tổng đơn hàng</strong></td>
                                                 <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
                                             </tr>
+<<<<<<< HEAD
                                             <th:block th:if="${session.order.user}">
                                                 <th:block th:if="${session.order.total_order > session.order.user.balance.money}">
                                                     <tr>
@@ -341,6 +342,34 @@
                                                         457,000                        </td>
                                                 </tr>
                                             </th:block>
+=======
+                                            <tr>
+
+
+                                                <td class="text-right"><strong>Số dư hiện tại: </strong>
+                                                </td>
+                                                <th:block sec:authorize="isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                                <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(0, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                            </tr>
+                                            <tr>
+                                               <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                </td>
+                                                <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                                <th:block sec:authorize="isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                            </tr>
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
                                         </tbody>
                                     </table>
                                     <p class="checkout">
@@ -350,7 +379,7 @@
                                         </a>
 
                                         <a class="btn btn-primary" style="color:#fff; width: 50%; padding: 6px 30px 6px 30px; background-image:linear-gradient(to right, #5db8ec 0%, #2584e4 51%) !important "
-                                           href="index.php?route=account/recharge"><i class="fa fa-wallet"></i>
+                                           href="recharge"><i class="fa fa-wallet"></i>
                                             Nạp tiền
                                         </a>
                                         <br>
@@ -590,13 +619,13 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
                 <div class="item-game-wrapper">
                     <div class="img">
-                        <a href="">
-                            <img class="check_img_errs" th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
+                        <a th:href="@{/viewproduct(productId=${product.id})}">
+                            <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
                         </a>
                     </div>
                     <div class="item-info">
                         <div class="item-title">
-                            <a href="" th:text="${product.name}"></a>
+                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}"></a>
                         </div>
 
                         <div class="item-price">
@@ -612,21 +641,21 @@
 
                             </p>
                         </div>
-                        <th:block th:if="${#lists.size(product.listCodeGiftCard)}">
+                        <th:block th:if="${product.numberCode > 0}">
                             <div class="item-btn-a">
                                 <a th:href="@{/cart/buy(productId=${product.id})}"><i class="fas fa-shopping-cart"></i></a>
                             </div>
                         </th:block>
-                        <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
+                        <th:block th:if="${product.numberCode == 0}">
                             <div class="item-btn-a">
                                 <i class="fas fa-shopping-cart"></i>
                             </div>
                         </th:block>
 
-                        <th:block th:if="${#lists.size(product.listCodeGiftCard)}">
-                            <div class="item-btn" onclick="cart.buyNow('9819', '1', this);" style="margin-top: 10px">Mua ngay</div>
+                        <th:block th:if="${product.numberCode > 0}">
+                            <a class="item-btn" th:href="@{/cart/buy(productId=${product.id},fast=1)}"  style="margin-top: 10px">Mua ngay</a>
                         </th:block>
-                        <th:block th:unless="${#lists.size(product.listCodeGiftCard)}">
+                        <th:block th:if="${product.numberCode == 0}">
                             <div class="out_of_stock">Hết hàng</div>
                         </th:block>
 

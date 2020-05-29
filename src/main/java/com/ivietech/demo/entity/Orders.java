@@ -32,6 +32,7 @@ public class Orders {
     private String status;
     @ManyToOne
     private User user;
+    private double totalMoney;
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails;
     @CreationTimestamp

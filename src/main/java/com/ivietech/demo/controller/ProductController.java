@@ -7,11 +7,18 @@ package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.BalanceRepository;
 import com.ivietech.demo.dao.OrderRepository;
+import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
+import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
+import com.ivietech.demo.entity.Type;
+import com.ivietech.demo.entity.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +40,28 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private TypeRepository typeRepository;
+    @Autowired
+    private PlaformRepository plaformRepository;
+
     @GetMapping("/viewproduct")
-    public String viewproduct(Model model,@RequestParam(value = "productId", required = false) Integer productId) {
-        Long temp = new Long(productId);
-   //     Product product = productRepository.getProductById(temp);
-       // model.addAttribute("product", product);
-        return "ProductDetail";
+    public String viewproduct(Model model, @RequestParam(value = "productId", required = false) Long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if (!product.isPresent()) {
+            return "error";
+        }
+        model.addAttribute("product", product.get());
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            model.addAttribute("user", user);
+
+        }
+        return "viewproduct";
     }
 }
