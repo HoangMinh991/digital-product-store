@@ -90,11 +90,28 @@ public class CartController {
         return "redirect:/viewCartDetail";
     }
 
-    @GetMapping("/cart/updateGiam")
-    public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    @GetMapping("/cart/remove")
+    public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+<<<<<<< HEAD
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
+        List<Item> items = order.getItems();
+        for (Item item : items) {
+            if (item.getProduct().getId() == productId) {
+                items.remove(item);
+                if (items.isEmpty()) {
+                    System.out.println("Empty");
+                    session.removeAttribute("order");
+                    return "redirect:/";
+=======
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
             if (item.getProductDto().getId() == productId) {
@@ -105,6 +122,7 @@ public class CartController {
                     temp -= 1;
                     item.setQuantity(temp);
                     break;
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
                 }
             }
         }
@@ -112,18 +130,40 @@ public class CartController {
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
-        return "redirect:/viewCartDetail";
+        return "redirect:/";
     }
 
-    @GetMapping("/cart/updateTang")
-    public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    @GetMapping("/cart/updateGiam")
+    public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
+<<<<<<< HEAD
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
+        List<Item> items = order.getItems();
+        for (Item item : items) {
+            if (item.getProduct().getId() == productId) {
+                if (item.getQuantity() == 1) {
+                    return "redirect:/viewCartDetail";
+                } else {
+                    int temp = item.getQuantity();
+                    temp -= 1;
+                    item.setQuantity(temp);
+                    break;
+                }
+=======
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
             if (item.getProductDto().getId() == productId) {
                 item.setQuantity(item.getQuantity() + 1);
                 break;
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
             }
         }
         //Set lại số lượng và total sau khi remove item
@@ -133,6 +173,25 @@ public class CartController {
         return "redirect:/viewCartDetail";
     }
 
+<<<<<<< HEAD
+    @GetMapping("/cart/updateTang")
+    public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            UserDto user_model = new UserDto();
+            BeanUtils.copyProperties(user, user_model);
+            order.setUser(user_model);
+            model.addAttribute("user", user_model);
+        }
+        List<Item> items = order.getItems();
+        for (Item item : items) {
+            if (item.getProduct().getId() == productId) {
+                item.setQuantity(item.getQuantity() + 1);
+                break;
+=======
     @GetMapping("/cart/remove")
     public String removeCart(@RequestParam(value = "productId", required = false) long productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -148,12 +207,13 @@ public class CartController {
                     session.removeAttribute("order");
                     return "redirect:/";
                 }
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
             }
         }
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
-        return "redirect:/";
+        return "redirect:/viewCartDetail";
     }
 
     @GetMapping("/cart/buy")

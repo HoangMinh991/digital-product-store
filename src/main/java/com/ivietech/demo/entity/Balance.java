@@ -21,10 +21,48 @@ import lombok.Data;
 public class Balance implements Serializable{
     @Id
     private long id;
-    private long money;
-    private long totalMoney;
+    private double money;
+    private double totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
     private User user;
 
+<<<<<<< HEAD
+    public Balance() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    public double getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(double totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+=======
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
 }

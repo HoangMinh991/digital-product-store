@@ -22,7 +22,11 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Data
+<<<<<<< HEAD
+public class CodeGiftCard {
+=======
 public class CodeGiftCard{
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +39,11 @@ public class CodeGiftCard{
     @ManyToOne
     private Product product;
     @ManyToOne
+<<<<<<< HEAD
+    private OrderDetails orderDetails;
+    private boolean enabled;
+=======
     private OrderDetails orderDetails;   
 
+>>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
 }

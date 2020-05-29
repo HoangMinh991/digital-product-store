@@ -31,8 +31,6 @@ public class Orders {
     private String codeOrder;
     private String status;
     @ManyToOne
-    private Payment payment;
-    @ManyToOne
     private User user;
     private double totalMoney;
     @OneToMany(mappedBy = "order")
@@ -40,6 +38,7 @@ public class Orders {
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;
+    private double total_money;
 
     
     
