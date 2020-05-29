@@ -6,7 +6,7 @@
 package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.BalanceRepository;
-import com.ivietech.demo.dao.CodeGiiftCardRepository;
+import com.ivietech.demo.dao.CodeGiftCardRepository;
 import com.ivietech.demo.dao.OrderRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
@@ -59,7 +59,7 @@ public class AdminController {
     @Autowired
     private PlaformRepository plaformRepository;
     @Autowired
-    private CodeGiiftCardRepository codeGiiftCardRepository;
+    private CodeGiftCardRepository codeGiftCardRepository;
     
     @Autowired
     private ProductValidator productValidator;
@@ -155,7 +155,7 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<CodeGiftCard> codeGiftCards = codeGiiftCardRepository.findAll(PageRequest.of(page, size));
+        Page<CodeGiftCard> codeGiftCards = codeGiftCardRepository.findAll(PageRequest.of(page, size));
         model.addAttribute("listCode", codeGiftCards);
         return "admin/listCode";
     }
@@ -175,7 +175,7 @@ public class AdminController {
                 codeGiftCard.setCode(row.getCell(0).getStringCellValue());
                 Product product = productRepository.findById((long) row.getCell(1).getNumericCellValue()).get();
                 codeGiftCard.setProduct(product);
-                listCodeGiftCard.add(codeGiiftCardRepository.save(codeGiftCard));
+                listCodeGiftCard.add(codeGiftCardRepository.save(codeGiftCard));
             } catch (Exception e) {
                 errorRow.add(i+1);
             }

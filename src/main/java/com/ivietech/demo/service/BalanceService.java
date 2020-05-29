@@ -49,7 +49,7 @@ public class BalanceService {
         @QueryHint(name = "javax.persistence.lock.timeout", value = "1000")
         , 
     @QueryHint(name = "javax.persistence.lock.scope", value = "EXTENDED")}, forCounting = false)
-    public Balance changeMoney(long id, double money) throws Exception {
+    public Balance changeMoney(long id, long money) throws Exception {
         Balance balance = findBalanceByID(id);
         balance.setMoney(balance.getMoney() - money);
         if (balance.getMoney() < 0) {
@@ -81,7 +81,7 @@ public class BalanceService {
         @QueryHint(name = "javax.persistence.lock.timeout", value = "1000")
         , 
     @QueryHint(name = "javax.persistence.lock.scope", value = "EXTENDED")}, forCounting = false)
-    public Balance changTotalMoney(Balance balance, int money){
+    public Balance changTotalMoney(Balance balance, long money){
         balance.setTotalMoney(balance.getTotalMoney() + money);
         return balanceRepository.save(balance);
     }

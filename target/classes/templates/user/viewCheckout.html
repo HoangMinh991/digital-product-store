@@ -91,52 +91,31 @@
                 <div class="container-body-container">
                     <div class="border-cart-top"></div>
                     <div class="row cart-detail">
-                        <th:block th:each="item: ${session.order.items}">
+                        <th:block th:each="item: ${orders.orderDetails}">
                             <div class="col-md-12 hidden-sm hidden-xs item">
                                 <div class="col-md-2">
-                                    <a href="https://divineshop.vn/steam-wallet-code10k" target="_blank">
-                                        <img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh-SP-New/Thang/10k.png">
+                                    <a th:href="@{/viewproduct(productId=${item.product.id})}" target="_blank">
+                                        <img th:src="${item.product.img}">
                                     </a>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="https://divineshop.vn/steam-wallet-code10k" target="_blank" class="title" th:text="${item.product.name}">Steam Wallet Code 10,000 VND </a>
+                                    <a href="" target="_blank" class="title" th:text="${item.product.name}">Name </a>
                                     <div class="key-game">
                                         <div><strong>Key Game</strong></div>
-                                        <th:block th:each="codegame: ${item.product.listCodeGiftCard}">
-                                        <div style="margin-top: 5px;cursor: copy;"><span class="copy-key" onmousemove="hideTooltip()" th:text="${codegame.code}"><i class="icon-caret-right" style="max-width: 8px"></i>RJE5E-NELP3-3QG6K</span></div>
-                                        </th:block>
+                                        <div style="margin-top: 5px;cursor: copy;">
+                                            <th:block th:each="code: ${item.listCodeGiftCard}">
+                                                <div><span class="copy-key" onmousemove="hideTooltip()" th:text="${code.code}"><i class="icon-caret-right" style="max-width: 8px"></i></span></div>
+                                            </th:block>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 text-right">
-                                    <span style="font-size: 14px;font-weight: bold;" class="price" th:text="'Số lượng: ' + ${item.quantity}">Số lượng: 1</span>
-                                </div>
+                               
                                 <div class="col-md-3 text-right">
-                                    <div style="font-size: 16px;margin-bottom: 5px;font-weight: bold;margin-bottom:10px;" th:text="${#numbers.formatDecimal(item.priceNew, 0, 'POINT', 0, 'POINT')}+ 'VNĐ '">13.000 VNĐ</div>
-                                    <a href="https://divineshop.vn/huong-dan-nhap-steam-code"  target="_blank" data-toggle="tooltip" title="Nhập key" class="btn btn-danger">Nhập key</a>
+                                    <div style="font-size: 16px;margin-bottom: 5px;font-weight: bold;margin-bottom:10px;" th:text="${#numbers.formatDecimal(item.product.priceNew, 0, 'POINT', 0, 'POINT')}+ 'VNĐ '">13.000 VNĐ</div>
+                                    <a href=""  target="_blank" data-toggle="tooltip" title="Nhập key" class="btn btn-danger">Nhập key</a>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-xs-12 hidden-lg hidden-md item">
-                                <div class="col-sm-3 col-xs-4">
-                                    <a href="https://divineshop.vn/steam-wallet-code10k" target="_blank">
-                                        <img class="portrait-crop" src="image/catalog/Anh-SP-New/Thang/10k.png">
-                                    </a>
-                                </div>
-                                <div class="col-sm-9 col-xs-8">
-                                    <div class="col-sm-12 col-xs-12">
-                                        <a href="https://divineshop.vn/steam-wallet-code10k" target="_blank" class="title">Steam Wallet Code 10,000 VND </a>
-                                        <div class="item-status">Số lượng: 1</div>
-                                        <div style="font-weight: bold;">13.000 VNĐ</div>
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <a href="https://divineshop.vn/huong-dan-nhap-steam-code" class="btn btn-danger" style="width:100%;">
-                                        Nhập key
-                                    </a>
-                                </div>
-                                <div style="margin-top: 5px;">
-                                    <strong>Key Game</strong><br>
-                                        <span class="copy-key" onmousemove="hideTooltip()"><i class="icon-caret-right" style="max-width: 8px"></i>RJE5E-NELP3-3QG6K</span>                                                    </div>
-                            </div>
+                            
                         </th:block>
                     </div>
                     <div class="mb15"></div>
@@ -149,16 +128,16 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title"><a href="#collapse-coupon" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"><strong>THÔNG TIN ĐƠN HÀNG</strong></a></h4>
                                             </div>
-                                            <div class="panel-body">
-                                                Mã đơn hàng: <strong>#3517352</strong><br />
-                                                Ngày tạo: 20/05/2020<br />
-                                                Email nhận key : hhfeedxongout@gmail.com<br>
+                                            <div class="panel-body" th:object="${orders}">
+                                                Mã đơn hàng: <strong th:text="*{id}">#3517352</strong><br />
+                                                Ngày tạo: <span th:text="${#dates.format(orders.createdDatetime, 'dd-MM-yyyy HH:mm')}">20/05/2020</span><br />
+                                                Email nhận key : <span th:text="*{user.email}">feedxongout@gmail.com</span><br>
                                                     Tình trạng đơn hàng: <span style="color:green;">Đã xử lý</span>                                                                                    </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12 padd-0">
-                                    <div class="order-total" th:object="${session.order}">
+                                    <div class="order-total" th:object="${orders}">
                                         <div class="panel panel-default">
                                             <div class="panel-heading" style="border-color: transparent;">
                                                 <h4 class="panel-title"><strong>THÔNG TIN THANH TOÁN</strong></h4>
@@ -171,7 +150,7 @@
                                                             <span class="text-gray">Thành tiền sản phẩm</span>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                            <span class="thanh-tien" th:text="*{total_order}">13.000đ</span>
+                                                            <span class="thanh-tien" th:text="*{totalMoney}">13.000đ</span>
                                                         </div>
                                                     </div>
                                                     <!-- Border Bottom Nét Đứt -->
@@ -183,18 +162,7 @@
                                                             <div class="h16-md-26 text-gray-900">TỔNG TIỀN</div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                            <div class="h16-bo-26 text-primary" th:text="*{total_order}">13.000đ</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Border Bottom Nét Đứt -->
-                                                    <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-border-dash border-bottom-dash"></div>
-                                                    <div class="col-md-12 col-sm-12 col-xs-12 padd-0 margin-item">
-                                                        <div class="col-md-6 col-sm-6 col-xs-6 padd-0">
-                                                            <span class="text-gray">Số dư khi thanh toán</span>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-6 col-xs-6 padd-0 text-right">
-                                                            <span class="thanh-tien">13.000 <i class="icon-coin-dollar" style="color:#000;"></i></span>
+                                                            <div class="h16-bo-26 text-primary" th:text="*{totalMoney}">13.000đ</div>
                                                         </div>
                                                     </div>
                                                 </div>

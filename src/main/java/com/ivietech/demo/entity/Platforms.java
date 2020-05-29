@@ -20,7 +20,6 @@ import lombok.Data;
  * @author HoangMinh
  */
 @Entity
-@Data
 public class Platforms {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +29,40 @@ public class Platforms {
     private List<Product> listProducts;
     @ManyToMany
     private Set<Type> type;
+
+    public Platforms() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Product> getListProducts() {
+        return listProducts;
+    }
+
+    public void setListProducts(List<Product> listProducts) {
+        this.listProducts = listProducts;
+    }
+
+    public Set<Type> getType() {
+        return type;
+    }
+
+    public void setType(Set<Type> type) {
+        this.type = type;
+    }
+    
 }

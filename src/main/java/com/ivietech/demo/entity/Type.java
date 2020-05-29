@@ -13,14 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import lombok.Data;
 
 /**
  *
  * @author HoangMinh
  */
 @Entity
-@Data
 public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +28,40 @@ public class Type {
     private List<Product> listProducts;
     @ManyToMany(mappedBy = "type")
     private Set<Platforms> platforms;
+
+    public Type() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Product> getListProducts() {
+        return listProducts;
+    }
+
+    public void setListProducts(List<Product> listProducts) {
+        this.listProducts = listProducts;
+    }
+
+    public Set<Platforms> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(Set<Platforms> platforms) {
+        this.platforms = platforms;
+    }
+    
 }

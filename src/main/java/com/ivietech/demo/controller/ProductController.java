@@ -11,8 +11,8 @@ import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.Platforms;
-import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
 import java.util.List;
@@ -47,11 +47,8 @@ public class ProductController {
 
     @GetMapping("/viewproduct")
     public String viewproduct(Model model, @RequestParam(value = "productId", required = false) Long productId) {
-        Optional<Product> product = productRepository.findById(productId);
-        if (!product.isPresent()) {
-            return "error";
-        }
-        model.addAttribute("product", product.get());
+        Optional<ProductDto> productDto = productRepository.findProductDtoById(productId);
+        model.addAttribute("productDto", productDto.get());
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);

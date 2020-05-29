@@ -25,7 +25,6 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -140,5 +139,14 @@ public class User {
     public void setListOrder(List<Orders> listOrder) {
         this.listOrder = listOrder;
     }
+
+    public List<Recharge> getRecharge() {
+        return recharge;
+    }
+
+    public void setRecharge(List<Recharge> recharge) {
+        this.recharge = recharge;
+    }
+    
     
 }

@@ -6,31 +6,30 @@
 package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.BalanceRepository;
+import com.ivietech.demo.dao.CodeGiftCardRepository;
 import com.ivietech.demo.dao.OrderRepository;
+import com.ivietech.demo.dao.OrderrDetailRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.ItemDto;
 import com.ivietech.demo.dto.Order;
-import com.ivietech.demo.dto.UserDto;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import com.ivietech.demo.dao.CodeGiftCardRepository;
-import com.ivietech.demo.dao.OrderrDetailRepository;
-import com.ivietech.demo.dto.Item;
-import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.CodeGiftCard;
 import com.ivietech.demo.entity.OrderDetails;
 import com.ivietech.demo.entity.Orders;
 import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.service.BalanceService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -61,46 +60,67 @@ public class CheckOutController {
 
     @GetMapping("/checkout")
     public String test(Model model, HttpServletRequest request) throws Exception {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        String parameter = request.getParameter("order_id");
+        if (parameter != null) {
+            Optional<Orders> orders = orderRepository.findById(Long.parseLong(parameter));
+            Orders order = orders.get();
+            model.addAttribute("orders", order);
+            model.addAttribute("user", user);
+            return "user/viewCheckout";
+        }
         //Thuc hien xu ly 
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         //add to DB orders
-        double total_order = order.getTotal_order();
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUserName(userName);
-        balanceService.changeMoney(user.getId(), total_order);
-        model.addAttribute("user", user);
+        long total_order = order.getTotal_order();
         Orders orders = new Orders();
-        orders.setStatus("OK");
         orders.setUser(user);
-        orders.setTotal_money(total_order);
-        orderRepository.save(orders);
-        
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            int id = item.getId();
+        orders.setTotalMoney(total_order);
+        orders = orderRepository.save(orders);
+        List<OrderDetails> orderDetailses = new ArrayList<>();
+        //orders = orderRepository.save(orders);
+        List<ItemDto> items = order.getItems();
+        for (ItemDto item : items) {
+            long id = item.getProductDto().getId();
             int quantity = item.getQuantity();
-            List<CodeGiftCard> code = codeGiftCardRepository.getCode(id, quantity);
-            ProductDto product = item.getProduct();
-            product.setListCodeGiftCard(code);
-            item.setProduct(product);
-            for (CodeGiftCard codeGiftCard : code) {
-                System.out.println(codeGiftCard.getCode());
-                codeGiftCardRepository.updateBlockGiftCode(codeGiftCard.getCode());
+            List<CodeGiftCard> code = new ArrayList<>();
+            code = codeGiftCardRepository.getCode((int) id, quantity);
+            if (code.size() < quantity){
+                return "redirect:/viewCardDetail";
             }
+            Optional<Product> findById = productRepository.findById(id);
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.setOrder(orders);
-            Optional<Product> findById = productRepository.findById(product.getId());
             orderDetails.setProduct(findById.get());
-            orderDetails.setListCodeGiftCard(code);
             orderDetails.setQuanity(quantity);
-            orderrDetailRepository.save(orderDetails);
-        }
-        //Lay total_invoice + iduser
-        //Thay doi vi tien cua user
-        session.removeAttribute("order");
-        model.addAttribute("user", user);
-        return "user/viewCheckout";
+            orderDetails.setListCodeGiftCard(code);
+            OrderDetails save = orderrDetailRepository.save(orderDetails);
+            save.setListCodeGiftCard(code);
+            orderrDetailRepository.save(save);
+            //orderrDetailRepository.save(orderDetails);
+            orderDetailses.add(orderDetails);
+            for (CodeGiftCard codeGiftCard : code) {
+                System.out.println(codeGiftCard.getCode());
+                codeGiftCard.setOrderDetails(orderDetails);
+            }
 
+        }
+        //Check balance
+        if (total_order > user.getBalance().getMoney()) {
+            return "redirect:/viewCardDetail";
+        }
+        //Thay doi vi tien cua user
+        balanceService.changeMoney(user.getId(), total_order);
+        model.addAttribute("user", user);
+        //Xoa session sau khi tru tien
+        session.removeAttribute("order");
+        orders = orderRepository.findById(orders.getId()).get();
+        orders.setStatus("OK");
+        orders.setOrderDetails(orderDetailses);
+        orders = orderRepository.save(orders);
+        model.addAttribute("orders", orders);
+        return "user/viewCheckout";
     }
 }

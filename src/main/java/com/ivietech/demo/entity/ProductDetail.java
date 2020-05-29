@@ -18,7 +18,6 @@ import lombok.Data;
  * @author HoangMinh
  */
 @Entity
-@Data
 public class ProductDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +25,32 @@ public class ProductDetail implements Serializable {
     private String description;
     @OneToOne
     private Product product;
+
+    public ProductDetail() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    
 }

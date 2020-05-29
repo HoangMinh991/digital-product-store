@@ -16,5 +16,5 @@ import lombok.Data;
 public class ItemDto implements Serializable{
     private ProductDto productDto;
     private int quantity;
-    private double price;
+    private long price;
 }

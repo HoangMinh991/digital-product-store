@@ -29,15 +29,15 @@
         <div class="trang-sp chi-tiet-sp">
             <div class="container" style="margin-top: 0">
                 <ul class="breadcrumb">
-                    <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-                        <a href="https://divineshop.vn/index.php?route=common/home" itemprop="url" style="color: #7b7b7b;"><span itemprop="title"><i class="fa fa-home"></i></span></a>
+                    <li itemscope="" itemtype="">
+                        <a href="" itemprop="url" style="color: #7b7b7b;"><span itemprop="title"><i class="fa fa-home"></i></span></a>
                     </li>
-                    <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-                        <a href="https://divineshop.vn/grand-theft-auto-v" itemprop="url" style="color: #7b7b7b;"><span itemprop="title">Grand Theft Auto V - GTA V</span></a>
+                    <li itemscope="" itemtype="">
+                        <a href="" itemprop="url" style="color: #7b7b7b;"><span itemprop="title" th:text="${productDto.name}"></span></a>
                     </li>
                 </ul>
                 <div class="container-title title-detail-product">
-                    <div class="fontSize-title">Grand Theft Auto V - GTA V</div>
+                    <div class="fontSize-title" th:text="${productDto.name}"></div>
                 </div>
                 <div class="container-body">
                     <div class="sp-header clearfix">
@@ -45,7 +45,7 @@
                             <div class="slider sp-slider-big">
                                 <div class="img-item">
                                     <div class="click_show_slide" onclick="click_show_slide()" style="height: 100%;width: 100%;">
-                                        <img src="https://steamcdn-a.akamaihd.net/steam/apps/271590/header.jpg" title="Grand Theft Auto V - GTA V" alt="Grand Theft Auto V - GTA V" class="slide-product-big check_img_errs">
+                                        <img th:src="${productDto.img}" title="" alt="" class="slide-product-big">
                                     </div>
                                 </div>
                             </div>
@@ -56,32 +56,37 @@
                                     <div class="sp-info-top-item-icon"><img style="width: 20px;" src="./assets/resources/item-icon-1.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Mã sản phẩm</div>
-                                        <div class="text-1">vncur 271590 idcur</div>
+                                        <div class="text-1" th:text="${productDto.id}">r</div>
                                     </div>
                                 </div>
                                 <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
                                     <div class="sp-info-top-item-icon"><img style="width: 20px;" src="./assets/resources/item-icon-2.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Tình trạng</div>
-                                        <span style="color:#53af2e; font-weight:bold;">Còn hàng</span>
+                                        <th:block th:if="${productDto.numberCode > 0}">
+                                            <span style="color:#53af2e; font-weight:bold;">Còn hàng</span>
+                                        </th:block>
+                                        <th:block th:unless="${productDto.numberCode > 0}">
+                                            <span style="color:#ff0000; font-weight:bold;">Hết hàng</span>
+                                        </th:block>
                                     </div>
                                 </div>
                                 <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
                                     <div class="sp-info-top-item-icon"><img style="width: 35px;" src="./assets/resources/item-icon-3.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Link gốc</div>
-                                        <p><a href="https://store.steampowered.com/app/271590/Grand_Theft_Auto_V/" target="_blank" rel="nofollow">Sản phẩm</a>
+                                        <p><a href="" target="_blank" rel="nofollow">Sản phẩm</a>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                             <div class="sp-price-text">Giá sản phẩm</div>
                             <div class="sp-price-new">
-                                <div class="price">457.000 VNĐ</div>
-
-                                <div class="price-info">&nbsp;&nbsp;
-                                    <a href="javascript:void(0)" id="promotion-request" alt="Thông báo cho tôi khi có giá tốt hơn" title="Thông báo cho tôi khi có giá tốt hơn"><i class="fas fa-bell"></i><b style="color: #928e8e"> Chuông báo giảm giá</b></a>
-                                </div>
+                                <div class="price" th:text="${#numbers.formatDecimal(productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></div>
+                                <th:block th:if ="${productDto.priceNew < productDto.priceOld}">                
+                                    <span class="old-p" th:text="${#numbers.formatDecimal(productDto.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                    <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-productDto.priceNew / productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                </th:block>
                             </div>
                             <div id="product">
                                 <hr/>
@@ -90,18 +95,18 @@
                                         <label>Số lượng:</label>
                                         <br/>
                                         <div class="qty" style="display: -webkit-inline-box;">
-                                            <a class="qtyBtn mines" href="javascript:void(0);">-</a>
+                                            <a class="qtyBtn mines" href="javascript:myFunctionMinus();">-</a>
                                             <input type="text" name="quantity" value="1" size="2" id="input-quantity" class="form-control" style="width:46px;height:26px;font-weight: bold;text-align: center;border-radius:0"/>
-                                            <a class="qtyBtn plus" href="javascript:void(0);">+</a>
-                                            <input type="hidden" name="product_id" value="97">
+                                            <a class="qtyBtn plus" href="javascript:myFunctionPlus();">+</a>
+                                            <input type="hidden" name="product_id" th:value="${productDto.id}">
                                         </div>
                                     </div>
                                     <div class="col-md-9 col-xs-12 bar-buy-product">
                                         <div id="button-cart-redirect" data-loading-text="Đang tải..." class="btn btn-green-bg col-md-5" style="margin-top: 12px;width: 144px">Mua Ngay
                                         </div>
 
-                                        <div id="button-cart" data-loading-text="Đang tải..." class="btn btn-orange-bg col-md-5 add-cart-orange" style="width: 144px">
-                                            <i class="fa fa-shopping-cart text-left"> </i> &nbsp;Thêm vào giỏ                                    </div>
+                                        <a id="myAnchor" th:href="@{/cart/buy(productId=${productDto.id})}"><div id="button-cart" data-loading-text="Đang tải..." class="btn btn-orange-bg col-md-5 add-cart-orange" style="width: 144px">
+                                            <i class="fa fa-shopping-cart text-left"> </i> &nbsp;Thêm vào giỏ                                    </div></a>
                                     </div>
                                 </div>
 
@@ -127,6 +132,20 @@
                 </div>
             </div>
         </div>
+        <script>
+            function myFunctionPlus() {
+                var x = document.getElementsByName("quantity")[0].value;
+                document.getElementsByName("quantity")[0].value = +x + 1;
+                var productID = document.getElementsByName("product_id")[0].value;
+                document.getElementById("myAnchor").href = "/cart/buy?productId=" + productID + "&quantity=" +document.getElementsByName("quantity")[0].value; 
+            }
+            function myFunctionMinus() {
+                var x = document.getElementsByName("quantity")[0].value;
+                if (+x > 1){
+                    document.getElementsByName("quantity")[0].value = +x - 1;
+                }              
+            }
+        </script>
     </body>
     <footer th:replace = "~{fragment/fragment ::footer}">
     </footer>

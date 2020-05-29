@@ -23,16 +23,11 @@ import org.springframework.stereotype.Repository;
 public interface CodeGiftCardRepository extends JpaRepository<CodeGiftCard, Long> {
 
     @Query(
-            value = "SELECT * FROM code_gift_card c WHERE c.enabled = true and c.product_id = :productId LIMIT :limit",
+            value = "SELECT * FROM code_gift_card c WHERE c.order_details_id is null and c.product_id = :productId LIMIT :limit",
             nativeQuery = true
     )
     public List<CodeGiftCard> getCode(@Param("productId") int productId, @Param("limit") int limit);
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE code_gift_card SET enabled = false WHERE code = :code", nativeQuery = true)
-    public void updateBlockGiftCode(@Param("code") String code);
-    
 //    //Dem so luong code trong kho
 //    @Query(value = "SELECT product_id, count(*) form code_gift_card WHERE enabled = true GROUP BY product_id", nativeQuery = true)
 }

@@ -15,6 +15,7 @@ public class Order implements Serializable {
     private List<ItemDto> items;
     private int status;
     private int total_quantity;
+    private long total_order;
 
     public Order() {
     }
@@ -52,14 +53,14 @@ public class Order implements Serializable {
         this.total_quantity = total_quantity;
     }
 
-    public double getTotal_order() {
+    public long getTotal_order() {
         return total_order;
     }
 
-    public void setTotal_order(double total_order) {
+    public void setTotal_order(long total_order) {
         this.total_order = total_order;
     }
-    private double total_order;
+    
 
   
 
@@ -72,7 +73,7 @@ public class Order implements Serializable {
     }
 
     public void setTotal_order() {
-        double temp_total = 0;
+        long temp_total = 0;
         for (ItemDto item : items) {
             temp_total += item.getPrice() * item.getQuantity();
         }

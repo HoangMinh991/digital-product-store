@@ -69,10 +69,6 @@ public class IndexController {
             model.addAttribute("user", user);
 
         }
-        for (ProductDto productDto : listBestProduct) {
-            System.out.println(productDto.getId());
-            System.out.println(productDto.getNumberCode());
-        }
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);

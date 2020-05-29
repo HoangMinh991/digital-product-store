@@ -129,7 +129,6 @@ public class SimpleWsHandler implements WebSocketHandler {
                         }
                         // String body = noti1.getPush().getBody().replaceAll("[^0-9\\s]", "");
                     } else {
-                        System.out.println("abcd");
                         String ref = notiSms.getPush().getNotifications().get(0).getBody().substring(rs);
                         String ft = notiSms.getPush().getNotifications().get(0).getBody().substring(0, rs);
                         String body = ft.replaceAll("[^0-9\\s]", "");

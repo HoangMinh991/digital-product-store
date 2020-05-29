@@ -17,17 +17,15 @@ import lombok.Data;
  * @author HoangMinh
  */
 @Entity
-@Data
 public class Balance implements Serializable{
     @Id
     private long id;
-    private double money;
-    private double totalMoney;
+    private long money;
+    private long totalMoney;
     @OneToOne
     @PrimaryKeyJoinColumn
     private User user;
 
-<<<<<<< HEAD
     public Balance() {
     }
 
@@ -39,19 +37,19 @@ public class Balance implements Serializable{
         this.id = id;
     }
 
-    public double getMoney() {
+    public long getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(long money) {
         this.money = money;
     }
 
-    public double getTotalMoney() {
+    public long getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(double totalMoney) {
+    public void setTotalMoney(long totalMoney) {
         this.totalMoney = totalMoney;
     }
 
@@ -62,7 +60,6 @@ public class Balance implements Serializable{
     public void setUser(User user) {
         this.user = user;
     }
+
     
-=======
->>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
 }

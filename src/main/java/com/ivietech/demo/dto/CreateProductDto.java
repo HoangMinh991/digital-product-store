@@ -16,8 +16,8 @@ public class CreateProductDto {
     private long id;
     private String img;
     private String name;
-    private double priceNew;
-    private double priceOld;
+    private long priceNew;
+    private long priceOld;
     private long typeId;
     private long platformsId;
     private boolean best;

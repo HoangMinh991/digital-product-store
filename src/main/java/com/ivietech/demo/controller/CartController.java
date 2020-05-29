@@ -7,6 +7,7 @@
 package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.BalanceRepository;
+import com.ivietech.demo.dao.CodeGiftCardRepository;
 import com.ivietech.demo.dao.OrderRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
@@ -15,6 +16,7 @@ import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dto.ItemDto;
 import com.ivietech.demo.dto.Order;
 import com.ivietech.demo.dto.ProductDto;
+import com.ivietech.demo.entity.CodeGiftCard;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.Type;
@@ -49,11 +51,12 @@ public class CartController {
     private BalanceRepository balanceRepository;
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private TypeRepository typeRepository;
     @Autowired
     private PlaformRepository plaformRepository;
+    @Autowired
+    private CodeGiftCardRepository codeGiftCardRepository;
 
     @GetMapping("/viewCartDetail")
     public String viewCartDetail(Model model) {
@@ -90,80 +93,21 @@ public class CartController {
         return "redirect:/viewCartDetail";
     }
 
-    @GetMapping("/cart/remove")
-    public String removeCart(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-<<<<<<< HEAD
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
-                items.remove(item);
-                if (items.isEmpty()) {
-                    System.out.println("Empty");
-                    session.removeAttribute("order");
-                    return "redirect:/";
-=======
-        List<ItemDto> items = order.getItems();
-        for (ItemDto item : items) {
-            if (item.getProductDto().getId() == productId) {
-                if (item.getQuantity() == 1) {
-                    return "redirect:/viewCartDetail";
-                } else {
-                    int temp = item.getQuantity();
-                    temp -= 1;
-                    item.setQuantity(temp);
-                    break;
->>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
-                }
-            }
-        }
-        //Set lại số lượng và total sau khi remove item
-        order.setTotal_quantity();
-        order.setTotal_order();
-        session.setAttribute("order", order);
-        return "redirect:/";
-    }
-
     @GetMapping("/cart/updateGiam")
     public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-<<<<<<< HEAD
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
-                if (item.getQuantity() == 1) {
-                    return "redirect:/viewCartDetail";
-                } else {
-                    int temp = item.getQuantity();
-                    temp -= 1;
-                    item.setQuantity(temp);
-                    break;
-                }
-=======
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
             if (item.getProductDto().getId() == productId) {
-                item.setQuantity(item.getQuantity() + 1);
-                break;
->>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
+                if (item.getQuantity() == 1) {
+                    return "redirect:/viewCartDetail";
+                } else {
+                    item.setQuantity(item.getQuantity() - 1);
+                    item.setPrice(item.getProductDto().getPriceNew() * item.getQuantity());
+                    break;
+                }
             }
         }
         //Set lại số lượng và total sau khi remove item
@@ -173,25 +117,31 @@ public class CartController {
         return "redirect:/viewCartDetail";
     }
 
-<<<<<<< HEAD
     @GetMapping("/cart/updateTang")
     public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+        List<CodeGiftCard> code = codeGiftCardRepository.getCode(productId, 100);
+        System.out.println(code.size());
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!"anonymousUser".equals(userName)) {
-            User user = userRepository.findByUserName(userName);
-            UserDto user_model = new UserDto();
-            BeanUtils.copyProperties(user, user_model);
-            order.setUser(user_model);
-            model.addAttribute("user", user_model);
-        }
-        List<Item> items = order.getItems();
-        for (Item item : items) {
-            if (item.getProduct().getId() == productId) {
+        List<ItemDto> items = order.getItems();
+  
+        for (ItemDto item : items) {
+            if (item.getProductDto().getId() == productId) {
+                if (item.getQuantity() == code.size()) {
+                    break;
+                }
                 item.setQuantity(item.getQuantity() + 1);
+                item.setPrice(item.getProductDto().getPriceNew() * item.getQuantity());
                 break;
-=======
+            }
+        }
+        //Set lại số lượng và total sau khi remove item
+        order.setTotal_quantity();
+        order.setTotal_order();
+        session.setAttribute("order", order);
+        return "redirect:/viewCartDetail";
+    }
+
     @GetMapping("/cart/remove")
     public String removeCart(@RequestParam(value = "productId", required = false) long productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -207,13 +157,12 @@ public class CartController {
                     session.removeAttribute("order");
                     return "redirect:/";
                 }
->>>>>>> ffce9387604eae47d0cf6ea538223b0c66c840ba
             }
         }
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
-        return "redirect:/viewCartDetail";
+        return "redirect:/";
     }
 
     @GetMapping("/cart/buy")
@@ -223,9 +172,12 @@ public class CartController {
         if (request.getParameter("productId") != null) {
             id = Long.parseLong(request.getParameter("productId"));
             Optional<ProductDto> productDto = productRepository.findProductDtoById(id);
+            List<CodeGiftCard> code = codeGiftCardRepository.getCode((int) id, 100);
+            productDto.get().setNumberCode(code.size());
             if (productDto.isPresent()) {
                 if (request.getParameter("quantity") != null) {
                     quantity = Integer.parseInt(request.getParameter("quantity"));
+                    System.out.println(quantity);
                 }
                 HttpSession session = request.getSession();
                 if (session.getAttribute("order") == null) {
@@ -233,29 +185,30 @@ public class CartController {
                     List<ItemDto> listItems = new ArrayList<ItemDto>();
                     ItemDto item = new ItemDto();
                     item.setQuantity(quantity);
-                    item.setPrice(productDto.get().getPriceNew() * quantity);
+                    item.setPrice(productDto.get().getPriceNew() * item.getQuantity());
                     item.setProductDto(productDto.get());
                     listItems.add(item);
                     order.setItems(listItems);
                     order.setTotal_quantity();
                     order.setTotal_order();
                     session.setAttribute("order", order);
-
                 } else {
                     Order order = (Order) session.getAttribute("order");
                     List<ItemDto> listItems = order.getItems();
                     boolean check = false;
                     for (ItemDto item : listItems) {
                         if (item.getProductDto().getId() == productDto.get().getId()) {
-                            item.setQuantity(item.getQuantity() + 1);
+                            item.setQuantity(item.getQuantity() + quantity);
+                            item.setPrice(item.getQuantity() * productDto.get().getPriceNew());
                             check = true;
+                            break;
                         }
                     }
                     if (check == false) {
                         ItemDto item = new ItemDto();
                         item.setQuantity(quantity);
                         item.setProductDto(productDto.get());
-                        item.setPrice(quantity * productDto.get().getPriceNew());
+                        item.setPrice(item.getQuantity() * productDto.get().getPriceNew());
                         listItems.add(item);
                     }
                     order.setTotal_quantity();
@@ -269,6 +222,9 @@ public class CartController {
                 if (fast == 1) {
                     return "redirect:/viewCartDetail";
                 }
+            }
+            if (request.getParameter("quantity") != null) {
+                return "redirect:/viewproduct?productId=" + request.getParameter("productId");
             }
             return "redirect:/";
         } else {
