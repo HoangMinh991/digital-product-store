@@ -1,6 +1,5 @@
 package com.ivietech.demo;
 
-import com.google.gson.Gson;
 import com.ivietech.demo.service.websocketclient.SimpleWsHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

@@ -58,7 +58,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("value", user.getBalance().getMoney());
         model.addAttribute("title", "Thông tin tài khoản");
-        return "/user/userInfo1";
+        return "/user/userInfo";
     }
     
     @PostMapping("/user/update")
@@ -78,7 +78,7 @@ public class UserController {
         user.setName(updateUserDto.getName());
         model.addAttribute("mesage", "Cập nhật thông tin thành công");
         userRepository.save(user);
-        return "/user/userInfo1";
+        return "/user/userInfo";
     }
 
 }

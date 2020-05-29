@@ -4,42 +4,22 @@
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
-
-    <div class="top-header">
-        <div class="container">
-            <div class="text-right" style="padding:5px 0;float: right">
-                Hỗ trợ 1900 633 305
+    <body>
+        <div class="top-header">
+            <div class="container">
+                <div class="text-right" style="padding:5px 0;float: right">
+                    Hỗ trợ 1900 633 305
+                </div>
             </div>
         </div>
-    </div>
-    <body>
         <header th:replace = "~{fragment/fragment ::header}"> 
 
         </header>
-        <div th:replace = "~{fragment/fragment ::menutop}">
-        </div>
 
-        <script th:src="@{/js/node.js}"></script>
-
-        <style xmlns="">
-            .btn_acction_edit {
-                display: none;
-                margin-left: 14px;
-            }
-
-            .info_edit {
-                display: none;
-            }
-
-            .checkbox {
-                display: inline-flex ;
-            }
-        </style>
         <div class="container">
             <div th:replace = "~{fragment/fragment ::menutop}">
-        </div>
 
-            
+            </div>
             <style>
                 .banner-home .menu-2 .header-menu div.nav-menu {
                     display: none;
@@ -48,688 +28,119 @@
                     width: 100%;
                 }
             </style>
-            <script>
-                $("#category-product").hover(
-                        function () {
-                            $(this).css("cursor", "pointer");
-                            $('.drop-category').css("display", "grid");
-                        }, function () {
-                    $('.drop-category').css("display", "none");
+            <script th:src="@{/js/node.js}"></script>
+            <style xmlns="">
+                .btn_acction_edit {
+                    display: none;
+                    margin-left: 14px;
                 }
-                );
-            </script>
-            
-            <div class="container-header" style="top: 5px">
-                <div class="img" style="background-image: url('./assets/resources/bao-mat/banner.png?rand=217864'); background-position: center center;
-                     background-size: cover; ">
-                    <input type="file" id="cover" style="display: none;" onchange="getFileDataCover(this);" />
-                    <div class="cover-img" style="height: 100%">
-                        <div class="up-cover" id="up-cover" style="position: absolute; right: 15px; top: 5px;display: none">
-                            <i class="fa fa-camera fa-2x camera-cover"></i>
-                        </div>
 
-                        <div class="cover-hidden">
-                            <i class="fa fa-camera camera-cover-hidden"></i> &nbsp; Cập nhật ảnh bìa
-                        </div>
-                    </div>
-                </div>
-                <div class="account-title">
-                    <input type="file" id="avatar" style="display: none;" />
-                    <div class="account-img">
-                        <div class="up-avatar" id="up-avatar"><i class="fa fa-camera"></i></div>
-                        <img class="img-fit" id="avatar-profile" style="border-radius: 50%;" src="image/default.png?rand=355341">
-                    </div>
-                    <div class="account-name">
-                        <div class="full-name" style="text-transform: capitalize;">Hoang Minh</div>
-                        <div class="account-balance">Số dư hiện tại: <span>0 <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
-                    </div>
-                </div>
-                <div class="account-info">
-                    <div class="account-info-item">Username: <span style="text-transform: capitalize;">hoangminh9119</span></div>
-                    <div class="account-info-item">Ngày đăng kí: <span>12-05-2020</span></div>
-                    <div class="account-info-item"><span>Member</span></div>
-                    <div class="account-info-item">Đã tích lũy: <span>13,000 <i class="icon-coin-dollar"></i></span></div>
-                </div>
-            </div>
-            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="modalLabel">Cắt Ảnh Đại Diện</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="img-container">
-                                <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary" id="crop">Đặt Làm Ảnh Đại Diện</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                .info_edit {
+                    display: none;
+                }
 
+                .checkbox {
+                    display: inline-flex ;
+                }
+            </style>
+            <style>
+                .camera-cover {
+                    opacity: 0.8;
+                    color: white;
+                }
+
+                .cover-hidden {
+                    position: absolute;
+                    right: 3px;
+                    top: 3px;
+                    background-color: black;
+                    border: 1px solid white;
+                    color: white;
+                    width: 150px;
+                    padding: 8px;
+                    opacity: 0.75;
+                    border-radius: 4px;
+                    text-align: center;
+                    display: none;
+                    cursor: pointer;
+                }
+
+                .camera-cover-hidden {
+                    float: left;
+                    margin-top: 2px;
+                }
+
+                .img-container img {
+                    max-width: 80%;
+                }
+
+                body .container {
+                    margin-top: 0;
+                }
+
+
+            </style>
+
+            <div th:replace = "~{fragment/fragment ::user}">
+
+            </div>
             <div class="container-body">
-                <div class="container-body-side">
-                    <a class="side-item" href="https://divineshop.vn/index.php?route=account/account">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-info fa-2x"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Thông tin tài khoản</b>
-                            </div>
-                            <div>Quản lí thông tin cá nhân</div>
-                        </div>
-                    </a>
-                    <a class="side-item" href="https://divineshop.vn/index.php?route=account/order">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-shopping-cart fa-2x" style="color: #f4b844;"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Lịch sử đơn hàng</b>
-                            </div>
-                            <div>Thông tin sản phẩm đã mua</div>
-                        </div>
-                    </a>
-                    <a class="side-item" href="https://divineshop.vn/index.php?route=account/transaction">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-dollar-sign fa-2x" style="color: #48a163;"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Lịch sử giao dịch</b>
-                            </div>
-                            <div>Thông tin thanh toán</div>
-                        </div>
-                    </a>
-                    <a class="side-item" href="https://divineshop.vn/index.php?route=account/wishlist">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-heart fa-2x" style="color: #ea3a4b;"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Sản phẩm yêu thích</b>
-                            </div>
-                            <div>Sản phẩm đã đánh dấu</div>
-                        </div>
-                    </a>
-                    <a class="side-item" href="https://divineshop.vn/index.php?route=account/password">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-key fa-2x" style="color: #ad4025;"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Thay đổi mật khẩu</b>
-                            </div>
-                            <div>Cập nhật mật khẩu mới</div>
-                        </div>
-                    </a>
-                    <a class="side-item " href="https://divineshop.vn/index.php?route=account/secure">
-                        <div class="side-item-icon fix-width-icon">
-                            <i class="fas fa-user-shield fa-2x" style="color: #ad4025;"></i>
-                        </div>
-                        <div class="side-item-title">
-                            <div><b>Bật bảo mật cấp 2</b>
-                            </div>
-                            <div>Bảo vệ tài khoản khỏi kẻ xấu</div>
-                        </div>
-                    </a>
+                <div th:replace = "~{fragment/fragment ::menu-side}">
+
                 </div>
                 <div class="container-body-container tai-khoan">
                     <h2>Thông tin cá nhân</h2>
                     <hr/>
-                    <div class="form-group">
-                        <label class="col-form-label">Email đăng nhập:</label>
-                        <div class="text info_detail">hhfeedxongout@gmail.com</div>
-                        <input type="text" value="hhfeedxongout@gmail.com" id="email" class="form-control info_edit" readonly/>
-                        <input type="hidden" value="392062" id="address_id"/>
-                        <input type="hidden" value="573049" id="customer_id"/>
-                        <span class="span_info"><a href="javascript:;" id="btn_edit"><i class="fas fa-edit"></i>Cập Nhật</a></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-form-label"><span style="color: red" class="info_edit"> * </span> Username:</label>
-                        <div class="text info_detail" style="text-transform: capitalize;">hoangminh9119</div>
-
-                        <input type="text" value="hoangminh9119" class="form-control info_edit" style="text-transform: capitalize;" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-form-label"> <span style="color: red" class="info_edit"> * </span> Họ và tên:</label>
-                        <div class="text info_detail">Hoang Minh</div>
-                        <input type="text" value="Hoang Minh" id="fullname" class="form-control info_edit" placeholder="Nhập fullname">
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label">Số điện thoại:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-                        <input type="text" value="" id="phone" class="form-control info_edit">
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label">Số chứng minh nhân dân:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-
-                        <input type="text" value="" id="cmnd" class="form-control info_edit">
-
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-form-label">Giới tính:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-
-                        <div class="gift info_edit" style="margin: -10px 0 -10px 12px">
-                            <div class="checkbox" style="width: 275px">
-                                <label class="control control--radio">Nam
-                                    <input type="radio" value="1" name="gender"/>
-                                    <div class="control__indicator"></div>
-                                </label>
-
-                                <label class="control control--radio">Nữ
-                                    <input type="radio" value="2" name="gender"/>
-                                    <div class="control__indicator"></div>
-                                </label>
-                            </div>
+                    <form th:action="@{/user/update}" th:object="${user}" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label">Email đăng nhập:</label>
+                            <div class="text info_detail" th:text="${user.email}"></div>
+                            <input type="text" th:field="*{email}" id="email" class="form-control info_edit" readonly/>
+                            <span class="span_info"><a href="javascript:;" id="btn_edit"><i class="fas fa-edit"></i>Cập Nhật</a></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label"><span style="color: red" class="info_edit"> * </span> Username:</label>
+                            <div class="text info_detail" style="text-transform: capitalize;" th:text="${user.userName}"></div>
+                            <input type="text" th:field="*{userName}" class="form-control info_edit" style="text-transform: capitalize;" readonly>
                         </div>
 
-                    </div>
-                    <div class="form-group info_edit">
-                        <label class="col-form-label">Tỉnh/Thành phố:</label>
-                        <select type="text" name="country_default" class="form-control info_edit" id="country_default">
-                            <option value=""> -------- SELECT -------- </option>
-                            <option value="1">Thành phố Hà Nội</option>
-                            <option value="2">Tỉnh Hà Giang</option>
-                            <option value="4">Tỉnh Cao Bằng</option>
-                            <option value="6">Tỉnh Bắc Kạn</option>
-                            <option value="8">Tỉnh Tuyên Quang</option>
-                            <option value="10">Tỉnh Lào Cai</option>
-                            <option value="11">Tỉnh Điện Biên</option>
-                            <option value="12">Tỉnh Lai Châu</option>
-                            <option value="14">Tỉnh Sơn La</option>
-                            <option value="15">Tỉnh Yên Bái</option>
-                            <option value="17">Tỉnh Hòa Bình</option>
-                            <option value="19">Tỉnh Thái Nguyên</option>
-                            <option value="20">Tỉnh Lạng Sơn</option>
-                            <option value="22">Tỉnh Quảng Ninh</option>
-                            <option value="24">Tỉnh Bắc Giang</option>
-                            <option value="25">Tỉnh Phú Thọ</option>
-                            <option value="26">Tỉnh Vĩnh Phúc</option>
-                            <option value="27">Tỉnh Bắc Ninh</option>
-                            <option value="30">Tỉnh Hải Dương</option>
-                            <option value="31">Thành phố Hải Phòng</option>
-                            <option value="33">Tỉnh Hưng Yên</option>
-                            <option value="34">Tỉnh Thái Bình</option>
-                            <option value="35">Tỉnh Hà Nam</option>
-                            <option value="36">Tỉnh Nam Định</option>
-                            <option value="37">Tỉnh Ninh Bình</option>
-                            <option value="38">Tỉnh Thanh Hóa</option>
-                            <option value="40">Tỉnh Nghệ An</option>
-                            <option value="42">Tỉnh Hà Tĩnh</option>
-                            <option value="44">Tỉnh Quảng Bình</option>
-                            <option value="45">Tỉnh Quảng Trị</option>
-                            <option value="46">Tỉnh Thừa Thiên Huế</option>
-                            <option value="48">Thành phố Đà Nẵng</option>
-                            <option value="49">Tỉnh Quảng Nam</option>
-                            <option value="51">Tỉnh Quảng Ngãi</option>
-                            <option value="52">Tỉnh Bình Định</option>
-                            <option value="54">Tỉnh Phú Yên</option>
-                            <option value="56">Tỉnh Khánh Hòa</option>
-                            <option value="58">Tỉnh Ninh Thuận</option>
-                            <option value="60">Tỉnh Bình Thuận</option>
-                            <option value="62">Tỉnh Kon Tum</option>
-                            <option value="64">Tỉnh Gia Lai</option>
-                            <option value="66">Tỉnh Đắk Lắk</option>
-                            <option value="67">Tỉnh Đắk Nông</option>
-                            <option value="68">Tỉnh Lâm Đồng</option>
-                            <option value="70">Tỉnh Bình Phước</option>
-                            <option value="72">Tỉnh Tây Ninh</option>
-                            <option value="74">Tỉnh Bình Dương</option>
-                            <option value="75">Tỉnh Đồng Nai</option>
-                            <option value="77">Tỉnh Bà Rịa - Vũng Tàu</option>
-                            <option value="79">Thành phố Hồ Chí Minh</option>
-                            <option value="80">Tỉnh Long An</option>
-                            <option value="82">Tỉnh Tiền Giang</option>
-                            <option value="83">Tỉnh Bến Tre</option>
-                            <option value="84">Tỉnh Trà Vinh</option>
-                            <option value="86">Tỉnh Vĩnh Long</option>
-                            <option value="87">Tỉnh Đồng Tháp</option>
-                            <option value="89">Tỉnh An Giang</option>
-                            <option value="91">Tỉnh Kiên Giang</option>
-                            <option value="92">Thành phố Cần Thơ</option>
-                            <option value="93">Tỉnh Hậu Giang</option>
-                            <option value="94">Tỉnh Sóc Trăng</option>
-                            <option value="95">Tỉnh Bạc Liêu</option>
-                            <option value="96">Tỉnh Cà Mau</option>
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label class="col-form-label"> <span style="color: red" class="info_edit"> * </span> Họ và tên:</label>
 
-                    <div class="form-group info_edit">
-                        <label class="col-form-label">Quận/Huyện: </label>
-                        <select type="text" name="districs_default" class="form-control info_edit" id="districs_default">
-                            <option value=""> -------- SELECT -------- </option>
-                        </select>
-                    </div>
-
-                    <div class="form-group info_edit">
-                        <label class="col-form-label">Phường/Xã: </label>
-                        <select type="text" name="wards_default" class="form-control info_edit" id="wards_default">
-                            <option value=""> -------- SELECT -------- </option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="info_edit">
-                            <label class="col-form-label">Số nhà/Đường: </label>
-                            <input type="text" value="" id="street" class="form-control info_edit" placeholder="ví dụ: 52 Ngô Quyền" disabled>
+                            <div class="text info_detail" th:text="${user.name}"></div>
+                            <input type="text" th:field="*{name}" id="fullname" class="form-control info_edit" placeholder="Nhập fullname">
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Số điện thoại:</label>
+                            <div class="text info_detail" th:text="${user.phone}"> </div>
+                            <input type="text"  th:field="*{phone}" id="phone" class="form-control info_edit">
+                        </div>
+                        <div class="btn-group btn_acction_edit">
+                            <button type="sumbit" class="btn-aqua-bg" id="btn_update">Cập nhật</button>
+                            <div class="btn-aqua" id="btn_back">Quay Lại</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-                    <div class="form-group info_detail">
-                        <label class="col-form-label">Địa chỉ:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-                    </div>
+        </div>
+        </div>
+        <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
+        <script th:src="@{/js/ranger_price.js}"></script>
+        <script>
+            $('#btn_edit').on("click", function () {
+                $('.btn_acction_edit').show();
+                $('.info_edit').show();
+                $('.info_detail').hide();
+                $(this).hide();
+                $('.span_info').hide();
+            });
 
-                    <div class="form-group">
-                        <label class="col-form-label">Nghề nghiệp:</label>
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-                        <input type="text" value="" id="job" class="form-control info_edit">
-
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label">Tình trạng hôn nhân:</label>
-
-                        <div class="text none info_detail">(Chưa có thông tin)</div>
-
-                        <select name="marital_status" class="form-control info_edit" id="marital_status">
-                            <option value="" selected>----- Select -----</option>
-                            <option value="1">Độc thân</option>
-                            <option value="2">Đã kết hôn</option>
-                        </select>
-
-                        <input type="hidden" value="" id="country_name">
-                            <input type="hidden" value="" id="districs_name">
-                                <input type="hidden" value="" id="ward_name">
-
-                                    </div>
-                                    <div class="btn-group btn_acction_edit">
-                                        <div class="btn-aqua-bg" id="btn_update">Cập nhật</div>
-                                        <div class="btn-aqua" id="btn_back">Quay Lại</div>
-                                    </div>
-                                    </div>
-                                    </div>
-
-                                    </div>
-                                    <footer>
-                                        <div class="footer-top" style="margin-top:20px;">
-                                            <div class="container mt-0">
-                                                <div class="row">
-                                                    <div class="col-md-3 col-sm-12 flex-row">
-                                                        <div class="img">
-                                                            <img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Footer/service1.png" style="max-width:50px;" alt="GIAO HÀNG SIÊU TỐC">
-                                                        </div>
-                                                        <div style="margin-left: 20px;">
-                                                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">GIAO HÀNG SIÊU TỐC</span>
-                                                            <p style="font-size:13px;">Hệ thống giao hàng tự động chỉ trong 3 phút</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12 flex-row">
-                                                        <div class="img">
-                                                            <img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Footer/service2.png" style="max-width:50px;" alt="BẢO HÀNH NHANH CHÓNG">
-                                                        </div>
-                                                        <div style="margin-left: 20px;">
-                                                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">BẢO HÀNH NHANH CHÓNG</span>
-                                                            <p style="font-size:13px;">Mọi yêu cầu hỗ trợ sẽ được đội ngũ tư vấn giải quyết trực tiếp.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12 flex-row">
-                                                        <div class="img">
-                                                            <img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Footer/service3.png" style="max-width:50px;" alt="UY TÍN 5 SAO">
-                                                        </div>
-                                                        <div style="margin-left: 20px;">
-                                                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">UY TÍN 5 SAO</span>
-                                                            <p style="font-size:13px;">Được cộng đồng bình chọn là shop game uy tín nhất VN</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3 col-sm-12 flex-row">
-                                                        <div class="img">
-                                                            <img src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Footer/service4.png" style="max-width:50px;" alt="HỖ TRỢ TẬN TÌNH">
-                                                        </div>
-                                                        <div style="margin-left: 20px;">
-                                                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">HỖ TRỢ TẬN TÌNH</span>
-                                                            <p style="font-size:13px;">Hệ thống hỗ trợ online liên tục từ 8h - 24h</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="footer-body">
-                                            <div class="container">
-                                                <div class="row position-relative service">
-                                                    <div class="col-md-6 col-lg-3 flex-column">
-                                                        <div class="paragraph">DIVINESHOP</div>
-                                                        <ul>
-                                                            <li><a href="https://help.divineshop.vn/gioi-thieu/ly-do-nen-mua-game-ban-quyen" target="_blank">Game bản quyền là gì?</a></li>
-                                                            <li><a href="https://help.divineshop.vn/gioi-thieu/gioi-thieu-divine-shop" target="_blank">Giới thiệu Divine Shop</a></li>
-                                                            <li><a href="https://help.divineshop.vn/gioi-thieu/dieu-khoan-dich-vu" target="_blank">Điều khoản dịch vụ</a></li>
-                                                            <li><a href="https://help.divineshop.vn/gioi-thieu/chinh-sach-bao-mat" target="_blank">Chính sách bảo mật</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-6 col-lg-2 flex-column">
-                                                        <div class="paragraph">TÀI KHOẢN</div>
-                                                        <ul>
-                                                            <li>
-                                                                <a href="index.php?route=checkout/cart">Giỏ hàng</a>
-                                                            </li>
-                                                            <li><a href="index.php?route=account/register">Đăng kí</a></li>
-                                                            <li><a href="index.php?route=account/login">Đăng nhập</a></li>
-                                                            <li><a href="index.php?route=account/order">Sản phẩm đã mua</a></li>
-                                                            <li><a href="https://help.divineshop.vn/chinh-sach-bao-hanh/thong-tin-bao-hanh">Chế độ bảo hành</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-6 col-lg-3 flex-column">
-                                                        <div class="paragraph">LIÊN HỆ</div>
-                                                        <ul>
-                                                            <li>
-                                                                <a href="/lien-he">Địa chỉ giao dịch trực tiếp</a>
-                                                            </li>
-                                                            <li>Hotline: 1900 633 305 (7:00 - 24:00)</li>
-                                                            <li>Email: hotro@divineshop.vn</li>
-                                                            <li><a href="https://www.facebook.com/Divine.Shop.Steam/">Fanpage</a></li>
-                                                            <li>
-                                                                <a href="/donate">Donate nhân viên CSKH</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-md-6 col-lg-4 flex-column">
-                                                        <div class="fb-page" data-href="https://www.facebook.com/Divine.Shop.Steam/" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/Divine.Shop.Steam/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Divine.Shop.Steam/">Divine Shop - Game bản quyền</a></blockquote></div>
-                                                    </div>
-                                                    <!--<div class="position-absolute social-btn flex-row">
-                                                      <div class="social-img">
-                                                        <a href="">
-                                                          <img src="assets/icon/facebook.png" alt="">
-                                                        </a>
-                                                      </div>
-                                                      <div class="social-img">
-                                                        <a href="">
-                                                          <img src="assets/icon/youtube.png" alt="">
-                                                        </a>
-                                                      </div>
-                                                      <div class="social-img">
-                                                        <a href="">
-                                                          <img src="assets/icon/instagram.png" alt="">
-                                                        </a>
-                                                      </div>
-                                                    </div>-->
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </footer>
-                                    <a id="messenger-button" href="https://m.me/Divine.Shop.Steam" alt="Hỗ Trợ DivineShop" title="Hỗ Trợ DivineShop">
-                                        <img style="position: fixed;bottom: 35px;right: 25px;z-index:2;" src="https://awqu8whgvy.vcdn.com.vn/image/banner_v2/messager.svg">
-                                    </a>
-
-                                    </body>
-                                    </html>
-                                    <script>
-                                        $(document).ready(function () {
-                                            var username = 'hoangminh9119';
-                                            var fullname = 'Hoang Minh';
-
-                                            if (username == '' || fullname == '') {
-                                                $('.btn_acction_edit').show();
-                                                $('.info_edit').show();
-                                                $('.info_detail').hide();
-                                                $(this).hide();
-                                                $('.span_info').hide();
-                                                $('#verify_sdt').hide();
-                                            }
-
-                                            if (username == '') {
-                                                $('#username').css("border", "1px solid red");
-                                            }
-
-                                            if (fullname == '') {
-                                                $('#fullname').css("border", "1px solid red");
-                                            }
-
-                                        });
-
-                                        $('#btn_edit').on("click", function () {
-                                            $('.btn_acction_edit').show();
-                                            $('.info_edit').show();
-                                            $('.info_detail').hide();
-                                            $(this).hide();
-                                            $('.span_info').hide();
-                                            $('#verify_sdt').hide();
-                                        });
-
-                                        $('#btn_update').on("click", function () {
-                                            var username = $('#username').val();
-                                            var phone = $('#phone').val();
-                                            var address_id = $('#address_id').val();
-                                            var customer_id = $('#customer_id').val();
-                                            var cmnd = $('#cmnd').val();
-                                            var fullname = $('#fullname').val();
-                                            var street = $('#street').val();
-                                            var country_id = $('#country_default').val();
-                                            var district_id = $('#districs_default').val();
-                                            var ward_id = $('#wards_default').val();
-                                            var job = $('#job').val();
-                                            var marital_status = $("select[name='marital_status']").val();
-                                            var gender = $("input[name='gender']:checked").val();
-
-                                            if (username == '') {
-                                                toastr["error"]('', 'Bạn chưa nhập username');
-                                                return false;
-                                            } else if (fullname == '') {
-                                                toastr["error"]('', 'Bạn chưa nhập họ và tên');
-                                                return false;
-                                            } else if (country_id != '' && district_id == '') {
-                                                toastr["error"]('', 'Bạn chưa chọn Quận/Huyện');
-                                                return false;
-                                            } else if (country_id != '' && ward_id == '') {
-                                                toastr["error"]('', 'Bạn chưa chọn Phường/Xã');
-                                                return false;
-                                            } else if (country_id != '' && street == '') {
-                                                toastr["error"]('', 'Bạn nhập Số nhà/Đường');
-                                                return false;
-                                            } else {
-                                                $.ajax({
-                                                    url: 'index.php?route=account/account/updateInfo',
-                                                    dataType: 'json',
-                                                    type: 'post',
-                                                    data: {
-                                                        cmnd: cmnd,
-                                                        fullname: fullname,
-                                                        phone: phone,
-                                                        street: street,
-                                                        country_id: country_id,
-                                                        district_id: district_id,
-                                                        ward_id: ward_id,
-                                                        job: job,
-                                                        gender: gender,
-                                                        address_id: address_id,
-                                                        customer_id: customer_id,
-                                                        marital_status: marital_status,
-                                                        username: username
-                                                    },
-
-                                                    success: function (json) {
-                                                        toastr.options = {
-                                                            "closeButton": true,
-                                                            "debug": true,
-                                                            "newestOnTop": true,
-                                                            "progressBar": true,
-                                                            "positionClass": "toast-top-right",
-                                                            "preventDuplicates": false,
-                                                            "onclick": null,
-                                                            "showDuration": "0",
-                                                            "hideDuration": "0",
-                                                            "timeOut": "3000",
-                                                            "extendedTimeOut": "3000",
-                                                            "showEasing": "swing",
-                                                            "hideEasing": "linear",
-                                                            "showMethod": "fadeIn",
-                                                            "hideMethod": "fadeOut"
-                                                        };
-
-                                                        if (json['success']) {
-                                                            toastr["success"]('', json['success']);
-                                                            window.location.reload();
-                                                        }
-                                                        if (json['error']) {
-                                                            toastr["error"]('', json['error']);
-                                                        }
-                                                    },
-
-                                                    error: function (json) {
-                                                        toastr["error"]('', json);
-                                                    }
-                                                });
-                                            }
-
-                                        });
-
-                                        $('#btn_delete').on("click", function () {
-                                            $('#phone').val('');
-                                            $('#cmnd').val('');
-                                            $('#fullname').val('');
-                                            $('#phone').val('');
-                                            $('#username').val('');
-                                            $('#address').val('');
-                                            $('#city').val('');
-                                            $('#job').val('');
-                                            $('#country_default').val('');
-                                            $('#districs_default').val('');
-                                            $("select[name*='wards_default']").val(' ');
-                                            $('#street').val('');
-                                            $("input[name*='gender']").val(' ');
-                                            $("select[name*='marital_status']").val('');
-                                            $('#edit_wards').hide();
-                                            $('#edit_districst').hide();
-                                            $('#edit_street').hide();
-                                        });
-
-                                        $('#btn_back').on("click", function () {
-                                            window.location.reload();
-                                        });
-
-                                    </script>
-
-                                    <script>
-                                        $('#country_default').on('change', function () {
-                                            var provinceid = $(this).val();
-
-                                            $('#edit_wards').hide();
-                                            $('#edit_districst').hide();
-                                            $('#edit_street').hide();
-                                            $('#street').val('');
-
-                                            $('#country_name').val($("#country_default option:selected").text());
-                                            $('#districs_default').html('<option value=""> -------- SELECT -------- </option>');
-                                            $('#wards_default').html('<option value=""> -------- SELECT -------- </option>');
-
-                                            $('#districs_default').prop('disabled', false);
-
-                                            $.ajax({
-                                                url: 'index.php?route=account/account/getDistricts&provinceid=' + provinceid,
-                                                type: 'get',
-                                                dataType: 'json',
-                                                success: function (json) {
-                                                    var districts = json.districts;
-                                                    districts.forEach(function (element) {
-                                                        $('#districs_default').
-                                                                append('<option value="' + element.districtid + '">' + element.name + '</option>')
-                                                    });
-                                                }
-                                            });
-                                        });
-
-                                        $('#edit_districst').on('click', function () {
-                                            $(this).hide();
-                                            $('#edit_wards').hide();
-                                            $('#edit_street').hide();
-
-                                            var provinceid = $('#country_default').val();
-
-                                            $('#country_name').val($("#country_default option:selected").text());
-                                            $('#districs_default').html('<option value=""> -------- SELECT -------- </option>');
-                                            $('#districs_default').prop('disabled', false);
-
-                                            $.ajax({
-                                                url: 'index.php?route=account/account/getDistricts&provinceid=' + provinceid,
-                                                type: 'get',
-                                                dataType: 'json',
-                                                success: function (json) {
-                                                    var districts = json.districts;
-                                                    districts.forEach(function (element) {
-                                                        $('#districs_default').
-                                                                append('<option value="' + element.districtid + '">' + element.name + '</option>')
-                                                    });
-                                                }
-                                            });
-                                        });
-
-                                        $('#districs_default').on('change', function () {
-                                            var district_id = $(this).val();
-
-                                            $('#districs_name').val($("#districs_default option:selected").text());
-                                            $('#country_name').val($("#country_default option:selected").text());
-
-                                            $('#wards_default').html('<option value=""> -------- SELECT -------- </option>');
-                                            $('#wards_default').prop('disabled', false);
-
-                                            $.ajax({
-                                                url: 'index.php?route=account/account/getWards&district_id=' + district_id,
-                                                type: 'get',
-                                                dataType: 'json',
-                                                success: function (json) {
-                                                    var wards = json.wards;
-                                                    wards.forEach(function (element) {
-                                                        $('#wards_default').
-                                                                append('<option value="' + element.wardid + '">' + element.name + '</option>')
-                                                    });
-                                                }
-                                            });
-                                        });
-
-                                        $('#edit_wards').on('click', function () {
-                                            $(this).hide();
-                                            $('#edit_street').hide();
-
-                                            var district_id = $('#districs_default').val();
-                                            $('#districs_name').val($("#districs_default option:selected").text());
-                                            $('#country_name').val($("#country_default option:selected").text());
-
-                                            $('#wards_default').html('<option value=""> -------- SELECT -------- </option>');
-                                            $('#wards_default').prop('disabled', false);
-
-                                            $.ajax({
-                                                url: 'index.php?route=account/account/getWards&district_id=' + district_id,
-                                                type: 'get',
-                                                dataType: 'json',
-                                                success: function (json) {
-                                                    var wards = json.wards;
-                                                    wards.forEach(function (element) {
-                                                        $('#wards_default').
-                                                                append('<option value="' + element.wardid + '">' + element.name + '</option>')
-                                                    });
-                                                }
-                                            });
-                                        });
-
-                                        $('#wards_default').on('change', function () {
-                                            $('#ward_name').val($("#wards_default option:selected").text());
-                                            $('#street').prop('disabled', false);
-                                            $('#edit_street').hide();
-                                        });
-
-                                        $('#edit_street').on('click', function () {
-                                            $(this).hide();
-                                            $('#districs_name').val($("#districs_default option:selected").text());
-                                            $('#country_name').val($("#country_default option:selected").text());
-                                            $('#ward_name').val($("#wards_default option:selected").text());
-                                            $('#street').prop('disabled', false);
-                                        });
-
-                                    </script>
+            $('#btn_back').on("click", function () {
+                window.location.reload();
+            });
+        </script>
+        <footer th:replace = "~{fragment/fragment ::footer}">
+        </footer>
+    </body>
+</html>

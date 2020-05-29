@@ -88,61 +88,63 @@
             </div>
             <div class="container-body ">
                 <div class="container-body ">
-                   
+
                     <div class="container-body-container" style="float:none;width:100%;">
                         <span class="gradient-text">NẠP TIỀN VÀO TÀI KHOẢN</span>
                         <!--<img src="./assets/resources/nap-tien-title.png">-->
                         <hr>
                             <p><b>Phương thức nạp tiền:</b></p>
                             <div class="list-group">
-
-                                <button id="css-payment" type="button" data-toggle="collapse" data-target="#momo" style="padding: 10px 0;" class="list-group-item list-group-item-action">
-                                    <div class="table-responsive-md" style="overflow:hidden; border: 0;margin-bottom: 0px;">
-                                        <table class="table">
-                                            <tbody>
-                                                <tr style="background-color:transparent;">
-                                                    <td rowspan="2" class="text-center" style="width:60px;min-width:50px;vertical-align: middle;">
-                                                        <img src="https://hgeqic7azi.vcdn.com.vn/image/catalog/Logo-bank/Momo.png" height="40px" width="40px">
-                                                    </td>
-                                                    <td>
-                                                        <span style="font-size:14px;"><strong>Chuyển khoản qua App Momo</strong></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span style="font-size:12px;">Nạp Tiền tự động thông qua chuyển khoản trên ứng dụng Momo (Lưu ý: Tài khoản Momo cần liên kết ngân hàng)</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </button>
-                                <div class="content-payment collapse"  id="momo" style ="block">
-                                    <div class="panel-group" id="momo-surcharge-block">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a href="#collapse-coupon" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">Chuyển khoản qua App Momo</a>
-                                                </h4>
-                                            </div>
-                                            <div class="panel-body">
-                                                <form method="post" th:action="@{/user/recharge}" th:object="${rechagerDto}" >
-                                                    <label class="col-sm-2 control-label" for="input-coupon">Nhập số Tiền:</label>
-                                                    <div class="col-sm-10">
-                                                        <div class="input-group">
-                                                            <input th:field="*{money}" type="number" placeholder="Vui lòng nhập số tiền" class="form-control">
-                                                                <span class="input-group-btn">
-                                                                    <button  type="sumit" class="btn btn-primary">Nạp tiền qua Momo</button>
-                                                                </span>
+                                <th:block th:each="payment:${payments}">
+                                    <button id="css-payment" type="button" data-toggle="collapse" th:data-target="${'#'+payment.namePayment}" style="padding: 10px 0;" class="list-group-item list-group-item-action">
+                                        <div class="table-responsive-md" style="overflow:hidden; border: 0;margin-bottom: 0px;">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr style="background-color:transparent;">
+                                                        <td rowspan="2" class="text-center" style="width:60px;min-width:50px;vertical-align: middle;">
+                                                            <img th:src="${payment.img}" height="40px" width="40px">
+                                                        </td>
+                                                        <td>
+                                                            <span style="font-size:14px;"><strong>Chuyển khoản qua <span th:text='${payment.namePayment}'></span></strong></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span style="font-size:12px;" th:text='${payment.description}'></span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </button>
+                                    <div class="content-payment collapse"  th:id="${payment.namePayment}" style ="block">
+                                        <div class="panel-group" id="momo-surcharge-block">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a href="#collapse-coupon" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">Chuyển khoản qua App Momo</a>
+                                                    </h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <form method="post" th:action="@{/user/payment}" th:object="${rechagerDto}" >
+                                                        <label class="col-sm-2 control-label" for="input-coupon">Nhập số Tiền:</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="input-group">
+                                                                <input th:field="*{money}" type="number" placeholder="Vui lòng nhập số tiền" class="form-control">
+                                                                    <span class="input-group-btn">
+                                                                        <button  type="sumit" class="btn btn-primary">Nạp tiền qua <span th:text='${payment.namePayment}'></span></button>
+                                                                    </span>
+                                                            </div>
+                                                            <input th:value='${payment.id}' type="hidden" th:name="idPayment" th:id="idPayment"/>
                                                         </div>
-                                                        <input th:value = "2" type="hidden" th:name="idPayment" th:id="idPayment"/>
-                                                    </div>
-                                                    <div class="img-responsive text-center" style="margin-top: 30px">
-                                                    </div>
-                                                </form>
+                                                        <div class="img-responsive text-center" style="margin-top: 30px">
+                                                        </div>
+                                                    </form>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </th:block>
+
                             </div>
                     </div>
                 </div>

@@ -63,9 +63,11 @@ public class RechangeController {
         RechagerDto rechagerDto = new RechagerDto();
         model.addAttribute("rechagerDto", rechagerDto);
         model.addAttribute("listType", listType);
+        List<Payment> payments = paymentRepository.findAll();
+        model.addAttribute("payments", payments);
         return "user/listpayment";
     }
-    @PostMapping("/user/recharge")
+    @PostMapping("/user/payment")
     public String addMoney(Model model, RechagerDto rechagerDto){
         System.out.println(rechagerDto.getMoney());
         Payment payment = paymentRepository.findById(rechagerDto.getIdPayment()).get();
@@ -77,8 +79,14 @@ public class RechangeController {
         recharge.setStatus("Đang đợi");
         recharge.setUser(user);
         rechagerRepository.save(recharge);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("recharge", recharge);
+        model.addAttribute("user", user);
         
-        return "rechange";
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
+        return "user/recharge";
     }
 
 }

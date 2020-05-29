@@ -28,6 +28,8 @@ public class Payment implements Serializable {
     private String namePerson;
     private String bankNumber;
     private String img;
+    private boolean enabled;
+    private String description;
     @OneToMany(mappedBy = "payment")
     private List<Recharge> recharge;
 
@@ -82,5 +84,22 @@ public class Payment implements Serializable {
     public void setRecharge(List<Recharge> recharge) {
         this.recharge = recharge;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     
 }
