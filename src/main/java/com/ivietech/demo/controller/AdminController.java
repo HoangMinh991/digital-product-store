@@ -17,6 +17,7 @@ import com.ivietech.demo.entity.CodeGiftCard;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
 import com.ivietech.demo.entity.Type;
+import com.ivietech.demo.validation.ProductValidator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,7 +60,9 @@ public class AdminController {
     private PlaformRepository plaformRepository;
     @Autowired
     private CodeGiiftCardRepository codeGiiftCardRepository;
-    private static String UPLOADED_FOLDER = "C://temp//";
+    
+    @Autowired
+    private ProductValidator productValidator;
 
     @GetMapping("/admin/product/list")
     public String ViewOrder(Model model, HttpServletRequest request) {
@@ -100,8 +104,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/product/add")
-    public String SaveProduct(@ModelAttribute("product") ProductDto productDto, @RequestParam("file") MultipartFile file,
+    public String SaveProduct(@ModelAttribute("product") ProductDto productDto,BindingResult bindingResult, @RequestParam("file") MultipartFile file,
             Model model) {
+        productValidator.validate(productDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "admin/createProduct";
+        }
         Product product = new Product();
         if (productDto.getId() != 0) {
             product = productRepository.findById(productDto.getId()).get();
@@ -132,7 +140,7 @@ public class AdminController {
             product.setImg(imgPath);
         }
         productRepository.save(product);
-        return "redirect:/admin/viewproduct";
+        return "redirect:/admin/product/list";
 
     }
 
@@ -153,13 +161,13 @@ public class AdminController {
     }
 
     @PostMapping("/upload/code")
-    public String mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile, Model model) throws IOException {
+    public String uploadCode(@RequestParam("file") MultipartFile reapExcelDataFile, Model model) throws IOException {
 
         List<CodeGiftCard> listCodeGiftCard = new ArrayList<>();
+        List<CodeGiftCard> listCodeGiftCardError = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
         List<Integer> errorRow = new ArrayList<Integer>();
-
         for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
             CodeGiftCard codeGiftCard = new CodeGiftCard();
             XSSFRow row = worksheet.getRow(i);
@@ -169,11 +177,11 @@ public class AdminController {
                 codeGiftCard.setProduct(product);
                 listCodeGiftCard.add(codeGiiftCardRepository.save(codeGiftCard));
             } catch (Exception e) {
-                errorRow.add(i);
+                errorRow.add(i+1);
             }
         }
         model.addAttribute("error", errorRow);
-        model.addAttribute("listCodeGiftCard", listCodeGiftCard);
+        model.addAttribute("listCode", listCodeGiftCard);
         return "admin/uploadCodeInfo";
     }
 }

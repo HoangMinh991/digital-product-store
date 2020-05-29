@@ -64,10 +64,9 @@ public class BalanceService {
         @QueryHint(name = "javax.persistence.lock.timeout", value = "1000")
         , 
     @QueryHint(name = "javax.persistence.lock.scope", value = "EXTENDED")}, forCounting = false)
-    public Balance changeMoney(Balance balance, int money) throws Exception {
+    public Balance changeMoney(Balance balance, long money) throws Exception {
 
         balance.setMoney(balance.getMoney() + money);
-       
         if (money > 0) {
             balance.setTotalMoney(balance.getTotalMoney() + money);
         }

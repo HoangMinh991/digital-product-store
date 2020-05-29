@@ -45,6 +45,8 @@ public class User {
     Balance balance;
     @OneToMany(mappedBy = "user")
     private List<Orders> listOrder;
+     @OneToMany(mappedBy = "user")
+    private List<Recharge> recharge;
 
     public User() {
         super();

@@ -18,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.Order;
 import com.ivietech.demo.dto.ProductDto;
+import com.ivietech.demo.entity.Orders;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
@@ -44,6 +46,7 @@ public class IndexController {
     private TypeRepository typeRepository;
     @Autowired
     private PlaformRepository plaformRepository;
+   
 
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request) {
@@ -78,6 +81,7 @@ public class IndexController {
         model.addAttribute("listSteamProduct", listSteamProduct);
         model.addAttribute("listGameProduct", listGameProduct);
         model.addAttribute("listBestSellProduct", listBestSellProduct);
+  
         return "index";
     }
 }

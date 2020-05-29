@@ -6,7 +6,7 @@
 package com.ivietech.demo.dao;
 
 import com.ivietech.demo.entity.Platforms;
-import com.ivietech.demo.entity.Rechager;
+import com.ivietech.demo.entity.Recharge;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface RechagerRepository extends JpaRepository<Rechager, Long> {
+public interface RechagerRepository extends JpaRepository<Recharge, Long> {
     
 }
