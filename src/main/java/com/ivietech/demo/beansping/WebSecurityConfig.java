@@ -46,9 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login-error")
                 .permitAll()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
-                .permitAll();
+                .logout().logoutUrl("/j_spring_security_logout")
+                .logoutSuccessUrl("/login?message=logout");
+
     }
 
     @Bean
