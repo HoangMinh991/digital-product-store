@@ -35,7 +35,6 @@ public class Orders {
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdDatetime;
-
     public Orders() {
     }
 

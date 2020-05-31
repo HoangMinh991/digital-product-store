@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.ivietech.demo.dao.RechagerRepository;
 import com.ivietech.demo.entity.Recharge;
 import com.ivietech.demo.model.app.Noti;
+import com.ivietech.demo.model.sms.NotiSms;
 import com.ivietech.demo.service.BalanceService;
 import com.ivietech.demo.utils.DataProcessing;
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ public class SimpleWsHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession wss) throws Exception {
-
     }
 
     @Override
@@ -50,36 +50,49 @@ public class SimpleWsHandler implements WebSocketHandler {
         long id = 0;
         long money = 0;
         String string = DataProcessing.removeAccent(mesage);
+        Noti notiApp = new Noti();
+        NotiSms notiSms = new NotiSms();
         try {
-            Noti notiApp = gson.fromJson(string, Noti.class);
-            if ("Nhan tien thanh cong".equalsIgnoreCase(notiApp.getPush().getTitle())) {
-                List<Long> array = new ArrayList<>();
-                String body = notiApp.getPush().getBody().replaceAll("[^0-9,-\\.]", ",");
-                System.out.println(body);
-                String[] item = body.split(",");
-                for (int i = 0; i < item.length; i++) {
-                    try {
-                        item[i] = item[i].replaceAll("[^0-9]", "");
-                        long s = Integer.parseInt(item[i]);
-                        array.add(s);
-                    } catch (NumberFormatException e) {
-
-                    }
-                }
-                id = array.get(2);
-                money = array.get(0);
-            }
-            if ("F@st Mobile".equalsIgnoreCase(notiApp.getPush().getTitle())) {
-                String body = notiApp.getPush().getBody();
-                String[] item = body.split("\n");
-                String value = item[1].replaceAll("[^0-9]", "");
-                id = Integer.parseInt(item[3]);
-                money = Long.parseLong(value);
-            }
-
+            notiApp = gson.fromJson(string, Noti.class);
         } catch (Exception e) {
-            try {
-                com.ivietech.demo.model.sms.Noti notiSms = gson.fromJson(string, com.ivietech.demo.model.sms.Noti.class);
+            System.out.println("lỗi app");
+        }
+        try {
+            notiSms = gson.fromJson(mesage, NotiSms.class);
+        } catch (Exception e) {
+            System.out.println("lỗi sms");
+        }
+        if (notiApp.getPush() != null) {
+            if (notiApp.getPush().getTitle() != null) {
+                if ("Nhan tien thanh cong".equalsIgnoreCase(notiApp.getPush().getTitle())) {
+                    List<Long> array = new ArrayList<>();
+                    String body = notiApp.getPush().getBody().replaceAll("[^0-9,-\\.]", ",");
+                    System.out.println(body);
+                    String[] item = body.split(",");
+                    for (int i = 0; i < item.length; i++) {
+                        try {
+                            item[i] = item[i].replaceAll("[^0-9]", "");
+                            long s = Integer.parseInt(item[i]);
+                            array.add(s);
+                        } catch (NumberFormatException e) {
+
+                        }
+                    }
+                    id = array.get(2);
+                    money = array.get(0);
+                }
+                if ("F@st Mobile".equalsIgnoreCase(notiApp.getPush().getTitle())) {
+                    String body = notiApp.getPush().getBody();
+                    String[] item = body.split("\n");
+                    String value = item[1].replaceAll("[^0-9]", "");
+                    id = Integer.parseInt(item[3]);
+                    money = Long.parseLong(value);
+                }
+
+            }
+        }
+        if (notiSms.getPush() != null) {
+            if (notiSms.getPush().getNotifications() != null) {
                 List<Long> array = new ArrayList<>();
                 if ("BIDV".equalsIgnoreCase(notiSms.getPush().getNotifications().get(0).getTitle())) {
                     String body = notiSms.getPush().getNotifications().get(0).getBody().replaceAll("[^0-9 ]", "");
@@ -94,7 +107,7 @@ public class SimpleWsHandler implements WebSocketHandler {
                     id = array.get(array.size() - 1);
                     money = array.get(1);
 
-                }
+                };
                 if ("VietinBank".equalsIgnoreCase(notiSms.getPush().getNotifications().get(0).getTitle())) {
                     String body = notiSms.getPush().getNotifications().get(0).getBody().replaceAll("[^0-9 |]", "");
                     String[] item = body.split("[|]");
@@ -102,9 +115,8 @@ public class SimpleWsHandler implements WebSocketHandler {
                     id = Long.parseLong(nd[0]);
                     money = Long.parseLong(item[2]);
 
-                }
+                };
                 if ("Vietcombank".equalsIgnoreCase(notiSms.getPush().getNotifications().get(0).getTitle())) {
-                    System.out.println("abc");
                     int rs = notiSms.getPush().getNotifications().get(0).getBody().lastIndexOf("Ref");
                     int rs1 = notiSms.getPush().getNotifications().get(0).getBody().lastIndexOf("FT");
                     if (rs1 != -1) {
@@ -151,27 +163,27 @@ public class SimpleWsHandler implements WebSocketHandler {
                         }
                     }
                     id = array.get(array.size() - 1);
-                    money = array.get(0);
+                    money = array.get(1);
+                    System.out.println(id);
+                    System.out.println(money);
                 }
-
-            } catch (Exception er) {
-
             }
-        }
-        if (id != 0) {
-            Optional<Recharge> recharge = rechagerRepository.findById(id);
-            if (recharge.isPresent()) {
-                if (recharge.get().getStatus().equalsIgnoreCase("Đang đợi")) {
-                    if (recharge.get().getMoney() == money) {
-                        recharge.get().setStatus("Thành Công");
-                        balanceService.changeMoney(recharge.get().getUser().getBalance(), money);
-                        rechagerRepository.save(recharge.get());
+
+            if (id!= 0) {
+                Optional<Recharge> recharge = rechagerRepository.findById(id);
+                if (recharge.isPresent()) {
+                    if (recharge.get().getStatus().equalsIgnoreCase("Đang đợi")) {
+                        if (recharge.get().getMoney() == money) {
+                            recharge.get().setStatus("Thành Công");
+                            balanceService.changeMoney(recharge.get().getUser().getBalance(), money);
+                            rechagerRepository.save(recharge.get());
+                        }
                     }
+
                 }
-
             }
-        }
 
+        }
     }
 
     @Override
@@ -182,7 +194,8 @@ public class SimpleWsHandler implements WebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession wss, CloseStatus cs) throws Exception {
         System.out.println(cs.getCode());
-        WebSocketConnectionManager manager = appContext.getBean(WebSocketConnectionManager.class);
+        WebSocketConnectionManager manager = appContext.getBean(WebSocketConnectionManager.class
+        );
         manager.start();
     }
 

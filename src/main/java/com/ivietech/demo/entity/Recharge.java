@@ -45,7 +45,7 @@ public class Recharge implements Serializable {
         this.id = id;
     }
 
-    public double getMoney() {
+    public long getMoney() {
         return money;
     }
 
@@ -84,5 +84,7 @@ public class Recharge implements Serializable {
     public void setCreatedDatetime(Date createdDatetime) {
         this.createdDatetime = createdDatetime;
     }
+
+   
     
 }

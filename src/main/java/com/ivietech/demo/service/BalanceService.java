@@ -38,7 +38,7 @@ public class BalanceService {
 
     public Balance findBalanceByID(long id) {
         Optional<Balance> findById = balanceRepository.findById(id);
-        if (findById != null) {
+        if (findById.isPresent()) {
             return findById.get();
         }
         return null;

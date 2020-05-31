@@ -53,14 +53,14 @@
                         <div class="sp-info">
                             <div class="sp-info-top">
                                 <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
-                                    <div class="sp-info-top-item-icon"><img style="width: 20px;" src="./assets/resources/item-icon-1.png"></div>
+                                    <div class="sp-info-top-item-icon"><img style="width: 20px;" src="https://divineshop.vn/assets/resources/item-icon-1.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Mã sản phẩm</div>
                                         <div class="text-1" th:text="${productDto.id}">r</div>
                                     </div>
                                 </div>
                                 <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
-                                    <div class="sp-info-top-item-icon"><img style="width: 20px;" src="./assets/resources/item-icon-2.png"></div>
+                                    <div class="sp-info-top-item-icon"><img style="width: 20px;" src="https://divineshop.vn/assets/resources/item-icon-2.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Tình trạng</div>
                                         <th:block th:if="${productDto.numberCode > 0}">
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
-                                    <div class="sp-info-top-item-icon"><img style="width: 35px;" src="./assets/resources/item-icon-3.png"></div>
+                                    <div class="sp-info-top-item-icon"><img style="width: 35px;" src="https://divineshop.vn/assets/resources/item-icon-3.png"></div>
                                     <div class="text-wrap">
                                         <div class="text">Link gốc</div>
                                         <p><a href="" target="_blank" rel="nofollow">Sản phẩm</a>
@@ -85,7 +85,7 @@
                                 <div class="price" th:text="${#numbers.formatDecimal(productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></div>
                                 <th:block th:if ="${productDto.priceNew < productDto.priceOld}">                
                                     <span class="old-p" th:text="${#numbers.formatDecimal(productDto.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
-                                    <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-productDto.priceNew / productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                    <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-productDto.priceNew*1.0 / productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
                                 </th:block>
                             </div>
                             <div id="product">

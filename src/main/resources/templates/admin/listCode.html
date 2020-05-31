@@ -21,7 +21,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <form class="form-group" th:action="@{/upload/code}" method="post" enctype="multipart/form-data">
+                                <form class="form-group" th:action="@{/admin/upload/code}" method="post" enctype="multipart/form-data">
 
                                     <input type="file" th:name="file"/><br/>
 
@@ -80,14 +80,14 @@
                                     <ul class="pagination justify-content-center font-weight-medium">
                                         <li class="page-item" th:classappend="${listCode.number eq 0} ? 'disabled'">
                                             <a class="page-link svg-icon"
-                                               th:href="@{/admin/code/list?page={id}(id=${listCode.number lt 2 ? 1 : listCode.number})}"
+                                               th:href="@{/admin/code/view?page={id}(id=${listCode.number lt 2 ? 1 : listCode.number})}"
                                                aria-label="Previous">
                                                 Lùi
                                             </a>
                                         </li>
                                         <li class="page-item" th:classappend="${i eq listCode.number + 1} ? 'active'"
                                             th:each="i : ${#numbers.sequence( listCode.number + 1, listCode.totalPages > 10 + listCode.number ? listCode.number + 10 : listCode.totalPages, 1)}">
-                                            <a class="page-link" th:href="@{/admin/code/list?page={id}(id=${i})}" th:text="${i}"
+                                            <a class="page-link" th:href="@{/admin/code/view?page={id}(id=${i})}" th:text="${i}"
                                                th:title="${'Page '+ i}"
                                                rel="tooltip"></a>
                                         </li>
@@ -97,7 +97,7 @@
                                             </a>
                                         </li>
                                         <li class="page-item" th:classappend="${listCode.number + 1 eq listCode.totalPages} ? 'disabled'">
-                                            <a class="page-link svg-icon" th:href="@{/admin/code/list?page={id}(id=${listCode.number + 2})}"
+                                            <a class="page-link svg-icon" th:href="@{/admin/code/view?page={id}(id=${listCode.number + 2})}"
                                                aria-label="Next"
                                                title="Next Page" rel="tooltip">
                                                 Tới

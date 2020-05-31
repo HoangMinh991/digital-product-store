@@ -1,6 +1,7 @@
 
 package com.ivietech.demo.model.sms;
 
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 public class Notification {

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" dir="ltr" lang="vi">
+      xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
@@ -121,7 +122,8 @@
                 </div>
             </div>
         </div>
-
+        <footer th:replace = "~{fragment/fragment ::footer}">
+        </footer>
     </body>
 </html>
 

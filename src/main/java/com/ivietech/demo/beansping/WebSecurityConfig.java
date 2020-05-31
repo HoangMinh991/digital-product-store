@@ -29,17 +29,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(2419200);
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/**", "/api/**").permitAll()
+                .antMatchers("/css/**", "/js/**",
+                         "/", "/detail/**", "/img/**","/img_b/**", "/uploads/**","/viewCartDetail/**","/viewproduct/**","/cart/**").permitAll()
                 .antMatchers("/login/**",
-                        "/resetPassword/**", "/passwordResetConfirm/**",
-                        "/registrationConfirm/**", "/register/**").permitAll()
-                .antMatchers("/account/**").hasRole("USER")
+                        "/resetPassword/**","/passwordResetConfirm/**",
+                        "/registrationConfirm/**","/registration/**","/rate/**" ).permitAll()
+                .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/updatePassword/**",
                         "/user/changePassword/**")
-                .hasAuthority("CHANGE_PASSWORD_PRIVILEGE");
-
-        http
+                .hasAuthority("CHANGE_PASSWORD_PRIVILEGE")
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login-error")
@@ -48,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/")
                 .permitAll();
-
     }
 
     @Bean

@@ -7,13 +7,18 @@ package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.BalanceRepository;
 import com.ivietech.demo.dao.OrderRepository;
+import com.ivietech.demo.dao.PaymentRepository;
 import com.ivietech.demo.dao.PlaformRepository;
 import com.ivietech.demo.dao.ProductRepository;
+import com.ivietech.demo.dao.RechagerRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.RechagerDto;
 import com.ivietech.demo.dto.UpdateUserDto;
 import com.ivietech.demo.entity.Orders;
+import com.ivietech.demo.entity.Payment;
 import com.ivietech.demo.entity.Platforms;
+import com.ivietech.demo.entity.Recharge;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
 import java.util.List;
@@ -22,6 +27,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -51,6 +57,10 @@ public class UserController {
     private TypeRepository typeRepository;
     @Autowired
     private PlaformRepository plaformRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
+    @Autowired
+    private RechagerRepository rechagerRepository;
 
     @GetMapping("/user/info")
     @PreAuthorize("hasRole('READ_PRIVILEGE')")
@@ -131,5 +141,63 @@ public class UserController {
         model.addAttribute("orders", listOrderSearch);
         return "user/viewHistorySearch";
     }
+    @GetMapping("/user/recharge")
+    public String getPayment(Model model) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        model.addAttribute("user", user);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        RechagerDto rechagerDto = new RechagerDto();
+        model.addAttribute("rechagerDto", rechagerDto);
+        model.addAttribute("listType", listType);
+        List<Payment> payments = paymentRepository.findAll();
+        model.addAttribute("payments", payments);
+        return "user/listpayment";
+    }
+    @PostMapping("/user/recharge")
+    public String addMoney(Model model, RechagerDto rechagerDto){
+        System.out.println(rechagerDto.getMoney());
+        Payment payment = paymentRepository.findById(rechagerDto.getIdPayment()).get();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        Recharge recharge = new Recharge();
+        recharge.setMoney(rechagerDto.getMoney());
+        recharge.setPayment(payment);
+        recharge.setStatus("Đang đợi");
+        recharge.setUser(user);
+        rechagerRepository.save(recharge);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("recharge", recharge);
+        model.addAttribute("user", user);
+        
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
+        return "user/recharge";
+    }
+    @GetMapping("user/transaction")
+    public String transaction(Model model, HttpServletRequest request ){
+        int page = 0; //default page number is 0 (yes it is weird)
+        int size = 10; //default page size is 10
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+            page = Integer.parseInt(request.getParameter("page")) - 1;
+        }
+        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+            size = Integer.parseInt(request.getParameter("size"));
+        }
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        model.addAttribute("user", user);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        Page<Recharge> recharges = rechagerRepository.findByUser(user,PageRequest.of(page, size, Sort.by("id").descending()));
+        System.out.println("abc");
+        model.addAttribute("recharges", recharges);
+        return "user/viewTransaction";
+    }
+    
 
 }

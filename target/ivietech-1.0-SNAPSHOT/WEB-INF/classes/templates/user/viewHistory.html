@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" dir="ltr" lang="vi">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <head th:replace = "~{fragment/fragment ::head}">
     </head>
@@ -122,6 +123,7 @@
                                                         <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
                                                     </span>
                                                 </div>
+
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="filter-title" for="input-amount-to">Số tiền đến</div>
@@ -241,22 +243,10 @@
 
         </div>
         </div>
-        <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
-        <script th:src="@{/js/ranger_price.js}"></script>
-        <script>
-            $('#btn_edit').on("click", function () {
-                $('.btn_acction_edit').show();
-                $('.info_edit').show();
-                $('.info_detail').hide();
-                $(this).hide();
-                $('.span_info').hide();
-            });
 
-            $('#btn_back').on("click", function () {
-                window.location.reload();
-            });
-        </script>
+
+
         <footer th:replace = "~{fragment/fragment ::footer}">
         </footer>
-    </body>
+        </body>
 </html>

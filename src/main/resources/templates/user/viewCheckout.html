@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" dir="ltr" lang="vi">
+      xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
@@ -131,8 +132,8 @@
                                             <div class="panel-body" th:object="${orders}">
                                                 Mã đơn hàng: <strong th:text="*{id}">#3517352</strong><br />
                                                 Ngày tạo: <span th:text="${#dates.format(orders.createdDatetime, 'dd-MM-yyyy HH:mm')}">20/05/2020</span><br />
-                                                Email nhận key : <span th:text="*{user.email}">feedxongout@gmail.com</span><br>
-                                                    Tình trạng đơn hàng: <span style="color:green;">Đã xử lý</span>                                                                                    </div>
+                                                Email nhận key : <span th:text="*{user.email}"></span><br>
+                                                Tình trạng đơn hàng: <span style="color:green;">Đã xử lý</span>                                                                                    </div>
                                         </div>
                                     </div>
                                 </div>
@@ -173,9 +174,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Về trang lịch sử đơn hàng -->
                     <hr>
-                        <a href="index.php?route=account/order" style="color: #279cff; cursor: pointer;font-weight:bold;"><< Về lịch sử đơn hàng</a>
+                        <a th:href="@{/user/order}" style="color: #279cff; cursor: pointer;font-weight:bold;"><< Về lịch sử đơn hàng</a>
                 </div>
             </div>
         </div>
@@ -184,21 +184,7 @@
 
         </div>
         </div>
-        <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
-        <script th:src="@{/js/ranger_price.js}"></script>
-        <script>
-            $('#btn_edit').on("click", function () {
-                $('.btn_acction_edit').show();
-                $('.info_edit').show();
-                $('.info_detail').hide();
-                $(this).hide();
-                $('.span_info').hide();
-            });
 
-            $('#btn_back').on("click", function () {
-                window.location.reload();
-            });
-        </script>
         <footer th:replace = "~{fragment/fragment ::footer}">
         </footer>
     </body>

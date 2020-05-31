@@ -1,4 +1,3 @@
-C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\model\sms\Noti.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\BalanceRepository.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\service\UserService.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\service\websocketclient\SimpleWsHandler.java
@@ -7,6 +6,7 @@ C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\co
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\entity\Role.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\VerificationTokenRepository.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\model\app\Action.java
+C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\model\sms\NotiSms.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\RechagerRepository.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\listener\RegistrationListener.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\validation\RegValidator.java

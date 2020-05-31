@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" dir="ltr" lang="vi">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
@@ -35,7 +36,7 @@
                 <div id="alert-position"></div>
 
                 <div class="container-title">
-                    <h2 class="thanh-toan-title">Giỏ Hàng</h2><span class="count-san-pham" th:text="${session.order}?${session.order.total_quantity}:'0'"></span>
+                    <h2 class="thanh-toan-title">Giỏ Hàng: <span class="thanh-toan-title" th:text="${session.order}?${session.order.total_quantity}:'0'"></span> sản phẩm</h2>
                     <div class="sort">
                         <a href="" th:href="@{/}"><div class="btn btn-aqua-bg">Tiếp tục mua hàng</div></a>
                     </div>
@@ -60,29 +61,29 @@
                             <div class="row cart-detail">
                                 <div class="col-md-12 hidden-sm hidden-xs item">
                                     <div class="col-md-3">
-                                        <a href="" target="_blank">
-                                            <img class="check_img_errs" th:src="${item.productDto.img}" th:alt="${item.productDto.name}" th:title="${item.productDto.name}" />
+                                        <a th:href="@{/viewproduct(productId = ${item.productDto.id})}">
+                                            <img th:src="${item.productDto.img}" th:alt="${item.productDto.name}" th:title="${item.productDto.name}" />
                                         </a>
                                     </div>
                                     <div class="col-md-5">
-                                        <a href="" target="_blank" class="title"><span th:text="${item.productDto.name}"></span></a>
+                                        <a th:href="@{/viewproduct(productId = ${item.productDto.id})}" class="title"><span th:text="${item.productDto.name}"></span></a>
                                         <br/>
                                         <th:block th:if="${item.productDto.numberCode >= item.quantity}">
                                             <div class="item-status">Tình trạng: <span class="con-hang">Còn hàng:( <span th:text='${item.productDto.numberCode}'></span> sản phẩm)</span></div>
                                         </th:block>
-                                        
+
                                         <th:block th:if="${item.productDto.numberCode <  item.quantity}">
                                             <div class="item-status">Tình trạng: <span class="het-hang">Hết hàng</span></div>
                                         </th:block>
-                                            
-                                            <a href="#" th:href="@{/viewCartDetail/cart/remove(productId=${item.productDto.id})}" style="color:red;" class="poiter">Xóa</a>
+
+                                        <a th:href="@{/viewCartDetail/cart/remove(productId=${item.productDto.id})}" style="color:red;" class="poiter">Xóa</a>
                                     </div>
 
                                     <div class="col-md-2 text-right">
                                         <span style="font-size: 16px;margin-bottom: 5px;font-weight: bold;" th:text="${#numbers.formatDecimal(item.productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span><br>
                                             <th:block th:if ="${item.productDto.priceNew < item.productDto.priceOld}">
                                                 <span class="sale"><s><i th:text="${#numbers.formatDecimal(item.productDto.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'" style="font-size:12px;"></i></s> | </span>
-                                                <span class="sale" style="color:red;" th:text="${'-' + #numbers.formatDecimal(100-item.productDto.priceNew / item.productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                                <span class="sale" style="color:red;" th:text="${'-' + #numbers.formatDecimal(100-item.productDto.priceNew *1.0/ item.productDto.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
                                             </th:block>
                                     </div>
 
@@ -176,8 +177,8 @@
                                                                             <div class="h16-bo-26 text-primary"><span th:text="${#numbers.formatDecimal(session.order.total_order - user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'"> <i class="icon-coin-dollar" style="color:#000;"></i></span></div>
                                                                         </div>
                                                                     </div>
-                                                                    
-                                                                    <a href="">
+
+                                                                    <a th:href="@{/user/recharge}">
                                                                         <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
                                                                     </a>
                                                                 </th:block>
@@ -195,7 +196,7 @@
 
 
                                                                 </div>                                                                
-                                                                <a href="">
+                                                                <a th:href="@{/user/recharge}">
                                                                     <button type="button" class="btn btn-danger col-md-12 col-sm-12 col-xs-12"><strong style="color:#fff;">Nạp Thêm Tiền</strong></button>
                                                                 </a>
 
@@ -220,16 +221,11 @@
                         <hr/>
                         <div class="buttons clearfix">
                             <div class="pull-left"><a href="" th:href="@{/}" class="btn btn-default">Tiếp tục mua hàng</a></div>
-                            <div class="pull-right"><a th:href="@{/checkout}" class="btn btn-primary">Thanh toán</a></div>
                         </div>
                 </form>
             </div>
         </div>
-        </div>
-
-        <link rel="stylesheet" href="https://awqu8whgvy.vcdn.com.vn/assets/css/ranger_price.css"/>
         <script th:src="@{/js/test.js}"></script>
-        <script th:src="@{/js/ranger_price.js}"></script>
         <footer th:replace = "~{fragment/fragment ::footer}">
 
         </footer>
