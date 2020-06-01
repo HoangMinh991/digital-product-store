@@ -62,24 +62,31 @@ public class PasswordResetController {
     @Autowired
     private ChangePasswordValidator changePasswordValidator;
 
+    
+    @GetMapping("/passwordreset")
+    public String resetPassword(){
+      
+        return "resetpass";
+    }
+    
     @GetMapping("/resetPassword")
-    @ResponseBody
-    public String resetPassword(HttpServletRequest request,
+    public String resetPassword(HttpServletRequest request, Model model,
             @RequestParam("email") String userEmail) {
 
         if (!passwordResetValidator.validate(userEmail)) {
-            return "/";
+            model.addAttribute("error", true);
+            return "resetpass";
         }
         User user = userRepository.findByEmail(userEmail);
         String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
         applicationEventPublisher.publishEvent(new ResetPasswordEvent(user, appUrl));
-        return "///";
+         model.addAttribute("error", false);
+        return "resetpass";
     }
 
     @GetMapping("/passwordResetConfirm")
     public String passwordResetConfirm(Model model,
             @RequestParam("id") long id, @RequestParam("token") String token) {
-        UpdatePasswordDto pass = new UpdatePasswordDto();
         String result = securityService.validatePasswordResetToken(id, token);
         if (result != null) {
             model.addAttribute("message", result);
