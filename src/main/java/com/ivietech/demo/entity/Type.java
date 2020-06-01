@@ -26,8 +26,6 @@ public class Type {
     private String name;
     @OneToMany(mappedBy = "type")
     private List<Product> listProducts;
-    @ManyToMany(mappedBy = "type")
-    private Set<Platforms> platforms;
 
     public Type() {
     }
@@ -56,12 +54,6 @@ public class Type {
         this.listProducts = listProducts;
     }
 
-    public Set<Platforms> getPlatforms() {
-        return platforms;
-    }
-
-    public void setPlatforms(Set<Platforms> platforms) {
-        this.platforms = platforms;
-    }
+   
     
 }

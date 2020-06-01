@@ -528,7 +528,7 @@ $(document).delegate('.agree', 'click', function (e) {
     }
 })(window.jQuery);
 
-function loadMore(page, type, platform, bestproduct, bestSell,position) {
+function loadMore(page, type, platform, bestproduct, bestSell,promotion,position) {
     $.ajax({
         method: 'get',
         url: '/api/detail',
@@ -537,11 +537,13 @@ function loadMore(page, type, platform, bestproduct, bestSell,position) {
             page: page,
             platform: platform,
             bestproduct: bestproduct,
-            bestsell: bestSell
+            bestsell: bestSell,
+            promotion:promotion
         },
         success: function (data) {
             var po ='.'+position+ ' .row';
            $(po).append(data);
+           
         }
     });
 }
@@ -626,3 +628,28 @@ $(document).ready(function () {
         $('body').css('position', 'fixed');
     });
 });
+function getInfoRecharge() {
+    $.ajax({
+        url: "http://localhost:8080"+ "/user/recharge/info",
+        type: "get",
+        data: {
+        }
+        ,
+        success: function (event) {
+            if (event.status === "Đang đợi") {
+                $("#status-check").text("Đang đợi chuyển khoản");
+                $("#loader").attr("style", "");
+            } else if (event.status === "Thành Công") {
+                $("#loader").attr("style", "display: none");
+                $("#status-check").text("Thành công");
+                $("#status-check").attr("class", "alert alert-success");
+
+            } else {
+                $("#loader").attr("style", "display: none");
+                $("#status-check").text("Thất bại do quá thời gian chuyển khoản");
+                $("#status-check").attr("class", "alert alert-danger");
+            }
+
+        }
+    })
+}

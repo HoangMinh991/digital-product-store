@@ -23,7 +23,7 @@
                             <div class="table-responsive">
                                 <div class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
-                                        
+
                                         <div class="col-sm-12">
                                             <a th:href="@{/admin/product/create}"/><button type="button" class="btn btn-primary">Tạo sản phẩm mới</button></a>
                                             <table class="table table-bordered dataTable">
@@ -79,10 +79,11 @@
 
                                                             </td> 
                                                             <td>
-                                                                <a th:href="@{/admin/product/delete(id=${product.id})}">
-                                                                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button></a>
+
                                                                 <a th:href="@{/admin/product/edit(id=${product.id})}">
                                                                     <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button></a>
+                                                                <a th:href="@{/admin/product/delete(id=${product.id})}">
+                                                                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button></a>
                                                             </td>
 
                                                         </tr>

@@ -1,10 +1,11 @@
 package com.ivietech.demo.service;
 
-
+import com.ivietech.demo.dao.PasswordResetTokenRepository;
 import com.ivietech.demo.dao.RoLeRepository;
 import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dao.VerificationTokenRepository;
 import com.ivietech.demo.dto.UserRegistrationDto;
+import com.ivietech.demo.entity.PasswordResetToken;
 import com.ivietech.demo.entity.Role;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.VerificationToken;
@@ -24,13 +25,15 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
     @Autowired
     private RoLeRepository roLeRepository;
-    
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-   
+
     @Autowired
     VerificationTokenRepository verificationTokenRepository;
-    
+    @Autowired
+    PasswordResetTokenRepository passwordResetTokenRepository;
+
     @Autowired
     BalanceService balanceService;
 
@@ -51,12 +54,10 @@ public class UserService implements IUserService {
         return user;
     }
 
-
     @Override
     public void saveRegisteredUser(User user) {
         userRepository.save(user);
     }
-
 
     @Override
     public void changeUserPassword(User user, String password) {
@@ -69,7 +70,6 @@ public class UserService implements IUserService {
         return bCryptPasswordEncoder.matches(oldPassword, user.getPassword());
     }
 
-    
     @Override
     public void changeMobilePhone(User user, String phone) {
         user.setPhone(phone);
@@ -84,7 +84,13 @@ public class UserService implements IUserService {
 
     @Override
     public VerificationToken getVerificationToken(String VerificationToken) {
-           return verificationTokenRepository.findByToken(VerificationToken);
+        return verificationTokenRepository.findByToken(VerificationToken);
+    }
+
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
     }
 
 }

@@ -53,16 +53,26 @@ public class Loadmore {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        if (request.getParameter("platform") != null && !request.getParameter("platform").isEmpty()) {
-            String platformName = request.getParameter("platform");
-            listProduct = productRepository.findAllByPlatforms(platformName, PageRequest.of(page, size));
-        }
-        if (request.getParameter("type") != null && !request.getParameter("type").isEmpty()) {
-            String typeName = request.getParameter("type");
-            listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
-        }
         if (request.getParameter("bestproduct") != null && !request.getParameter("bestproduct").isEmpty()) {
             listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
+        }
+        if (request.getParameter("platform") != null && !request.getParameter("platform").isEmpty()
+                && request.getParameter("type") != null && !request.getParameter("type").isEmpty()) {
+            String typeName = request.getParameter("type");
+            String platformName = request.getParameter("platform");
+            listProduct = productRepository.findAllByTypeAndPlatforms(typeName, platformName, PageRequest.of(page, size));
+        } else {
+            if (request.getParameter("platform") != null && !request.getParameter("platform").isEmpty()) {
+                String platformName = request.getParameter("platform");
+                listProduct = productRepository.findAllByPlatforms(platformName, PageRequest.of(page, size));
+            }
+            if (request.getParameter("type") != null && !request.getParameter("type").isEmpty()) {
+                String typeName = request.getParameter("type");
+                listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
+            }
+        }
+        if (request.getParameter("productPromotion") != null && !request.getParameter("productPromotion").isEmpty()) {
+            listProduct = productRepository.findAllByPromotion(PageRequest.of(page, size));
         }
         model.addAttribute("listProduct", listProduct);
         return "fragment/product";

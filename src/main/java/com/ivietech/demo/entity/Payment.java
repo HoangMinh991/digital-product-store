@@ -23,7 +23,7 @@ public class Payment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String namePayment;
     private String namePerson;
     private String bankNumber;
@@ -36,20 +36,11 @@ public class Payment implements Serializable {
     public Payment() {
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-    
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -77,12 +68,12 @@ public class Payment implements Serializable {
         this.bankNumber = bankNumber;
     }
 
-    public List<Recharge> getRecharge() {
-        return recharge;
+    public String getImg() {
+        return img;
     }
 
-    public void setRecharge(List<Recharge> recharge) {
-        this.recharge = recharge;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public boolean isEnabled() {
@@ -100,6 +91,16 @@ public class Payment implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Recharge> getRecharge() {
+        return recharge;
+    }
+
+    public void setRecharge(List<Recharge> recharge) {
+        this.recharge = recharge;
+    }
+
+    
     
     
 }

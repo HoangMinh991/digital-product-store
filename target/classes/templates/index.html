@@ -18,10 +18,10 @@
     </header>
     <div class="banner-home-sidebar hidden-sm hidden-xs" style="display: block;">
         <div class="banner-sidebar-item">
-            <a class="sidebar-left" href="/index.php?route=product/search&amp;search=netflix"  target="_blank">
+            <a class="sidebar-left" href="/">
                 <img class="image" src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Banner/NETFLIX%20NEWSSSS.png" >
             </a>
-            <a class="sidebar-right" href="/index.php?route=product/search&amp;search=pubg"  target="_blank">
+            <a class="sidebar-right" href=""  target="_blank">
                 <img class="image" src="https://awqu8whgvy.vcdn.com.vn/image/catalog/Anh/Banner%20d%E1%BB%8Dc.png">
             </a>
         </div>
@@ -47,7 +47,9 @@
             </div>
         </div>
         <div style="hiden" id="pagenumber" value="0"></div>
-        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1','', 'bestproduct')">Tải thêm sản phẩm</div>
+        <input id="pageBest" value="2" type="hidden"></input>
+
+        <div class="view-more btn-aqua" id="loadMoreProduct1">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
@@ -62,8 +64,8 @@
                 </th:block>
             </div>
         </div>
-
-        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1', '1', 'bestSell')">Tải thêm sản phẩm</div>
+        <input id="pageBestSell" value="2" type="hidden"></input>
+        <div class="view-more btn-aqua" id="loadMoreProduct2">Tải thêm sản phẩm</div>
         <hr>
     </div>
 
@@ -79,7 +81,8 @@
                 </th:block>
             </div>
         </div>
-        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', 'Gift card', 'Steam', '','', 'giftcardsteam')">Tải thêm sản phẩm</div>
+        <input id="pageGiftCard" value="2" type="hidden"></input>
+        <div class="view-more btn-aqua" id="loadMoreProduct3" >Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
@@ -94,8 +97,8 @@
                 </th:block>
             </div>
         </div>
-
-        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', 'Game', '', '','',game')">Tải thêm sản phẩm</div>
+        <input id="pageGame" value="2" type="hidden"></input>
+        <div class="view-more btn-aqua" id="loadMoreProduct1">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
@@ -105,12 +108,13 @@
         </div>
         <div class="list-container">
             <div class="row service">
-                <th:block th:replace = "~{fragment/fragment ::listProduct(${listBestProduct})}">
+                <th:block th:replace = "~{fragment/fragment ::listProduct(${listPromotion})}">
 
                 </th:block>
             </div>
         </div>
-        <div class="view-more btn-aqua" id="loadMoreProduct1" onclick="loadMore('2', '', '', '1', '','bestproduct')">Tải thêm sản phẩm</div>
+        <input id="promotion" value="2" type="hidden"></input>
+        <div class="view-more btn-aqua" id="loadMoreProduct5">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <footer th:replace = "~{fragment/fragment ::footer}">
@@ -119,4 +123,31 @@
     </footer>
 
 </body>
+<script>
+    $("#loadMoreProduct1").click(function () {
+        var page = $("#pageBest").val();
+        loadMore(page, '', '', '1', '','', 'bestproduct');
+        $("#pageBest").val(+page+1);
+    });
+    $("#loadMoreProduct2").click(function () {
+        var page = $("#pageBestSell").val();
+        loadMore(page, '', '', '', '1','', 'bestSell');
+        $("#pageBestSell").val(+page+1);
+    });
+    $("#loadMoreProduct3").click(function () {
+        var page = $("#pageGiftCard").val();
+        loadMore(page, 'Gift card', 'Steam', '', '','', 'giftcardsteam');
+         $("#pageGiftCard").val(+page+1);
+    });
+    $("#loadMoreProduct4").click(function () {
+        var page = $("#pageGame").val();
+        loadMore(page, 'Game', '', '', '','', 'game');
+        $("#pageGame").val(+page+1);
+    });
+    $("#loadMoreProduct5").click(function () {
+        var page = $("#promotion").val();
+        loadMore(page, '', '', '', '', '1', 'productPromotion');
+        $("#promotion").val(+page+1);
+    });
+</script>
 </html>

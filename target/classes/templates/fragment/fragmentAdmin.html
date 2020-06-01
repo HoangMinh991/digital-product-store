@@ -69,7 +69,9 @@
                 <div class="bg-white py-2 collapse-inner rounded">
 
                     <a class="collapse-item" th:href="@{/admin/product/create}">Thêm mới sản phẩm</a>
-                    <a class="collapse-item" th:href="@{/admin/product/view}">Danh sách sản phẩm</a>            
+                    <a class="collapse-item" th:href="@{/admin/product/view}">Danh sách sản phẩm</a>
+                    <a class="collapse-item" th:href="@{/admin/type/view}">Danh sách loại hình</a>  
+                    <a class="collapse-item" th:href="@{/admin/platform/view}">Danh sách nền tảng</a>  
                 </div>
             </div>
         </li>
@@ -115,6 +117,19 @@
             <div id="collapsePages5" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/user/view}">Danh sách tài khoản</a>            
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages6" aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Quản lý kênh thanh toán</span>
+            </a>
+            <div id="collapsePages6" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:href="@{/admin/payment/create}">Tạo mới kênh thanh toán</a>          
+                    <a class="collapse-item" th:href="@{/admin/payment/view}">Danh sách kênh thanh toán</a>            
                 </div>
             </div>
         </li>

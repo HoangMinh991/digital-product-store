@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Payload;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -71,17 +70,15 @@ public class AdminController {
     private CodeGiftCardRepository codeGiftCardRepository;
     @Autowired
     private RechagerRepository rechagerRepository;
-
     @Autowired
     private ProductValidator productValidator;
-
     @Autowired
     private BalanceService balanceService;
     @Autowired
     private PaymentRepository paymentRepository;
 
     @GetMapping("/admin/product/view")
-    public String ViewOrder(Model model, HttpServletRequest request) {
+    public String viewOrder(Model model, HttpServletRequest request) {
 
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
@@ -97,7 +94,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/product/create")
-    public String CreateProduct(Model model) {
+    public String createProduct(Model model) {
         ProductDto productDto = new ProductDto();
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
@@ -160,6 +157,91 @@ public class AdminController {
 
     }
 
+    @GetMapping("/admin/product/delete")
+    public String deleteProduct(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Product product = new Product();
+        product = productRepository.findById(id).get();
+        if (product.getListCodeGiftCard().isEmpty() && product.getListOrderDetail().isEmpty()) {
+            product.setPlatforms(null);
+            product.setType(null);
+            product = productRepository.save(product);
+            productRepository.delete(product);
+        }
+        return "redirect:/admin/product/view";
+    }
+
+    @GetMapping("/admin/type/view")
+    public String viewType(Model model) {
+        List<Type> types = typeRepository.findAll();
+        model.addAttribute("types", types);
+        return "admin/listType";
+    }
+
+    @GetMapping("/admin/type/create")
+    public String createType(Model model) {
+        Type type = new Type();
+        model.addAttribute("type", type);
+        return "admin/createType";
+    }
+
+    @GetMapping("/admin/type/edit")
+    public String editType(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Type type = typeRepository.findById(id).get();
+        model.addAttribute("type", type);
+        return "admin/createType";
+    }
+
+    @PostMapping("/admin/type/add")
+    public String saveType(@ModelAttribute("type") Type type) {
+        typeRepository.save(type);
+        return "redirect:/admin/type/view";
+    }
+
+    @GetMapping("/admin/type/delete")
+    public String deleteType(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Type type = typeRepository.findById(id).get();
+        if (type.getListProducts().isEmpty()) {
+            typeRepository.delete(type);
+        }
+        return "redirect:/admin/type/view";
+    }
+    
+    @GetMapping("/admin/platform/view")
+    public String viewPlatforms(Model model) {
+        List<Platforms> platforms = plaformRepository.findAll();
+        model.addAttribute("platforms", platforms);
+        return "admin/listPlatform";
+    }
+
+    @GetMapping("/admin/platform/create")
+    public String createPlatforms(Model model) {
+        Platforms platform = new Platforms();
+        model.addAttribute("platform", platform);
+        return "admin/createPlatform";
+    }
+
+    @GetMapping("/admin/platform/edit")
+    public String editPlatforms(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Platforms platform = plaformRepository.findById(id).get();
+        model.addAttribute("platform", platform);
+        return "admin/createPlatform";
+    }
+
+    @PostMapping("/admin/platform/add")
+    public String savePlatform(@ModelAttribute("platform") Platforms platform) {
+        plaformRepository.save(platform);
+        return "redirect:/admin/platform/view";
+    }
+
+    @GetMapping("/admin/platform/delete")
+    public String deletePlatform(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Platforms platform = plaformRepository.findById(id).get();
+        if (platform.getListProducts().isEmpty()) {
+            plaformRepository.delete(platform);
+        }
+        return "redirect:/admin/platform/view";
+    }
+
     @GetMapping("/admin/code/view")
     public String ViewCode(Model model, HttpServletRequest request) {
 
@@ -201,6 +283,26 @@ public class AdminController {
         return "admin/uploadCodeInfo";
     }
 
+    @GetMapping("/admin/code/edit")
+    public String editCode(Model model, @RequestParam(value = "id", required = true) Long id) {
+        CodeGiftCard code = new CodeGiftCard();
+        code = codeGiftCardRepository.findById(id).get();
+        model.addAttribute("code", code);
+        return "admin/editcode";
+    }
+
+    @GetMapping("/admin/code/delete")
+    public String deleteCode(Model model, @RequestParam(value = "id", required = true) Long id) {
+        CodeGiftCard code = new CodeGiftCard();
+        code = codeGiftCardRepository.findById(id).get();
+        if (code.getOrderDetails() == null) {
+            code.setProduct(null);
+            code = codeGiftCardRepository.save(code);
+            codeGiftCardRepository.delete(code);
+        }
+        return "redirect:/admin/code/view";
+    }
+
     @GetMapping("/admin/recharge/view")
     public String rechargeView(Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
@@ -211,7 +313,7 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Recharge> listRecharges = rechagerRepository.findAll(PageRequest.of(page, size,Sort.by("id").descending()));
+        Page<Recharge> listRecharges = rechagerRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("listRecharge", listRecharges);
 
         return "admin/listRecharge";
@@ -230,6 +332,7 @@ public class AdminController {
         }
         return "redirect:/admin/recharge/view?page=" + page;
     }
+
     @GetMapping("/admin/user/view")
     public String userView(Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
@@ -240,16 +343,81 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<User> listUser = userRepository.findAll(PageRequest.of(page, size,Sort.by("id").descending()));
+        Page<User> listUser = userRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("listUser", listUser);
 
         return "admin/listUser";
     }
-    
+
     @GetMapping("/admin/payment/view")
-    public String paymentView(Model model){
+    public String paymentView(Model model) {
         List<Payment> payments = paymentRepository.findAll();
         model.addAttribute("payments", payments);
         return "admin/listPayment";
+    }
+
+    @GetMapping("/admin/payment/edit")
+    public String editPayment(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Payment payment = new Payment();
+        payment = paymentRepository.findById(id).get();
+
+        model.addAttribute("payment", payment);
+        return "admin/createPayment";
+    }
+
+    @GetMapping("/admin/payment/create")
+    public String CreatePayment(Model model) {
+        Payment payment = new Payment();
+        model.addAttribute("payment", payment);
+        return "admin/createPayment";
+    }
+
+    @PostMapping("/admin/payment/add")
+    public String SavePayment(@ModelAttribute("payment") Payment payment, @RequestParam("file") MultipartFile file,
+            Model model) {
+        Payment p = new Payment();
+
+        if (payment.getId() != 0) {
+            p = paymentRepository.findById(payment.getId()).get();
+        }
+        String imgPath = "";
+
+        if (file.isEmpty()) {
+            if (payment.getId() == 0) {
+                return "redirect:uploadStatus";
+            }
+        } else {
+            try {
+                byte[] bytes = file.getBytes();
+                java.nio.file.Path path = Paths.get("uploads/img_p/" + file.getOriginalFilename());
+                Files.write(path, bytes);
+                imgPath = '/' + path.toString();
+            } catch (IOException e) {
+                return "redirect:uploadStatus";
+            }
+        }
+        System.out.println("abccsdsa");
+
+        p.setBankNumber(payment.getBankNumber());
+        p.setDescription(payment.getDescription());
+        p.setNamePerson(payment.getNamePerson());
+        p.setNamePayment(payment.getNamePayment());
+        p.setEnabled(payment.isEnabled());
+        if (!imgPath.isEmpty()) {
+            p.setImg(imgPath);
+        }
+        paymentRepository.save(p);
+        return "redirect:/admin/payment/view";
+
+    }
+
+    @GetMapping("/admin/payment/delete")
+    public String deletePayment(Model model, @RequestParam(value = "id", required = true) Long id) {
+        Payment payment = new Payment();
+        payment = paymentRepository.findById(id).get();
+        if (payment.getRecharge().isEmpty()) {
+            paymentRepository.delete(payment);
+        }
+        return "redirect:/admin/payment/view";
     }
 }

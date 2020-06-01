@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
@@ -113,8 +113,9 @@
                             <span>Số tiền: </span><span th:text='${recharge.money}'></span>
                         </div>
                         <div class="alert alert-warning">
-                            <strong>Trạng thái: </strong><br/>
-                            <div id="loader" class="loader" style="display: none"></div>
+                            <strong>Trạng thái: </strong> <br/>
+                            
+                            <div id="loader" class="loader" style="display: none" ></div>
                             <p id="status-check"></p>
                         </div>
                         <div class="alert alert-warning">Thời gian thực hiện chuyển khoản là 30 phút,Sau khoảng thời gian này nếu không chuyển khoản đơn hàng sẽ tự động được huỷ</div>
@@ -125,5 +126,16 @@
         <footer th:replace = "~{fragment/fragment ::footer}">
         </footer>
     </body>
+    <script>
+        $(document).ready(function () {
+            getInfoRecharge();
+            var interval_obj = setInterval(function () {
+                getInfoRecharge();
+            }, 5000);
+        }
+        );
+    </script>
+
+    });
 </html>
 

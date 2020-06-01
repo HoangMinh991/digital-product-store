@@ -24,6 +24,9 @@ public interface IUserService {
        
     void changeMobilePhone(User user, String steamId);
     
+    void createPasswordResetTokenForUser(User user, String token);
+    
+    
     
     
 }

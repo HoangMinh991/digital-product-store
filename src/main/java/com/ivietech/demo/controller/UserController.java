@@ -157,8 +157,7 @@ public class UserController {
         return "user/listpayment";
     }
     @PostMapping("/user/recharge")
-    public String addMoney(Model model, RechagerDto rechagerDto){
-        System.out.println(rechagerDto.getMoney());
+    public String addMoney(Model model, RechagerDto rechagerDto,  HttpServletRequest request){
         Payment payment = paymentRepository.findById(rechagerDto.getIdPayment()).get();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
@@ -167,12 +166,12 @@ public class UserController {
         recharge.setPayment(payment);
         recharge.setStatus("Đang đợi");
         recharge.setUser(user);
-        rechagerRepository.save(recharge);
+        recharge=rechagerRepository.save(recharge);
+        request.getSession().setAttribute("id", recharge.getId());
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("recharge", recharge);
         model.addAttribute("user", user);
-        
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
         return "user/recharge";
@@ -194,7 +193,6 @@ public class UserController {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         Page<Recharge> recharges = rechagerRepository.findByUser(user,PageRequest.of(page, size, Sort.by("id").descending()));
-        System.out.println("abc");
         model.addAttribute("recharges", recharges);
         return "user/viewTransaction";
     }

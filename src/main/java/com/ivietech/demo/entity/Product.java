@@ -8,6 +8,7 @@ package com.ivietech.demo.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class Product implements Serializable {
     private String name;
     private long priceNew;
     private long priceOld;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.REMOVE)
     @PrimaryKeyJoinColumn
     private ProductDetail productDetail;
     @ManyToOne

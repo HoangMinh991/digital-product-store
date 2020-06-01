@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -30,10 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**",
-                         "/", "/detail/**", "/img/**","/img_b/**", "/uploads/**","/viewCartDetail/**","/viewproduct/**","/cart/**").permitAll()
+                        "/", "/detail/**", "/img/**", "/img_b/**", "/uploads/**", "/viewCartDetail/**", "/viewproduct/**", "/cart/**").permitAll()
                 .antMatchers("/login/**",
-                        "/resetPassword/**","/passwordResetConfirm/**",
-                        "/registrationConfirm/**","/register/**","/rate/**" ).permitAll()
+                        "/resetPassword/**", "/passwordResetConfirm/**",
+                        "/registrationConfirm/**", "/register/**", "/rate/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/updatePassword/**",
@@ -44,14 +45,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .failureUrl("/login-error")
-                .permitAll()
-                .and()
-                .logout().logoutUrl("/j_spring_security_logout")
-                .logoutSuccessUrl("/login?message=logout");
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/").and()
+                .exceptionHandling()
+                .accessDeniedPage("/403");;
 
     }
 
-    @Bean
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }

@@ -25,7 +25,7 @@
                                     <div class="row">
 
                                         <div class="col-sm-12">
-
+                                            <a th:href="@{/admin/payment/create}"/><button type="button" class="btn btn-primary">Tạo phương thức thanh toán mới</button></a>
                                             <table class="table table-bordered dataTable">
                                                 <thead>
                                                     <tr>
@@ -65,6 +65,8 @@
                                                             <td>
                                                                 <a th:href="@{/admin/payment/edit(id=${payment.id})}">
                                                                     <button type="button" class="btn btn-info"><i class="far fa-edit"></i></button></a>
+                                                                <a th:href="@{/admin/payment/delete(id=${payment.id})}">
+                                                                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button></a>
 
                                                             </td>
 

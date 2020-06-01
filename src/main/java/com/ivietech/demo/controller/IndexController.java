@@ -18,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.dto.Order;
 import com.ivietech.demo.dto.ProductDto;
-import com.ivietech.demo.entity.Orders;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
@@ -62,6 +60,7 @@ public class IndexController {
         Page<ProductDto> listGameProduct = productRepository.findAllByType("Game", PageRequest.of(page, size));
         Page<ProductDto> listBestProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
         Page<ProductDto> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
+        Page<ProductDto> listPromotion = productRepository.findAllByPromotion(PageRequest.of(page, size));
      //   Page<ProductDto> listBestSellProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!"anonymousUser".equals(userName)) {
@@ -77,6 +76,7 @@ public class IndexController {
         model.addAttribute("listSteamProduct", listSteamProduct);
         model.addAttribute("listGameProduct", listGameProduct);
         model.addAttribute("listBestSellProduct", listBestSellProduct);
+        model.addAttribute("listPromotion", listPromotion);
   
         return "index";
     }
