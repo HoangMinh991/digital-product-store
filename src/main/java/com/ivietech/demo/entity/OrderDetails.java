@@ -28,7 +28,7 @@ public class OrderDetails {
     private Orders order;  
     @OneToMany(mappedBy = "orderDetails")
     private List<CodeGiftCard> listCodeGiftCard;
-    private int quanity;
+    private long quantity;
 
     public OrderDetails() {
     }
@@ -65,12 +65,13 @@ public class OrderDetails {
         this.listCodeGiftCard = listCodeGiftCard;
     }
 
-    public int getQuanity() {
-        return quanity;
+    public long getQuantity() {
+        return quantity;
     }
 
-    public void setQuanity(int quanity) {
-        this.quanity = quanity;
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
-    
+
+   
 }

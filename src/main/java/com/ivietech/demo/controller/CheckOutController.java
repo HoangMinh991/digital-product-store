@@ -75,41 +75,59 @@ public class CheckOutController {
         Order order = (Order) session.getAttribute("order");
         //add to DB orders
         long total_order = order.getTotal_order();
-        Orders orders = new Orders();
-        orders.setUser(user);
-        orders.setTotalMoney(total_order);
-        orders = orderRepository.save(orders);
-        List<OrderDetails> orderDetailses = new ArrayList<>();
-        //orders = orderRepository.save(orders);
+        //Check balance
+        if (total_order > user.getBalance().getMoney()) {
+            String error_message = "Không đủ tiền vui lòng nạp thêm";
+            model.addAttribute("error_message", error_message);
+            model.addAttribute("user", user);
+            return "viewcarddetail";
+        }
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
             long id = item.getProductDto().getId();
             int quantity = item.getQuantity();
             List<CodeGiftCard> code = new ArrayList<>();
             code = codeGiftCardRepository.getCode((int) id, quantity);
-            if (code.size() < quantity){
-                return "redirect:/viewCardDetail";
+            if (code.size() < quantity) {
+                String error_message = "Không đủ sản phẩm, vui lòng xem lại đơn hàng";
+                model.addAttribute("error_message", error_message);
+                model.addAttribute("user", user);
+                return "viewcarddetail";
             }
+        }
+        Orders orders = new Orders();
+        orders.setUser(user);
+        orders.setTotalMoney(total_order);
+        orders = orderRepository.save(orders);
+        List<OrderDetails> orderDetailses = new ArrayList<>();
+        //orders = orderRepository.save(orders);
+
+        for (ItemDto item : items) {
+            long id = item.getProductDto().getId();
+            long quantity = item.getQuantity();
+            List<CodeGiftCard> code = new ArrayList<>();
+            code = codeGiftCardRepository.getCode(id, quantity);
             Optional<Product> findById = productRepository.findById(id);
+            System.out.println("abcd");
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.setOrder(orders);
             orderDetails.setProduct(findById.get());
-            orderDetails.setQuanity(quantity);
+            System.out.println("abcd1");
+            orderDetails.setQuantity(quantity);
             orderDetails.setListCodeGiftCard(code);
             OrderDetails save = orderrDetailRepository.save(orderDetails);
+            System.out.println("abcd2");
             save.setListCodeGiftCard(code);
             orderrDetailRepository.save(save);
+             System.out.println("abcd3");
             //orderrDetailRepository.save(orderDetails);
             orderDetailses.add(orderDetails);
             for (CodeGiftCard codeGiftCard : code) {
                 System.out.println(codeGiftCard.getCode());
                 codeGiftCard.setOrderDetails(orderDetails);
             }
+             System.out.println("abcd5");
 
-        }
-        //Check balance
-        if (total_order > user.getBalance().getMoney()) {
-            return "redirect:/viewCardDetail";
         }
         //Thay doi vi tien cua user
         balanceService.changeMoney(user.getId(), total_order);

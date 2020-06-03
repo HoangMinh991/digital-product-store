@@ -26,18 +26,18 @@ public class ChangePasswordValidator implements Validator {
 
         if (newPassDto.getOddPassword() != null && newPassDto.getNewPassword() != null
                 && newPassDto.getNewPasswordConfirm() != null) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "oddPassword", "Không được bỏ trống");
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "Không được bỏ trống");
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPasswordConfirm", "Không được bỏ trống");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "oddPassword","1", "Không được bỏ trống");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPassword", "1","Không được bỏ trống");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "newPasswordConfirm", "1","Không được bỏ trống");
             if (newPassDto.getNewPassword().length() < 8 || newPassDto.getNewPassword().length() > 32) {
-                errors.rejectValue("newPassword", "Mật khâu phải từ 8 đến 32 kí tự");
+                errors.rejectValue("newPassword","1", "Mật khâu phải từ 8 đến 32 kí tự");
             }
             if (newPassDto.getOddPassword().length() < 8 || newPassDto.getOddPassword().length() > 32) {
-                errors.rejectValue("oddPassword", "Mật khâu phải từ 8 đến 32 kí tự");
+                errors.rejectValue("oddPassword","1", "Mật khâu phải từ 8 đến 32 kí tự");
             }
 
             if (!newPassDto.getNewPasswordConfirm().equals(newPassDto.getNewPassword())) {
-                errors.rejectValue("newPasswordConfirm", "Không trùng pass");
+                errors.rejectValue("newPasswordConfirm", "1", "Không trùng pass");
             }
 
         } else {

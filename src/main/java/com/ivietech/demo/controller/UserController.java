@@ -13,6 +13,7 @@ import com.ivietech.demo.dao.ProductRepository;
 import com.ivietech.demo.dao.RechagerRepository;
 import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
+import com.ivietech.demo.dto.NewPassDto;
 import com.ivietech.demo.dto.RechagerDto;
 import com.ivietech.demo.dto.UpdateUserDto;
 import com.ivietech.demo.entity.Orders;
@@ -21,6 +22,9 @@ import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Recharge;
 import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
+import com.ivietech.demo.service.IUserService;
+import com.ivietech.demo.validation.ChangePasswordValidator;
+import com.ivietech.demo.validation.NewPasswordValidator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -34,6 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +66,12 @@ public class UserController {
     private PaymentRepository paymentRepository;
     @Autowired
     private RechagerRepository rechagerRepository;
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private NewPasswordValidator newPasswordValidator;
+    @Autowired
+    private ChangePasswordValidator changePasswordValidator;
 
     @GetMapping("/user/info")
     @PreAuthorize("hasRole('READ_PRIVILEGE')")
@@ -68,7 +79,7 @@ public class UserController {
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
-        model.addAttribute("listType", listType);   
+        model.addAttribute("listType", listType);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
         model.addAttribute("user", user);
@@ -76,10 +87,10 @@ public class UserController {
         model.addAttribute("title", "Thông tin tài khoản");
         return "/user/userInfo";
     }
-    
+
     @PostMapping("/user/update")
     @PreAuthorize("hasRole('READ_PRIVILEGE')")
-    public String updateUser(Model model, BindingResult result,@Valid UpdateUserDto updateUserDto) {
+    public String updateUser(Model model, BindingResult result, @Valid UpdateUserDto updateUserDto) {
         if (result.hasErrors()) {
             return "user/userInfo1";
         }
@@ -89,13 +100,14 @@ public class UserController {
         model.addAttribute("listType", listType);
         User user = userRepository.findByUserName(
                 SecurityContextHolder.getContext().getAuthentication().getName());
-       
+
         user.setPhone(updateUserDto.getPhone());
         user.setName(updateUserDto.getName());
         model.addAttribute("mesage", "Cập nhật thông tin thành công");
         userRepository.save(user);
         return "/user/userInfo";
     }
+
     @RequestMapping("/user/order")
     public String viewHistoryOrder(Model model, HttpServletRequest request) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -126,7 +138,7 @@ public class UserController {
             Model model, HttpServletRequest request) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
-                int page = 0; //default page number is 0 (yes it is weird)
+        int page = 0; //default page number is 0 (yes it is weird)
         int size = 5; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
@@ -141,6 +153,7 @@ public class UserController {
         model.addAttribute("orders", listOrderSearch);
         return "user/viewHistorySearch";
     }
+
     @GetMapping("/user/recharge")
     public String getPayment(Model model) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -156,8 +169,9 @@ public class UserController {
         model.addAttribute("payments", payments);
         return "user/listpayment";
     }
+
     @PostMapping("/user/recharge")
-    public String addMoney(Model model, RechagerDto rechagerDto,  HttpServletRequest request){
+    public String addMoney(Model model, RechagerDto rechagerDto, HttpServletRequest request) {
         Payment payment = paymentRepository.findById(rechagerDto.getIdPayment()).get();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
@@ -166,7 +180,7 @@ public class UserController {
         recharge.setPayment(payment);
         recharge.setStatus("Đang đợi");
         recharge.setUser(user);
-        recharge=rechagerRepository.save(recharge);
+        recharge = rechagerRepository.save(recharge);
         request.getSession().setAttribute("id", recharge.getId());
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
@@ -176,8 +190,9 @@ public class UserController {
         model.addAttribute("listType", listType);
         return "user/recharge";
     }
+
     @GetMapping("user/transaction")
-    public String transaction(Model model, HttpServletRequest request ){
+    public String transaction(Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
@@ -192,10 +207,44 @@ public class UserController {
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
-        Page<Recharge> recharges = rechagerRepository.findByUser(user,PageRequest.of(page, size, Sort.by("id").descending()));
+        Page<Recharge> recharges = rechagerRepository.findByUser(user, PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("recharges", recharges);
         return "user/viewTransaction";
     }
-    
+
+    @GetMapping("/user/changePassword")
+    public String changePassword(Model model) {
+        NewPassDto newPassDto = new NewPassDto();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        model.addAttribute("user", user);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("newPass", newPassDto);
+        return "user/userChangePass";
+    }
+
+    @PostMapping("/user/changePassword")
+    @PreAuthorize("hasRole('READ_PRIVILEGE')")
+    public String changeUserPassword(@ModelAttribute("newPass") NewPassDto pass, BindingResult bindingResult, Model model) {
+        changePasswordValidator.validate(pass, bindingResult);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUserName(userName);
+        model.addAttribute("user", user);
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        if (bindingResult.hasErrors()) {
+            return "user/userChangePass";
+        }
+        if (!userService.checkIfValidOldPassword(user, pass.getOddPassword())) {
+            model.addAttribute("status", "Mật khẩu cũ không khớp");
+            return "user/userChangePass";
+        }
+        userService.changeUserPassword(user, pass.getNewPassword());
+        model.addAttribute("status", "Đổi mật khẩu thành công");
+        return "user/userChangePass";
+    }
 
 }

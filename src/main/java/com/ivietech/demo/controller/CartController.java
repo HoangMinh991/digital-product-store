@@ -93,7 +93,6 @@ public class CartController {
     public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
             if (item.getProductDto().getId() == productId) {
@@ -110,7 +109,14 @@ public class CartController {
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
-        return "redirect:/viewCartDetail";
+        String message = "Bạn đã thay đổi giỏ hàng thành công!";
+        model.addAttribute("message", message);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            model.addAttribute("user", user);
+        }
+        return "viewcarddetail";
     }
 
     @GetMapping("/cart/updateTang")
@@ -120,11 +126,10 @@ public class CartController {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         List<ItemDto> items = order.getItems();
-  
         for (ItemDto item : items) {
             if (item.getProductDto().getId() == productId) {
                 if (item.getQuantity() == code.size()) {
-                    break;
+                    return "redirect:/viewCartDetail";
                 }
                 item.setQuantity(item.getQuantity() + 1);
                 item.setPrice(item.getProductDto().getPriceNew() * item.getQuantity());
@@ -135,7 +140,14 @@ public class CartController {
         order.setTotal_quantity();
         order.setTotal_order();
         session.setAttribute("order", order);
-        return "redirect:/viewCartDetail";
+        String message = "Bạn đã thay đổi giỏ hàng thành công!";
+        model.addAttribute("message", message);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = userRepository.findByUserName(userName);
+            model.addAttribute("user", user);
+        }
+        return "viewcarddetail";
     }
 
     @GetMapping("/cart/remove")
@@ -163,6 +175,9 @@ public class CartController {
 
     @GetMapping("/cart/buy")
     public String addToCart(Model model, HttpServletRequest request) {
+
+        System.out.println(request.getRequestURL().toString());
+        //System.out.println(request.toString());
         int quantity = 1;
         long id;
         if (request.getParameter("productId") != null) {

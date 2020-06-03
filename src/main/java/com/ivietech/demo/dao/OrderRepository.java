@@ -41,4 +41,10 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             @Param("date_to") String date_to,
             Pageable pageable);
 
+    @Query(
+            value = "SELECT * FROM db.orders",
+            nativeQuery = true
+    )
+    public Page<Orders> listOrderAdmin(Pageable pageable);
+
 }

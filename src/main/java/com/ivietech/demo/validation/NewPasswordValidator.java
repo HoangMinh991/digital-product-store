@@ -20,20 +20,20 @@ public class NewPasswordValidator implements Validator {
         UpdatePasswordDto updatePasswordDto = (UpdatePasswordDto) o;
 
         if (updatePasswordDto.getPassword()!= null && updatePasswordDto.getPasswordConfirm()!= null) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Không được bỏ trống");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password","1", "Không được bỏ trống");
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "Không được bỏ trống");
        
             if (updatePasswordDto.getPassword().length() < 8 || updatePasswordDto.getPassword().length() > 32) {
-                errors.rejectValue("password", "Mật khâu phải từ 8 đến 32 kí tự");
+                errors.rejectValue("password","1", "Mật khâu phải từ 8 đến 32 kí tự");
             }
 
             if (!updatePasswordDto.getPasswordConfirm().equals(updatePasswordDto.getPassword())) {
-                errors.rejectValue("passwordConfirm", "Không trùng pass");
+                errors.rejectValue("passwordConfirm","1", "Không trùng pass");
             }
             
 
         } else {
-            errors.rejectValue("password", "null");
+            errors.rejectValue("password","1", "null");
         }
 
     }

@@ -40,13 +40,10 @@ public class RegValidator implements Validator {
             if (userService.findByUserName(userDto.getUserName()) != null) {
                 errors.rejectValue("userName","1", "Trùng tên");
             }
-            
-            
-
             if (userService.findByEmail(userDto.getEmail()) != null) {
                 errors.rejectValue("email","1", "Trùng mail");
             }
-
+            
             if (userDto.getPassword().length() < 8 || userDto.getPassword().length() > 32) {
                 errors.rejectValue("password","1", "Mật khâu phải từ 8 đến 32 kí tự");
             }

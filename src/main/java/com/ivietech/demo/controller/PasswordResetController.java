@@ -7,7 +7,6 @@ package com.ivietech.demo.controller;
 
 import com.ivietech.demo.dao.PasswordResetTokenRepository;
 import com.ivietech.demo.dao.UserRepository;
-import com.ivietech.demo.dto.NewPassDto;
 import com.ivietech.demo.dto.UpdatePasswordDto;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.event.ResetPasswordEvent;
@@ -16,24 +15,18 @@ import com.ivietech.demo.service.IUserService;
 import com.ivietech.demo.validation.ChangePasswordValidator;
 import com.ivietech.demo.validation.NewPasswordValidator;
 import com.ivietech.demo.validation.PasswordResetValidator;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -121,22 +114,6 @@ public class PasswordResetController {
         return "/user/updatePassword";
 
     }
-
-    @PostMapping("/user/changePassword")
-    @PreAuthorize("hasRole('READ_PRIVILEGE')")
-    @ResponseBody
-    public String changeUserPassword(@RequestBody NewPassDto pass, BindingResult bindingResult) {
-        changePasswordValidator.validate(pass, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "/";
-        }
-        User user = userRepository.findByUserName(
-                SecurityContextHolder.getContext().getAuthentication().getName());
-        if (!userService.checkIfValidOldPassword(user, pass.getOddPassword())) {
-            return "/";
-        }
-        userService.changeUserPassword(user, pass.getNewPassword());
-        return "/";
-    }
-
+    
+    
 }

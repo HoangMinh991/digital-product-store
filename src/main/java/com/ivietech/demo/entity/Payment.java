@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import lombok.Data;
+import javax.validation.constraints.NotEmpty;
 
 /**
  *
@@ -24,11 +24,15 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty
     private String namePayment;
+    @NotEmpty
     private String namePerson;
+    @NotEmpty
     private String bankNumber;
     private String img;
     private boolean enabled;
+    @NotEmpty
     private String description;
     @OneToMany(mappedBy = "payment")
     private List<Recharge> recharge;
@@ -100,7 +104,4 @@ public class Payment implements Serializable {
         this.recharge = recharge;
     }
 
-    
-    
-    
 }

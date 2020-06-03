@@ -81,61 +81,46 @@
 
 
             </style>
-        </div>
-        <div class="container">
 
             <div th:replace = "~{fragment/fragment ::user}">
 
             </div>
-
-            <div class="container-body ">
+            <div class="container-body">
                 <div th:replace = "~{fragment/fragment ::menu-side}">
 
                 </div>
-                <div class="container-body-container">
-                    <span class="gradient-text">NẠP TIỀN VÀO TÀI KHOẢN</span>
+                <div class="container-body-container tai-khoan">
+                    <h2>Đổi mật khẩu</h2>
+                    <p th:text="${status}" style="color: red" class="error"></p>
                     <hr/>
-                    <div class="row">
-                        <div class="alert alert-success">
-                            <span>Quý khách vui lòng chuyển khoản theo thông tin dưới </span><br/>
+                    <form th:action="@{/user/changePassword}" th:object="${newPass}" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label">Mật khẩu cũ:<span style="color: red"> * </span> </label>
+                            <input type="password" th:field="*{oddPassword}" id="email" class="form-control"/>
+                            <div th:if="${#fields.hasErrors('oddPassword')}" th:errors="*{oddPassword}" class="text-red"></div>
                         </div>
-                        <hr/>
-                        <div class="alert alert-info">
-                            <strong>Thông tin thanh toán</strong><br/>
-                            <span>Chuyển khoản đến <span th:text='${recharge.payment.namePayment}'></span></span><br/>
-                            <span>Số tài khoản: <span th:text='${recharge.payment.bankNumber}'></span></span><br/>
-                            <span>Chủ tài khoản: <span th:text='${recharge.payment.namePerson}'></span></span><br/>
+                        <div class="form-group">
+                            <label class="col-form-label">Mật khẩu mới:<span style="color: red"> * </span> </label>
+                            <input type="password" th:field="*{newPassword}" class="form-control ">
+                                <div th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" class="text-red"></div>
                         </div>
-                        <div class="alert alert-danger">
-                            <strong>Nội dung</strong><br/>
-                            <span>Quý khách vui lòng chuyển khoản với nội dung</span><br/>
-                            <span>Nội dung: </span><strong th:text='${recharge.id}'></strong><br/>
-                            <span>Số tiền: </span><span th:text='${recharge.money}'></span>
+
+                        <div class="form-group">
+                            <label class="col-form-label">Xác nhận khẩu mới:<span style="color: red"> * </span></label>
+                            <input type="password" th:field="*{newPasswordConfirm}" class="form-control " >
+                                <div th:if="${#fields.hasErrors('newPasswordConfirm')}" th:errors="*{newPasswordConfirm}" class="text-red"></div>
                         </div>
-                        <div class="alert alert-warning">
-                            <strong>Trạng thái: </strong> <br/>
-                            
-                            <div id="loader" class="loader" style="display: none" ></div>
-                            <p id="status-check"></p>
+
+                        <div class="btn-group">
+                            <button type="sumbit" class="btn-aqua-bg">Thay đổi mật khẩu</button>
                         </div>
-                        <div class="alert alert-warning">Sau 12h đêm nếu không chuyển khoản đơn hàng sẻ tự động được huỷ</div>
-                    </div>
+                    </form>
                 </div>
             </div>
+
         </div>
+
         <footer th:replace = "~{fragment/fragment ::footer}">
         </footer>
     </body>
-    <script>
-        $(document).ready(function () {
-            getInfoRecharge();
-            var interval_obj = setInterval(function () {
-                getInfoRecharge();
-            }, 5000);
-        }
-        );
-    </script>
-
-    });
 </html>
-

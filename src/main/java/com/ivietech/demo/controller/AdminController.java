@@ -16,6 +16,8 @@ import com.ivietech.demo.dao.TypeRepository;
 import com.ivietech.demo.dao.UserRepository;
 import com.ivietech.demo.dto.ProductDto;
 import com.ivietech.demo.entity.CodeGiftCard;
+import com.ivietech.demo.entity.OrderDetails;
+import com.ivietech.demo.entity.Orders;
 import com.ivietech.demo.entity.Payment;
 import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Product;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -192,7 +195,10 @@ public class AdminController {
     }
 
     @PostMapping("/admin/type/add")
-    public String saveType(@ModelAttribute("type") Type type) {
+    public String saveType(@ModelAttribute("type") @Valid Type type, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/createType";
+        }
         typeRepository.save(type);
         return "redirect:/admin/type/view";
     }
@@ -205,7 +211,7 @@ public class AdminController {
         }
         return "redirect:/admin/type/view";
     }
-    
+
     @GetMapping("/admin/platform/view")
     public String viewPlatforms(Model model) {
         List<Platforms> platforms = plaformRepository.findAll();
@@ -228,7 +234,10 @@ public class AdminController {
     }
 
     @PostMapping("/admin/platform/add")
-    public String savePlatform(@ModelAttribute("platform") Platforms platform) {
+    public String savePlatform(@ModelAttribute("platform") @Valid Platforms platform, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/createPlatform";
+        }
         plaformRepository.save(platform);
         return "redirect:/admin/platform/view";
     }
@@ -373,8 +382,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/payment/add")
-    public String SavePayment(@ModelAttribute("payment") Payment payment, @RequestParam("file") MultipartFile file,
-            Model model) {
+    public String SavePayment(@ModelAttribute("payment") @Valid Payment payment, @RequestParam("file") MultipartFile file,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/createPlatform";
+        }
+        
         Payment p = new Payment();
 
         if (payment.getId() != 0) {
@@ -396,7 +409,6 @@ public class AdminController {
                 return "redirect:uploadStatus";
             }
         }
-        System.out.println("abccsdsa");
 
         p.setBankNumber(payment.getBankNumber());
         p.setDescription(payment.getDescription());
@@ -419,5 +431,31 @@ public class AdminController {
             paymentRepository.delete(payment);
         }
         return "redirect:/admin/payment/view";
+    }
+    
+    @GetMapping("/admin/order/view")
+    public String orderView(Model model, HttpServletRequest request) {
+        int page = 0; //default page number is 0 (yes it is weird)
+        int size = 10; //default page size is 10
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+            page = Integer.parseInt(request.getParameter("page")) - 1;
+        }
+        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+            size = Integer.parseInt(request.getParameter("size"));
+        }
+        Page<Orders> listOrder = orderRepository.listOrderAdmin(PageRequest.of(page, size));
+        model.addAttribute("listOrder", listOrder);
+//        Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
+//        model.addAttribute("listProduct", productDto);
+        return "admin/listOrder";
+    }
+
+    @GetMapping("/admin/order/detail")
+    public String orderViewDetail(Model model, HttpServletRequest request, @RequestParam(value = "orderId", required = true) long orderId) {
+        Optional<Orders> order = orderRepository.findById(orderId);
+        model.addAttribute("order", order.get());
+        List<OrderDetails> orderDetails = order.get().getOrderDetails();
+        model.addAttribute("orderDetails", orderDetails);
+        return "admin/orderDetail";
     }
 }

@@ -33,7 +33,16 @@
         <script th:src="@{/js/node.js}"></script>
         <div class="trang-sp">
             <div class="container">
-                <div id="alert-position"></div>
+                <th:block th:if="${message}">
+                    <div class="alert alert-success alert-cart"><i class="fa fa-check-circle"></i><span th:text="${message}"></span><button type="button" class="close" data-dismiss="alert">&times;</button>
+                    </div>
+                    <div id="alert-position"></div>
+                </th:block>
+                <th:block th:if="${error_message}">
+                    <div class="alert alert-danger alert-cart"><i class="fa fa-check-circle"></i><span th:text="${error_message}"></span><button type="button" class="close" data-dismiss="alert">&times;</button>
+                    </div>
+                    <div id="alert-position"></div>
+                </th:block>
 
                 <div class="container-title">
                     <h2 class="thanh-toan-title">Giỏ Hàng: <span class="thanh-toan-title" th:text="${session.order}?${session.order.total_quantity}:'0'"></span> sản phẩm</h2>

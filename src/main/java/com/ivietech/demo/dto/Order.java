@@ -75,7 +75,7 @@ public class Order implements Serializable {
     public void setTotal_order() {
         long temp_total = 0;
         for (ItemDto item : items) {
-            temp_total += item.getPrice() * item.getQuantity();
+            temp_total += item.getPrice();
         }
         this.total_order = temp_total;
     }
