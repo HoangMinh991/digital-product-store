@@ -639,7 +639,7 @@ function getInfoRecharge() {
             if (event.status === "Đang đợi") {
                 $("#status-check").text("Đang đợi chuyển khoản");
                 $("#loader").attr("style", "");
-            } else if (event.status === "Thành Công") {
+            } else if (event.status === "Thành công") {
                 $("#loader").attr("style", "display: none");
                 $("#status-check").text("Thành công");
                 $("#status-check").attr("class", "alert alert-success");

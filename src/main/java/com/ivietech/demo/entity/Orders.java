@@ -7,13 +7,14 @@ package com.ivietech.demo.entity;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -23,9 +24,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String codeOrder;
+    @GenericGenerator(name = "id",
+            strategy = "com.ivietech.demo.utils.OrderIdGGenerator")
+    @GeneratedValue(generator = "id")
+    @Column(name = "id")
+    private String id;
     private String status;
     @ManyToOne
     private User user;
@@ -38,20 +41,12 @@ public class Orders {
     public Orders() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCodeOrder() {
-        return codeOrder;
-    }
-
-    public void setCodeOrder(String codeOrder) {
-        this.codeOrder = codeOrder;
     }
 
     public String getStatus() {

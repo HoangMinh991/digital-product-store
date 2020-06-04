@@ -102,12 +102,15 @@
                                         </div>
                                     </div>
                                     <div class="col-md-9 col-xs-12 bar-buy-product">
-                                        <a id="muaNgay" th:href="@{/cart/buy(productId=${productDto.id}, fast=1)}">
-                                            <div id="button-cart-redirect" data-loading-text="Đang tải..." class="btn btn-green-bg col-md-5" style="margin-top: 12px;width: 144px">Mua Ngay
-                                            </div></a>
+                                        <a th:class="${productDto.numberCode <= 0} ? ${'dis'} : ${''}" th:href="@{/cart/buy(productId=${productDto.id}, fast=1)}">
+                                            <div id="button-cart-redirect" class="btn btn-green-bg col-md-5" style="margin-top: 12px;width: 144px">Mua Ngay
+                                            </div>
+                                        </a>
 
-                                        <a id="myAnchor" th:href="@{/cart/buy(productId=${productDto.id})}"><div id="button-cart" data-loading-text="Đang tải..." class="btn btn-orange-bg col-md-5 add-cart-orange" style="width: 144px">
-                                                <i class="fa fa-shopping-cart text-left"> </i> &nbsp;Thêm vào giỏ                                    </div></a>
+                                        <a th:class="${productDto.numberCode <= 0} ? ${'dis'} : ${''}" id="myAnchor" th:href="@{/cart/buy(productId=${productDto.id})}">
+                                            <div id="button-cart" class="btn btn-orange-bg col-md-5 add-cart-orange " style="width: 144px">
+                                                <i class="fa fa-shopping-cart text-left"> </i> &nbsp;Thêm vào giỏ </div>
+                                        </a>
                                     </div>
                                 </div>
 

@@ -19,7 +19,55 @@
                         <p class="mb-4"></p>
                     </div>
                     <div class="container-fluid">
+                        <div class="row filter">
+                            <form th:action="@{/admin/order/view}">
+                                <div class="col-lg-12 col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="filter-title" for="input-order-id">Mã đơn hàng</div>
+                                            <input type="text" th:name="filter_order_id" placeholder="Số đơn hàng" id="input-order-id" class="form-control" />
+
+                                            <div class="filter-title" for="input-date-added-from">Ngày tạo từ</div>
+                                            <input type="text" th:name="filter_date_added_from" value="" placeholder="Ngày tạo từ" data-date-format="YYYY-MM-DD" id="input-date-added-from" class="form-control" />
+                                            <script>
+                                                $('#input-date-added-from').datepicker({
+                                                    uiLibrary: 'bootstrap4',
+                                                    format: 'yyyy-dd-mm'
+                                                });
+
+                                            </script>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="filter-title" for="input-amount-from">Số tiền từ</div>
+                                            <input type="text"  th:name="filter_total_from" value="" placeholder="Số tiền từ" id="input-amount-from" class="form-control" />
+                                            <div class="filter-title" for="input-date-added-to">Ngày tạo đến</div>
+
+                                            <input type="text" th:name="filter_date_added_to" value="" placeholder="Ngày tạo đến" data-date-format="YYYY-MM-DD" id="input-date-added-to" class="form-control" />
+                                            <script>
+                                                $('#input-date-added-to').datepicker({
+                                                    uiLibrary: 'bootstrap4',
+                                                    format: 'yyyy-dd-mm'
+                                                });
+
+                                            </script>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="filter-title" for="input-amount-to">Số tiền đến</div>
+                                            <input type="text"  th:name="filter_total_to" value="" placeholder="Số tiền đến" id="input-amount-to" class="form-control" />
+                                            <div class="button-group">
+                                                <input class="btn-green-bg" id="button-filter" type="submit" value="Tìm kiếm"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
                         <div class="row">
+
                             <div class="table-responsive">
                                 <div class="dataTables_wrapper dt-bootstrap4">
                                     <div class="row">
@@ -28,7 +76,6 @@
                                             <table id="selectedColumn" class="table table-bordered dataTable">
                                                 <thead>
                                                     <tr>
-                                                        <th class="th-sm">Id hóa đơn</th>
                                                         <th>Mã hóa đơn</th>
                                                         <th>Ngày tạo hóa đơn</th>
                                                         <th>Tổng tiền hóa đơn</th>
@@ -43,9 +90,7 @@
                                                             <td th:utext="${order.id}">
 
                                                             </td>
-                                                            <td th:utext="${order.codeOrder}">
 
-                                                            </td>
                                                             <td th:utext="${#dates.format(order.createdDatetime, 'dd-MM-yyyy HH:mm')}">
 
                                                             </td>

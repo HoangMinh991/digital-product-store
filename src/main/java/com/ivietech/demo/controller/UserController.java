@@ -109,32 +109,12 @@ public class UserController {
     }
 
     @RequestMapping("/user/order")
-    public String viewHistoryOrder(Model model, HttpServletRequest request) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUserName(userName);
-        int page = 0; //default page number is 0 (yes it is weird)
-        int size = 5; //default page size is 10
-        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
-            page = Integer.parseInt(request.getParameter("page")) - 1;
-        }
-        Page<Orders> listOrder = orderRepository.listOrder((int) user.getId(), "OK", PageRequest.of(page, size));
-        double total = 0;
-        for (Orders order : listOrder) {
-            total += order.getTotalMoney();
-        }
-        model.addAttribute("total", total);
-        model.addAttribute("user", user);
-        model.addAttribute("orders", listOrder);
-        return "user/viewHistory";
-    }
-
-    @RequestMapping("/user/searchOrder")
     public String viewSearchOrder(
             @RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
-            @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") double total_from,
+            @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
             @RequestParam(value = "filter_date_added_to", required = false, defaultValue = "2030-1-1") String date_to,
-            @RequestParam(value = "filter_total_to", required = false, defaultValue = "999999") double total_to,
+            @RequestParam(value = "filter_total_to", required = false, defaultValue = "99999999999") long total_to,
             Model model, HttpServletRequest request) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
@@ -143,7 +123,7 @@ public class UserController {
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
-        Page<Orders> listOrderSearch = orderRepository.listOrderSearch((int) user.getId(), order_id, "OK", total_from, total_to, date_from, date_to, PageRequest.of(page, size));
+        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
         double total = 0;
         for (Orders order : listOrderSearch) {
             total += order.getTotalMoney();
@@ -151,7 +131,7 @@ public class UserController {
         model.addAttribute("total", total);
         model.addAttribute("user", user);
         model.addAttribute("orders", listOrderSearch);
-        return "user/viewHistorySearch";
+        return "user/viewHistory";
     }
 
     @GetMapping("/user/recharge")
@@ -192,7 +172,13 @@ public class UserController {
     }
 
     @GetMapping("user/transaction")
-    public String transaction(Model model, HttpServletRequest request) {
+    public String transaction(Model model, @RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
+            @RequestParam(value = "filter_status", required = false, defaultValue = "") String status,
+            @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
+            @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
+            @RequestParam(value = "filter_date_added_to", required = false, defaultValue = "2030-1-1") String date_to,
+            @RequestParam(value = "filter_total_to", required = false, defaultValue = "9999999999999999") long total_to,
+            HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
@@ -203,14 +189,15 @@ public class UserController {
         }
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
+        Page<Recharge> recharges = rechagerRepository.findRechargeSearchForUser(user.getId(), rechargeId,status, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
         model.addAttribute("user", user);
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
-        Page<Recharge> recharges = rechagerRepository.findByUser(user, PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("recharges", recharges);
         return "user/viewTransaction";
     }
+
 
     @GetMapping("/user/changePassword")
     public String changePassword(Model model) {

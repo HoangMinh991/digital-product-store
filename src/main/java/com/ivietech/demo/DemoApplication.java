@@ -29,7 +29,7 @@ public class DemoApplication {
     			this.webSocketUri);
     	
     	//Will connect as soon as possible
-    	//manager.setAutoStartup(true);
+    	manager.setAutoStartup(true);
     	return manager;
     }
    

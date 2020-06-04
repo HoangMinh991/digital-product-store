@@ -26,7 +26,7 @@ public interface CodeGiftCardRepository extends JpaRepository<CodeGiftCard, Long
             value = "SELECT * FROM code_gift_card c WHERE c.order_details_id is null and c.product_id = :productId LIMIT :limit",
             nativeQuery = true
     )
-    public List<CodeGiftCard> getCode(@Param("productId") long productId, @Param("limit") long limit);
+    public List<CodeGiftCard> getCode(@Param("productId") String productId, @Param("limit") long limit);
 
 //    //Dem so luong code trong kho
 //    @Query(value = "SELECT product_id, count(*) form code_gift_card WHERE enabled = true GROUP BY product_id", nativeQuery = true)

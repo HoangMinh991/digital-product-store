@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @author HoangMinh
  */
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, String> {
 
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END)) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.best = 1 GROUP BY p.id ")
@@ -51,7 +51,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name,p.best) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.id =?1  GROUP BY p.id")
-    public Optional<ProductDto> findProductDtoById (Long id);
+    public Optional<ProductDto> findProductDtoById (String id);
     
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c GROUP BY p.id")
@@ -60,5 +60,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.priceNew < p.priceOld GROUP BY p.id")
     public Page<ProductDto> findAllByPromotion(PageRequest of);
+    
 
 }

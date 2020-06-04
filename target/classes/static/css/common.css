@@ -3984,4 +3984,7 @@ body {
 .text-review {
     white-space: pre;
 }
-/*# sourceMappingURL=common.css.map */
+a.dis{
+pointer-events: none;
+cursor: default;
+}

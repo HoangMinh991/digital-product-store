@@ -64,7 +64,7 @@ public class CheckOutController {
         User user = userRepository.findByUserName(userName);
         String parameter = request.getParameter("order_id");
         if (parameter != null) {
-            Optional<Orders> orders = orderRepository.findById(Long.parseLong(parameter));
+            Optional<Orders> orders = orderRepository.findById(parameter);
             Orders order = orders.get();
             model.addAttribute("orders", order);
             model.addAttribute("user", user);
@@ -84,10 +84,10 @@ public class CheckOutController {
         }
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
-            long id = item.getProductDto().getId();
+            String id = item.getProductDto().getId();
             int quantity = item.getQuantity();
             List<CodeGiftCard> code = new ArrayList<>();
-            code = codeGiftCardRepository.getCode((int) id, quantity);
+            code = codeGiftCardRepository.getCode( id, quantity);
             if (code.size() < quantity) {
                 String error_message = "Không đủ sản phẩm, vui lòng xem lại đơn hàng";
                 model.addAttribute("error_message", error_message);
@@ -103,30 +103,26 @@ public class CheckOutController {
         //orders = orderRepository.save(orders);
 
         for (ItemDto item : items) {
-            long id = item.getProductDto().getId();
+            String id = item.getProductDto().getId();
             long quantity = item.getQuantity();
             List<CodeGiftCard> code = new ArrayList<>();
             code = codeGiftCardRepository.getCode(id, quantity);
-            Optional<Product> findById = productRepository.findById(id);
-            System.out.println("abcd");
+            Product findById = productRepository.findById(id).get();
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.setOrder(orders);
-            orderDetails.setProduct(findById.get());
-            System.out.println("abcd1");
+            orderDetails.setProduct(findById);
+
             orderDetails.setQuantity(quantity);
             orderDetails.setListCodeGiftCard(code);
             OrderDetails save = orderrDetailRepository.save(orderDetails);
-            System.out.println("abcd2");
             save.setListCodeGiftCard(code);
             orderrDetailRepository.save(save);
-             System.out.println("abcd3");
             //orderrDetailRepository.save(orderDetails);
             orderDetailses.add(orderDetails);
             for (CodeGiftCard codeGiftCard : code) {
                 System.out.println(codeGiftCard.getCode());
                 codeGiftCard.setOrderDetails(orderDetails);
             }
-             System.out.println("abcd5");
 
         }
         //Thay doi vi tien cua user

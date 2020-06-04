@@ -45,7 +45,7 @@ public class ProductController {
     private PlaformRepository plaformRepository;
 
     @GetMapping("/viewproduct")
-    public String viewproduct(Model model, @RequestParam(value = "productId", required = false) Long productId) {
+    public String viewproduct(Model model, @RequestParam(value = "productId", required = false) String productId) {
         Optional<ProductDto> productDto = productRepository.findProductDtoById(productId);
         model.addAttribute("productDto", productDto.get());
         List<Platforms> listPlatforms = plaformRepository.findAll();

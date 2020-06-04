@@ -22,6 +22,36 @@
                         <div class="row">
                             <div class="table-responsive">
                                 <div class="dataTables_wrapper dt-bootstrap4">
+                                    <form th:action="@{/admin/product/view}">
+                                        <div class="search-header">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 mb-15 col-filter-price">
+                                                    <input type="text" name="search" value="" placeholder="Nhập từ khóa tìm kiếm..." class="form-control">
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
+                                                    <select th:name="filter_type_name"  class="form-control">
+                                                        <option value="" selected>Tất cả danh mục</option>
+                                                        <option th:each="type : ${listType}"
+                                                                th:value="${type.name}"
+                                                                th:utext="${type.name}"/>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
+                                                    <select  th:name="filter_platform_name" class="form-control">
+                                                        <option value="" selected>Tất cả danh mục</option>
+                                                        <option th:each="Platform : ${listPlatforms}"
+                                                                th:value="${Platform.name}"
+                                                                th:utext="${Platform.name}"/>
+                                                    </select>
+                                                </div>
+                                                <button type="submit">Tìm kiếm</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                    <hr/>
+
+
                                     <div class="row">
 
                                         <div class="col-sm-12">

@@ -91,6 +91,10 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
         Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
         model.addAttribute("listProduct", productDto);
         return "admin/listProduct";
@@ -108,7 +112,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/product/edit")
-    public String CreateProduct(Model model, @RequestParam(value = "id", required = true) Long id) {
+    public String CreateProduct(Model model, @RequestParam(value = "id", required = true) String id) {
         ProductDto productDto = new ProductDto();
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
@@ -126,14 +130,15 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "admin/createProduct";
         }
+        System.out.println("abcsds");
         Product product = new Product();
-        if (productDto.getId() != 0) {
+        if (productDto.getId() != null) {
             product = productRepository.findById(productDto.getId()).get();
         }
         String imgPath = "";
 
         if (file.isEmpty()) {
-            if (productDto.getId() == 0) {
+            if (productDto.getId()==null) {
                 return "redirect:uploadStatus";
             }
         } else {
@@ -161,7 +166,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/product/delete")
-    public String deleteProduct(Model model, @RequestParam(value = "id", required = true) Long id) {
+    public String deleteProduct(Model model, @RequestParam(value = "id", required = true) String id) {
         Product product = new Product();
         product = productRepository.findById(id).get();
         if (product.getListCodeGiftCard().isEmpty() && product.getListOrderDetail().isEmpty()) {
@@ -280,7 +285,7 @@ public class AdminController {
             XSSFRow row = worksheet.getRow(i);
             try {
                 codeGiftCard.setCode(row.getCell(0).getStringCellValue());
-                Product product = productRepository.findById((long) row.getCell(1).getNumericCellValue()).get();
+                Product product = productRepository.findById(row.getCell(1).getStringCellValue()).get();
                 codeGiftCard.setProduct(product);
                 listCodeGiftCard.add(codeGiftCardRepository.save(codeGiftCard));
             } catch (Exception e) {
@@ -329,7 +334,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/recharge/change")
-    public String rechargeChange(Model model, @RequestParam(value = "page", required = true) String page, @RequestParam(value = "id", required = true) Long id) throws Exception {
+    public String rechargeChange(Model model, @RequestParam(value = "page", required = true) String page, @RequestParam(value = "id", required = true) String id) throws Exception {
         Optional<Recharge> recharge = rechagerRepository.findById(id);
         if (recharge.isPresent()) {
             if (recharge.get().getStatus().equalsIgnoreCase("Đang đợi")) {
@@ -451,7 +456,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/order/detail")
-    public String orderViewDetail(Model model, HttpServletRequest request, @RequestParam(value = "orderId", required = true) long orderId) {
+    public String orderViewDetail(Model model, HttpServletRequest request, @RequestParam(value = "orderId", required = true) String orderId) {
         Optional<Orders> order = orderRepository.findById(orderId);
         model.addAttribute("order", order.get());
         List<OrderDetails> orderDetails = order.get().getOrderDetails();

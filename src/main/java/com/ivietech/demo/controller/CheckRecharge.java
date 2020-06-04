@@ -25,10 +25,10 @@ public class CheckRecharge {
     public Object getInfoInvoice(HttpServletRequest request) {
         StatusDto status = new StatusDto();
         if (request.getSession().getAttribute("id") == null) {
-            status.setId(0);
+            status.setId("0");
             status.setStatus("403");
         } else {
-            status.setId((long) request.getSession().getAttribute("id"));
+            status.setId((String) request.getSession().getAttribute("id"));
             status.setStatus(rechagerRepository.findById(status.getId()).get().getStatus());
         }
         return status;

@@ -47,7 +47,7 @@ public class SimpleWsHandler implements WebSocketHandler {
         Gson gson = new Gson();
         String mesage = wsm.getPayload().toString();
         System.out.println(mesage);
-        long id = 0;
+        String id = null;
         long money = 0;
         String string = DataProcessing.removeAccent(mesage);
         Noti notiApp = new Noti();
@@ -78,14 +78,14 @@ public class SimpleWsHandler implements WebSocketHandler {
 
                         }
                     }
-                    id = array.get(2);
+                    id = "NAP"+array.get(2).toString();
                     money = array.get(0);
                 }
                 if ("F@st Mobile".equalsIgnoreCase(notiApp.getPush().getTitle())) {
                     String body = notiApp.getPush().getBody();
                     String[] item = body.split("\n");
                     String value = item[1].replaceAll("[^0-9]", "");
-                    id = Integer.parseInt(item[3]);
+                    id = item[3];
                     money = Long.parseLong(value);
                 }
 
@@ -104,7 +104,7 @@ public class SimpleWsHandler implements WebSocketHandler {
                         } catch (Exception err) {
                         }
                     }
-                    id = array.get(array.size() - 1);
+                    id = "NAP"+array.get(array.size() - 1).toString();
                     money = array.get(1);
 
                 };
@@ -112,7 +112,7 @@ public class SimpleWsHandler implements WebSocketHandler {
                     String body = notiSms.getPush().getNotifications().get(0).getBody().replaceAll("[^0-9 |]", "");
                     String[] item = body.split("[|]");
                     String[] nd = item[4].split("[ ]");
-                    id = Long.parseLong(nd[0]);
+                    id = "NAP"+ nd[0];
                     money = Long.parseLong(item[2]);
 
                 };
@@ -162,14 +162,14 @@ public class SimpleWsHandler implements WebSocketHandler {
                             }
                         }
                     }
-                    id = array.get(array.size() - 1);
+                    id =  "NAP"+array.get(array.size() - 1).toString();
                     money = array.get(1);
                     System.out.println(id);
                     System.out.println(money);
                 }
             }
 
-            if (id!= 0) {
+            if (id!= null) {
                 Optional<Recharge> recharge = rechagerRepository.findById(id);
                 if (recharge.isPresent()) {
                     if (recharge.get().getStatus().equalsIgnoreCase("Đang đợi")) {

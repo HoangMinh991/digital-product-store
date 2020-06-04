@@ -543,7 +543,6 @@
     </div>
 
     <div th:fragment="search">
-        <input type="hidden" value="63" id="path"/>
         <div class="search-header" id="content">
             <div class="row">
                 <div class="col-lg-4 col-md-4 mb-15 col-filter-price">
@@ -563,15 +562,6 @@
                         <option th:each="Platform : ${listPlatforms}"
                                 th:value="${Platform.id}"
                                 th:utext="${Platform.name}"/>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                    <select id="input-sort" class="form-control">
-                        <option value="p.sort_order"  data-order="ASC">Mặc định</option>
-                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 1</option>
-                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 2</option>
-                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 3</option>
-                        <option value="p.sort_order"  data-order="ASC">Sắp xếp option 4</option>
                     </select>
                 </div>
             </div>

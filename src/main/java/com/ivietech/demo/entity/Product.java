@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -29,16 +30,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Product implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+   @GenericGenerator(name = "id",
+            strategy = "com.ivietech.demo.utils.ProductIdGGenerator")
+    @GeneratedValue(generator = "id")
+    @Column(name = "id")
+    private String id;
     private String img;
     @Column(unique=true)
     private String name;
     private long priceNew;
     private long priceOld;
-    @OneToOne(cascade=CascadeType.REMOVE)
-    @PrimaryKeyJoinColumn
-    private ProductDetail productDetail;
     @ManyToOne
     private Platforms platforms;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -55,11 +56,11 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -93,14 +94,6 @@ public class Product implements Serializable {
 
     public void setPriceOld(long priceOld) {
         this.priceOld = priceOld;
-    }
-
-    public ProductDetail getProductDetail() {
-        return productDetail;
-    }
-
-    public void setProductDetail(ProductDetail productDetail) {
-        this.productDetail = productDetail;
     }
 
     public Platforms getPlatforms() {

@@ -69,12 +69,12 @@ public class CartController {
     }
 
     @GetMapping("/viewCartDetail/cart/remove")
-    public String removeCartOnDetailPage(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    public String removeCartOnDetailPage(Model model, @RequestParam(value = "productId", required = false) String productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
-            if (item.getProductDto().getId() == productId) {
+            if (item.getProductDto().getId().equalsIgnoreCase(productId)) {
                 items.remove(item);
                 if (items.isEmpty()) {
                     session.removeAttribute("order");
@@ -90,12 +90,12 @@ public class CartController {
     }
 
     @GetMapping("/cart/updateGiam")
-    public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    public String updateCartGiam(Model model, @RequestParam(value = "productId", required = false) String productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         List<ItemDto> items = order.getItems();
         for (ItemDto item : items) {
-            if (item.getProductDto().getId() == productId) {
+            if (item.getProductDto().getId().equalsIgnoreCase(productId)) {
                 if (item.getQuantity() == 1) {
                     return "redirect:/viewCartDetail";
                 } else {
@@ -120,14 +120,15 @@ public class CartController {
     }
 
     @GetMapping("/cart/updateTang")
-    public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) Integer productId, HttpServletRequest request) {
+    public String updateCartTang(Model model, @RequestParam(value = "productId", required = false) String productId, HttpServletRequest request) {
         List<CodeGiftCard> code = codeGiftCardRepository.getCode(productId, 100);
-        System.out.println(code.size());
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         List<ItemDto> items = order.getItems();
+        System.out.println(productId);
         for (ItemDto item : items) {
-            if (item.getProductDto().getId() == productId) {
+            if (item.getProductDto().getId().equalsIgnoreCase(productId)) {
+                System.out.println("abc");
                 if (item.getQuantity() == code.size()) {
                     return "redirect:/viewCartDetail";
                 }
@@ -151,14 +152,14 @@ public class CartController {
     }
 
     @GetMapping("/cart/remove")
-    public String removeCart(@RequestParam(value = "productId", required = false) long productId, HttpServletRequest request) {
+    public String removeCart(@RequestParam(value = "productId", required = false) String productId, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         List<ItemDto> items = new ArrayList<>();
         items = order.getItems();
         System.out.println(items.size());
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getProductDto().getId() == productId) {
+            if (items.get(i).getProductDto().getId().equalsIgnoreCase(productId)) {
                 order.getItems().remove(items.get(i));
                 if (order.getItems().isEmpty()) {
                     System.out.println("Empty");
@@ -179,11 +180,11 @@ public class CartController {
         System.out.println(request.getRequestURL().toString());
         //System.out.println(request.toString());
         int quantity = 1;
-        long id;
+        String id;
         if (request.getParameter("productId") != null) {
-            id = Long.parseLong(request.getParameter("productId"));
+            id = request.getParameter("productId");
             Optional<ProductDto> productDto = productRepository.findProductDtoById(id);
-            List<CodeGiftCard> code = codeGiftCardRepository.getCode((int) id, 100);
+            List<CodeGiftCard> code = codeGiftCardRepository.getCode( id, 100);
             productDto.get().setNumberCode(code.size());
             if (productDto.isPresent()) {
                 if (request.getParameter("quantity") != null) {
@@ -208,7 +209,7 @@ public class CartController {
                     List<ItemDto> listItems = order.getItems();
                     boolean check = false;
                     for (ItemDto item : listItems) {
-                        if (item.getProductDto().getId() == productDto.get().getId()) {
+                        if (item.getProductDto().getId().equalsIgnoreCase(productDto.get().getId())) {
                             item.setQuantity(item.getQuantity() + quantity);
                             item.setPrice(item.getQuantity() * productDto.get().getPriceNew());
                             check = true;

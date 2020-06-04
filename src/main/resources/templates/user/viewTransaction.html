@@ -94,10 +94,8 @@
                     <div class="hidden-xs padding-left-right-pc">
                         <h2>Lịch sử nạp tiền</h2>
                         <hr>
-
-                            <!--<p>Hiển thị <span></span> 0 đến 0 trong tổng số 0 (0 Trang)</p>-->
                             <div class="row filter">
-                                <form th:action="@{/user/searchOrder}">
+                                <form th:action="@{/user/transaction}">
                                     <div class="col-lg-12 col-md-12">
 
                                         <div class="row">
@@ -106,23 +104,35 @@
                                                 <input type="text" th:name="filter_order_id" placeholder="Số đơn hàng" id="input-order-id" class="form-control" />
 
                                                 <div class="filter-title" for="input-date-added-from">Ngày tạo từ</div>
-                                                <div class="input-group date">
-                                                    <input type="text"  th:name="filter_date_added_from" value="" placeholder="Ngày tạo từ" data-date-format="YYYY-MM-DD" id="input-date-added-from" class="form-control" />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+
+                                                <div class='input-group date' id='datetimepicker'>
+                                                    <input type='text' th:name="filter_date_added_from" value="" placeholder="Ngày tạo từ" data-date-format="YYYY-MM-DD" id="input-date-added-from" class="form-control" />
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-calendar"></span>
                                                     </span>
                                                 </div>
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        $('#datetimepicker').datetimepicker();
+                                                    });
+                                                </script>
+
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="filter-title" for="input-amount-from">Số tiền từ</div>
                                                 <input type="text"  th:name="filter_total_from" value="" placeholder="Số tiền từ" id="input-amount-from" class="form-control" />
                                                 <div class="filter-title" for="input-date-added-to">Ngày tạo đến</div>
-                                                <div class="input-group date">
+                                                <div class='input-group date' id='datetimepicker1'>
                                                     <input type="text" th:name="filter_date_added_to" value="" placeholder="Ngày tạo đến" data-date-format="YYYY-MM-DD" id="input-date-added-to" class="form-control" />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-calendar"></span>
                                                     </span>
                                                 </div>
+                                                <script type="text/javascript">
+                                                    $(function () {
+                                                        $('#datetimepicker1').datetimepicker();
+                                                    });
+                                                </script>      
 
                                             </div>
                                             <div class="col-md-4">
@@ -136,6 +146,10 @@
 
                                     </div>
                                 </form>
+                            </div>
+
+                            <div style="text-align: right; font-weight: 600; font-size: 17px; margin-bottom: 10px;">
+                                Tổng Tiền: <span th:text="${total}">0</span> đ
                             </div>
 
                             <div class="table-responsive">
@@ -244,5 +258,5 @@
 
         <footer th:replace = "~{fragment/fragment ::footer}">
         </footer>
-        </body>
+    </body>
 </html>
