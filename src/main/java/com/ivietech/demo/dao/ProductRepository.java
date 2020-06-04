@@ -54,8 +54,9 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     public Optional<ProductDto> findProductDtoById (String id);
     
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
-            + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c GROUP BY p.id")
-    public Page<ProductDto> findAllProductDto(PageRequest of);
+            + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c "
+            + "WHERE p.id like %?1% AND  p.name like %?2% AND p.priceNew > ?3 AND p.priceNew < ?4  AND p.type.name like %?5% AND p.platforms.name like %?6% GROUP BY p.id")
+    public Page<ProductDto> findAllProductDto(String idProduct,String nameProduct, long priceLow, long priceHigh,String typeName, String platformName ,PageRequest of);
     
     @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.priceNew < p.priceOld GROUP BY p.id")

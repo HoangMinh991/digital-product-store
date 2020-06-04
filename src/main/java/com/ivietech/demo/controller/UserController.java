@@ -180,7 +180,7 @@ public class UserController {
             @RequestParam(value = "filter_total_to", required = false, defaultValue = "9999999999999999") long total_to,
             HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
-        int size = 10; //default page size is 10
+        int size = 5; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }

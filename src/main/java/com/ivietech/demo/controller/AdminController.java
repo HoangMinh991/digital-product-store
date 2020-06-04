@@ -29,7 +29,10 @@ import com.ivietech.demo.validation.ProductValidator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -81,7 +85,15 @@ public class AdminController {
     private PaymentRepository paymentRepository;
 
     @GetMapping("/admin/product/view")
-    public String viewOrder(Model model, HttpServletRequest request) {
+    public String viewOrder(Model model,
+            @RequestParam(value = "filter_product_id", required = false, defaultValue = "") String productId,
+            @RequestParam(value = "filter_product_name", required = false, defaultValue = "") String productName,
+            @RequestParam(value = "filter_type_name", required = false, defaultValue = "") String typeName,
+            @RequestParam(value = "filter_plaform_name", required = false, defaultValue = "") String plaformName,
+            @RequestParam(value = "filter_price_from", required = false, defaultValue = "0") long priceLow,
+            @RequestParam(value = "filter_price_to", required = false, defaultValue = "999999999999999") long priceHigh,
+            
+            HttpServletRequest request) {
 
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
@@ -95,7 +107,7 @@ public class AdminController {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
-        Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
+        Page<ProductDto> productDto = productRepository.findAllProductDto(productId,productName, priceLow, priceHigh, typeName, plaformName, PageRequest.of(page, size));
         model.addAttribute("listProduct", productDto);
         return "admin/listProduct";
     }
@@ -132,7 +144,8 @@ public class AdminController {
         }
         System.out.println("abcsds");
         Product product = new Product();
-        if (productDto.getId() != null) {
+        if (!productDto.getId().isEmpty()) {
+            System.out.println(productDto.getId());
             product = productRepository.findById(productDto.getId()).get();
         }
         String imgPath = "";
@@ -318,7 +331,13 @@ public class AdminController {
     }
 
     @GetMapping("/admin/recharge/view")
-    public String rechargeView(Model model, HttpServletRequest request) {
+    public String rechargeView(Model model,@RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
+            @RequestParam(value = "filter_status", required = false, defaultValue = "") String status,
+            @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-01-01") String date_from,
+            @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
+            @RequestParam(value = "filter_date_added_to", required = false, defaultValue = "2030-01-01") String date_to,
+            @RequestParam(value = "filter_total_to", required = false, defaultValue = "9999999999999999") long total_to,
+            HttpServletRequest request) throws ParseException {
         int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
@@ -327,9 +346,9 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Recharge> listRecharges = rechagerRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
-        model.addAttribute("listRecharge", listRecharges);
-
+        Page<Recharge> recharges = rechagerRepository.findRechargeSearch( rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
+        
+        model.addAttribute("listRecharge", recharges);
         return "admin/listRecharge";
     }
 

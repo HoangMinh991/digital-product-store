@@ -40,4 +40,18 @@ public interface RechagerRepository extends JpaRepository<Recharge, String> {
             @Param("date_to") String date_to,
             Pageable pageable);
     
+    
+    @Query(
+            value = "SELECT * FROM Recharge r WHERE r.id LIKE CONCAT('%',:code_recharge,'%') and r.status LIKE CONCAT('%',:status,'%') and r.money >= :total_from "
+            + "and r.money <= :total_to and r.created_datetime >= :date_from and r.created_datetime <= :date_to",
+            nativeQuery = true
+    )
+    public Page<Recharge> findRechargeSearch(
+            @Param("code_recharge") String code_recharge,
+            @Param("status") String status,
+            @Param("total_from") long total_from,
+            @Param("total_to") long total_to,
+            @Param("date_from") String date_from,
+            @Param("date_to") String date_to,
+            Pageable pageable);
 }

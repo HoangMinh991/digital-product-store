@@ -20,37 +20,56 @@
 
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="table-responsive">
-                                <div class="dataTables_wrapper dt-bootstrap4">
-                                    <form th:action="@{/admin/product/view}">
-                                        <div class="search-header">
-                                            <div class="row">
-                                                <div class="col-lg-4 col-md-4 mb-15 col-filter-price">
-                                                    <input type="text" name="search" value="" placeholder="Nhập từ khóa tìm kiếm..." class="form-control">
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                                                    <select th:name="filter_type_name"  class="form-control">
-                                                        <option value="" selected>Tất cả danh mục</option>
-                                                        <option th:each="type : ${listType}"
-                                                                th:value="${type.name}"
-                                                                th:utext="${type.name}"/>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-md-2 mb-15 col-filter-price">
-                                                    <select  th:name="filter_platform_name" class="form-control">
-                                                        <option value="" selected>Tất cả danh mục</option>
-                                                        <option th:each="Platform : ${listPlatforms}"
-                                                                th:value="${Platform.name}"
-                                                                th:utext="${Platform.name}"/>
-                                                    </select>
-                                                </div>
-                                                <button type="submit">Tìm kiếm</button>
+                            <div class="row filter">
+                                <form th:action="@{/admin/product/view}">
+                                    <div class="col-lg-12 col-md-12">
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="filter-title">Mã sản phẩm</div>
+                                                <input type="text" th:name="filter_product_id" placeholder="Mã sản phẩm" class="form-control"/>
+                                                <div class="filter-title">Tên sản phẩm</div>
+                                                <input type="text" th:name="filter_product_name" placeholder="Tên sản phẩm" class="form-control"/>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="filter-title">Giá từ</div>
+                                                <input type="text"  th:name="filter_price_from" value="" placeholder="Giá từ"  class="form-control" />
+                                                <div class="filter-title">Giá kết thúc</div>
+                                                <input type="text"  th:name="filter_price_to" value="" placeholder="Số tiền đến" class="form-control" />
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="filter-title">Loại hình</div>
+                                                <select th:name="filter_type_name"  class="form-control">
+                                                    <option value="" selected>Tất cả danh mục</option>
+                                                    <option th:each="type : ${listType}"
+                                                            th:value="${type.name}"
+                                                            th:utext="${type.name}"/>
+                                                </select>
+                                                <div class="filter-title">Nền tảng</div>
+                                                <select  th:name="filter_plaform_name" class="form-control">
+                                                    <option value="" selected>Tất cả danh mục</option>
+                                                    <option th:each="Platform : ${listPlatforms}"
+                                                            th:value="${Platform.name}"
+                                                            th:utext="${Platform.name}"/>
+                                                </select>
+                                            </div>
+                                             <div class="col-md-3">
+                                                 <br/>
+                                                <button class="btn-success" type="submit">Tìm kiếm</button>
+                                            </div>
+
                                         </div>
 
-                                    </form>
-                                    <hr/>
+                                        
+                                        <hr/>
+                                    </div>
 
+                                </form>
+                            </div>
+                            <div class="table-responsive">
+                                <div class="dataTables_wrapper dt-bootstrap4">
+                                   
+                                    <hr/>
 
                                     <div class="row">
 
