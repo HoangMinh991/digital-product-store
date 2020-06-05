@@ -28,7 +28,7 @@ public class OrderIdGGenerator implements IdentifierGenerator {
         try {
             Statement statement = connection.createStatement();
 
-            ResultSet rs = statement.executeQuery("SELECT count(*) from Recharge;");
+            ResultSet rs = statement.executeQuery("SELECT count(*) from Orders;");
             if (rs.next()) {
                 int id = rs.getInt(1)+101;
                 String generatedId = prefix + new Integer(id).toString();

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" dir="ltr" lang="vi">
+      xmlns:th="http://www.thymeleaf.org">
     <head th:replace = "~{fragment/fragment ::head}">
 
     </head>
@@ -46,16 +46,16 @@
                         <th:block th:each="i :${#numbers.sequence(1, listProduct.totalPages, 1)}">
                             <th:block th:if="${(i < (listProduct.number+5))&&(i > (listProduct.number-5))}">
                                 <li th:classappend="${i eq listProduct.number + 1} ? 'active'" class="page-item">
-                                    <a class="page-link" th:href="@{/detail (page=${i},platform=${param.platform},type=${param.type}, bestproduct=${param.bestproduct})}" th:text="${i}"></a></li>
+                                    <a class="page-link" th:href="@{/detail/search (page=${i},filter_product_name=${param.filter_product_name},filter_price_from=${param.filter_price_from},
+                                       filter_price_to=${param.filter_price_to},filter_type_name=${param.filter_type_name},filter_plaform_name=${param.filter_plaform_name})}" th:text="${i}"></a></li>
                             </th:block>
                         </th:block>
-                        <li class="page-item"><a class="page-link" th:href="@{detail (page=${listProduct.number +2},platform=${param.platform},type=${param.type})}">Next</a></li>
+                        <li class="page-item"><a class="page-link" th:href="@{/detail/search (page=${listProduct.number +2},filter_product_name=${param.filter_product_name},filter_price_from=${param.filter_price_from},
+                                       filter_price_to=${param.filter_price_to},filter_type_name=${param.filter_type_name},filter_plaform_name=${param.filter_plaform_name})}">Next</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
-      
-
     </body>
     <footer th:replace = "~{fragment/fragment ::footer}">
     </footer>

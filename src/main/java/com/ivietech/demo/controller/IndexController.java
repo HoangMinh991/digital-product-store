@@ -24,6 +24,7 @@ import com.ivietech.demo.entity.Type;
 import com.ivietech.demo.entity.User;
 import java.util.List;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -49,7 +50,7 @@ public class IndexController {
     @GetMapping("/")
     public String index(Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
-        int size = 4; //default page size is 10
+        int size = 8; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
@@ -79,5 +80,30 @@ public class IndexController {
         model.addAttribute("listPromotion", listPromotion);
   
         return "index";
+    }
+    @GetMapping("/search")
+    public String search(Model model,
+            @RequestParam(value = "name", required = false, defaultValue = "") String name, HttpServletRequest request){
+        
+        int page = 0;
+        int size = 8; 
+        if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
+            page = Integer.parseInt(request.getParameter("page")) - 1;
+        }
+        if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
+            size = Integer.parseInt(request.getParameter("size"));
+        }
+        List<Platforms> listPlatforms = plaformRepository.findAll();
+        List<Type> listType = typeRepository.findAll();
+        model.addAttribute("listPlatforms", listPlatforms);
+        model.addAttribute("listType", listType);
+        Page<ProductDto> productDto = productRepository.findAllProductDto(name, name, name, name,PageRequest.of(page, size));
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!"anonymousUser".equals(userName)) {
+            User user = accountRepository.findByUserName(userName);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("listProduct", productDto);
+        return "search";
     }
 }

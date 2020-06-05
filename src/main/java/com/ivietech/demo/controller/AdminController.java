@@ -85,7 +85,7 @@ public class AdminController {
     private PaymentRepository paymentRepository;
 
     @GetMapping("/admin/product/view")
-    public String viewOrder(Model model,
+    public String viewProduct(Model model,
             @RequestParam(value = "filter_product_id", required = false, defaultValue = "") String productId,
             @RequestParam(value = "filter_product_name", required = false, defaultValue = "") String productName,
             @RequestParam(value = "filter_type_name", required = false, defaultValue = "") String typeName,
