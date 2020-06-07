@@ -128,6 +128,11 @@ public class UserController {
         for (Orders order : listOrderSearch) {
             total += order.getTotalMoney();
         }
+        model.addAttribute("filter_order_id", order_id);
+        model.addAttribute("filter_date_added_from", date_from);
+        model.addAttribute("filter_total_from", total_from);
+        model.addAttribute("filter_date_added_to", date_to);
+        model.addAttribute("filter_total_to", total_to);
         model.addAttribute("total", total);
         model.addAttribute("user", user);
         model.addAttribute("orders", listOrderSearch);

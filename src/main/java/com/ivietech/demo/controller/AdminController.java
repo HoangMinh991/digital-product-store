@@ -92,7 +92,6 @@ public class AdminController {
             @RequestParam(value = "filter_plaform_name", required = false, defaultValue = "") String plaformName,
             @RequestParam(value = "filter_price_from", required = false, defaultValue = "0") long priceLow,
             @RequestParam(value = "filter_price_to", required = false, defaultValue = "999999999999999") long priceHigh,
-            
             HttpServletRequest request) {
 
         int page = 0; //default page number is 0 (yes it is weird)
@@ -107,7 +106,7 @@ public class AdminController {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
-        Page<ProductDto> productDto = productRepository.findAllProductDto(productId,productName, priceLow, priceHigh, typeName, plaformName, PageRequest.of(page, size));
+        Page<ProductDto> productDto = productRepository.findAllProductDto(productId, productName, priceLow, priceHigh, typeName, plaformName, PageRequest.of(page, size));
         model.addAttribute("listProduct", productDto);
         return "admin/listProduct";
     }
@@ -151,7 +150,7 @@ public class AdminController {
         String imgPath = "";
 
         if (file.isEmpty()) {
-            if (productDto.getId()==null) {
+            if (productDto.getId() == null) {
                 return "redirect:uploadStatus";
             }
         } else {
@@ -331,7 +330,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/recharge/view")
-    public String rechargeView(Model model,@RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
+    public String rechargeView(Model model, @RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
             @RequestParam(value = "filter_status", required = false, defaultValue = "") String status,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-01-01") String date_from,
             @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
@@ -346,8 +345,8 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Recharge> recharges = rechagerRepository.findRechargeSearch( rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
-        
+        Page<Recharge> recharges = rechagerRepository.findRechargeSearch(rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size, Sort.by("id").descending()));
+
         model.addAttribute("listRecharge", recharges);
         return "admin/listRecharge";
     }
@@ -407,11 +406,11 @@ public class AdminController {
 
     @PostMapping("/admin/payment/add")
     public String SavePayment(@ModelAttribute("payment") @Valid Payment payment, @RequestParam("file") MultipartFile file,
-        BindingResult bindingResult) {
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/createPlatform";
         }
-        
+
         Payment p = new Payment();
 
         if (payment.getId() != 0) {
@@ -456,18 +455,23 @@ public class AdminController {
         }
         return "redirect:/admin/payment/view";
     }
-    
+
     @GetMapping("/admin/order/view")
-    public String orderView(Model model, HttpServletRequest request) {
+    public String orderView(@RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
+            @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
+            @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
+            @RequestParam(value = "filter_date_added_to", required = false, defaultValue = "2030-1-1") String date_to,
+            @RequestParam(value = "filter_total_to", required = false, defaultValue = "99999999999") long total_to, 
+            Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
-        int size = 10; //default page size is 10
+        int size = 5; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Orders> listOrder = orderRepository.listOrderAdmin(PageRequest.of(page, size));
+        Page<Orders> listOrder = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
         model.addAttribute("listOrder", listOrder);
 //        Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
 //        model.addAttribute("listProduct", productDto);

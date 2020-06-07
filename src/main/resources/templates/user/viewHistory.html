@@ -183,10 +183,12 @@
                                         <th:block th:each="i :${#numbers.sequence(1, orders.totalPages, 1)}">
                                             <th:block th:if="${(i < (orders.number+5))&&(i > (orders.number-5))}">
                                                 <li th:classappend="${i eq orders.number + 1} ? 'active'" class="page-item">
-                                                    <a class="page-link" th:href="@{/user/order (page=${i})}" th:text="${i}"></a></li>
+                                                    <a class="page-link" th:href="@{/user/order (filter_order_id=${filter_order_id}, filter_date_added_from=${filter_date_added_from},
+                                                       filter_total_from=${filter_total_from}, filter_date_added_to=${filter_date_added_to}, filter_total_to=${filter_total_to}, page=${i})}" th:text="${i}"></a></li>
                                             </th:block>
                                         </th:block>
-                                        <li class="page-item"><a class="page-link" th:href="@{/user/order (page=${orders.number +2})}">Next</a></li>
+                                        <li class="page-item"><a class="page-link" th:href="@{/user/order (filter_order_id=${filter_order_id}, filter_date_added_from=${filter_date_added_from},
+                                                       filter_total_from=${filter_total_from}, filter_date_added_to=${filter_date_added_to}, filter_total_to=${filter_total_to}, page=${orders.number +2})}">Next</a></li>
                                     </ul>
                                 </nav>
 
