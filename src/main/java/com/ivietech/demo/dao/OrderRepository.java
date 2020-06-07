@@ -39,8 +39,8 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             @Param("date_from") String date_from,
             @Param("date_to") String date_to,
             Pageable pageable);
-    
-     @Query(
+
+    @Query(
             value = "SELECT * FROM orders o WHERE o.id LIKE CONCAT('%',:code_order,'%') and o.total_money >= :total_from "
             + "and o.total_money <= :total_to and o.created_datetime >= :date_from and o.created_datetime < :date_to",
             nativeQuery = true
@@ -58,7 +58,5 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             nativeQuery = true
     )
     public Page<Orders> listOrderAdmin(Pageable pageable);
-
- 
 
 }

@@ -40,7 +40,6 @@ import javax.validation.Valid;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +53,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -138,15 +136,12 @@ public class AdminController {
 
     @PostMapping("/admin/product/add")
     public String SaveProduct(@ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @RequestParam("file") MultipartFile file,
-            Model model, RedirectAttributes redirectAttributes) {
+            Model model) {
         productValidator.validate(productDto, bindingResult);
         if (bindingResult.hasErrors()) {
-            List<Platforms> listPlatforms = plaformRepository.findAll();
-            List<Type> listType = typeRepository.findAll();
-            model.addAttribute("listPlatforms", listPlatforms);
-            model.addAttribute("listType", listType);
             return "admin/createProduct";
         }
+        System.out.println("abcsds");
         Product product = new Product();
         if (!productDto.getId().isEmpty()) {
             System.out.println(productDto.getId());
@@ -155,9 +150,8 @@ public class AdminController {
         String imgPath = "";
 
         if (file.isEmpty()) {
-            if (productDto.getId().isEmpty()) {
-                redirectAttributes.addFlashAttribute("message", "Vui lòng chọn file");
-                return "redirect:/uploadStatus";
+            if (productDto.getId() == null) {
+                return "redirect:uploadStatus";
             }
         } else {
             try {
@@ -166,7 +160,7 @@ public class AdminController {
                 Files.write(path, bytes);
                 imgPath = '/' + path.toString();
             } catch (IOException e) {
-                return "admin/createProduct";
+                return "redirect:uploadStatus";
             }
         }
         product.setName(productDto.getName());
@@ -285,13 +279,14 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<CodeGiftCard> codeGiftCards = codeGiftCardRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
+        Page<CodeGiftCard> codeGiftCards = codeGiftCardRepository.findAll(PageRequest.of(page, size));
         model.addAttribute("listCode", codeGiftCards);
         return "admin/listCode";
     }
 
     @PostMapping("/admin/upload/code")
     public String uploadCode(@RequestParam("file") MultipartFile reapExcelDataFile, Model model) throws IOException {
+
         List<CodeGiftCard> listCodeGiftCard = new ArrayList<>();
         List<CodeGiftCard> listCodeGiftCardError = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -460,12 +455,8 @@ public class AdminController {
         }
         return "redirect:/admin/payment/view";
     }
-    
-    @GetMapping("/uploadStatus")
-    public String uploadStatus() {
-        return "admin/uploadStatus";
-    }
-     @GetMapping("/admin/order/view")
+
+    @GetMapping("/admin/order/view")
     public String orderView(@RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
             @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
