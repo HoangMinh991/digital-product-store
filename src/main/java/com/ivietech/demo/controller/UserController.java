@@ -108,7 +108,7 @@ public class UserController {
         return "/user/userInfo";
     }
 
-    @RequestMapping("/user/order")
+     @RequestMapping("/user/order")
     public String viewSearchOrder(
             @RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
@@ -123,11 +123,16 @@ public class UserController {
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
-        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
+        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
         double total = 0;
         for (Orders order : listOrderSearch) {
             total += order.getTotalMoney();
         }
+        model.addAttribute("filter_order_id", order_id);
+        model.addAttribute("filter_date_added_from", date_from);
+        model.addAttribute("filter_total_from", total_from);
+        model.addAttribute("filter_date_added_to", date_to);
+        model.addAttribute("filter_total_to", total_to);
         model.addAttribute("total", total);
         model.addAttribute("user", user);
         model.addAttribute("orders", listOrderSearch);
