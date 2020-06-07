@@ -5,7 +5,6 @@
  */
 package com.ivietech.demo.dao;
 
-import com.ivietech.demo.entity.Platforms;
 import com.ivietech.demo.entity.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

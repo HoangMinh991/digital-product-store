@@ -32,6 +32,9 @@
                                         <label>Ảnh sản phẩm</label>
                                         <input type="file" name="file" /><br/><br/>
                                     </div>
+                                    <div th:if="${message}">
+                                        <span class="text-danger" th:text="${message}"/>
+                                    </div>
                                     <div class="form-group">
                                         <label>Đánh dấu sản phẩm nổi bật: </label>
                                         <input type="checkbox"  th:field="*{best}"  th:checked="*{best}"/>

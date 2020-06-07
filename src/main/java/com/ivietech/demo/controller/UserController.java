@@ -123,7 +123,7 @@ public class UserController {
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
-        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
+        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
         double total = 0;
         for (Orders order : listOrderSearch) {
             total += order.getTotalMoney();

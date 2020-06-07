@@ -40,6 +40,7 @@ import javax.validation.Valid;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,6 +54,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -92,7 +94,6 @@ public class AdminController {
             @RequestParam(value = "filter_plaform_name", required = false, defaultValue = "") String plaformName,
             @RequestParam(value = "filter_price_from", required = false, defaultValue = "0") long priceLow,
             @RequestParam(value = "filter_price_to", required = false, defaultValue = "999999999999999") long priceHigh,
-            
             HttpServletRequest request) {
 
         int page = 0; //default page number is 0 (yes it is weird)
@@ -107,7 +108,7 @@ public class AdminController {
         List<Type> listType = typeRepository.findAll();
         model.addAttribute("listPlatforms", listPlatforms);
         model.addAttribute("listType", listType);
-        Page<ProductDto> productDto = productRepository.findAllProductDto(productId,productName, priceLow, priceHigh, typeName, plaformName, PageRequest.of(page, size));
+        Page<ProductDto> productDto = productRepository.findAllProductDto(productId, productName, priceLow, priceHigh, typeName, plaformName, PageRequest.of(page, size));
         model.addAttribute("listProduct", productDto);
         return "admin/listProduct";
     }
@@ -137,12 +138,15 @@ public class AdminController {
 
     @PostMapping("/admin/product/add")
     public String SaveProduct(@ModelAttribute("product") ProductDto productDto, BindingResult bindingResult, @RequestParam("file") MultipartFile file,
-            Model model) {
+            Model model, RedirectAttributes redirectAttributes) {
         productValidator.validate(productDto, bindingResult);
         if (bindingResult.hasErrors()) {
+            List<Platforms> listPlatforms = plaformRepository.findAll();
+            List<Type> listType = typeRepository.findAll();
+            model.addAttribute("listPlatforms", listPlatforms);
+            model.addAttribute("listType", listType);
             return "admin/createProduct";
         }
-        System.out.println("abcsds");
         Product product = new Product();
         if (!productDto.getId().isEmpty()) {
             System.out.println(productDto.getId());
@@ -151,8 +155,9 @@ public class AdminController {
         String imgPath = "";
 
         if (file.isEmpty()) {
-            if (productDto.getId()==null) {
-                return "redirect:uploadStatus";
+            if (productDto.getId().isEmpty()) {
+                redirectAttributes.addFlashAttribute("message", "Vui lòng chọn file");
+                return "redirect:/uploadStatus";
             }
         } else {
             try {
@@ -161,7 +166,7 @@ public class AdminController {
                 Files.write(path, bytes);
                 imgPath = '/' + path.toString();
             } catch (IOException e) {
-                return "redirect:uploadStatus";
+                return "admin/createProduct";
             }
         }
         product.setName(productDto.getName());
@@ -280,14 +285,13 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<CodeGiftCard> codeGiftCards = codeGiftCardRepository.findAll(PageRequest.of(page, size));
+        Page<CodeGiftCard> codeGiftCards = codeGiftCardRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("listCode", codeGiftCards);
         return "admin/listCode";
     }
 
     @PostMapping("/admin/upload/code")
     public String uploadCode(@RequestParam("file") MultipartFile reapExcelDataFile, Model model) throws IOException {
-
         List<CodeGiftCard> listCodeGiftCard = new ArrayList<>();
         List<CodeGiftCard> listCodeGiftCardError = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -331,7 +335,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/recharge/view")
-    public String rechargeView(Model model,@RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
+    public String rechargeView(Model model, @RequestParam(value = "filter_recharge_id", required = false, defaultValue = "") String rechargeId,
             @RequestParam(value = "filter_status", required = false, defaultValue = "") String status,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-01-01") String date_from,
             @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
@@ -346,8 +350,8 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Recharge> recharges = rechagerRepository.findRechargeSearch( rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
-        
+        Page<Recharge> recharges = rechagerRepository.findRechargeSearch(rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size, Sort.by("id").descending()));
+
         model.addAttribute("listRecharge", recharges);
         return "admin/listRecharge";
     }
@@ -407,11 +411,11 @@ public class AdminController {
 
     @PostMapping("/admin/payment/add")
     public String SavePayment(@ModelAttribute("payment") @Valid Payment payment, @RequestParam("file") MultipartFile file,
-        BindingResult bindingResult) {
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/createPlatform";
         }
-        
+
         Payment p = new Payment();
 
         if (payment.getId() != 0) {
@@ -456,7 +460,7 @@ public class AdminController {
         }
         return "redirect:/admin/payment/view";
     }
-    
+
     @GetMapping("/admin/order/view")
     public String orderView(Model model, HttpServletRequest request) {
         int page = 0; //default page number is 0 (yes it is weird)
@@ -481,5 +485,10 @@ public class AdminController {
         List<OrderDetails> orderDetails = order.get().getOrderDetails();
         model.addAttribute("orderDetails", orderDetails);
         return "admin/orderDetail";
+    }
+
+    @GetMapping("/uploadStatus")
+    public String uploadStatus() {
+        return "admin/uploadStatus";
     }
 }
