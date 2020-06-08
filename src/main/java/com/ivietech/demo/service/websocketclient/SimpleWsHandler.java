@@ -46,7 +46,6 @@ public class SimpleWsHandler implements WebSocketHandler {
     public void handleMessage(WebSocketSession wss, WebSocketMessage<?> wsm) throws Exception {
         Gson gson = new Gson();
         String mesage = wsm.getPayload().toString();
-        System.out.println(mesage);
         String id = null;
         long money = 0;
         String string = DataProcessing.removeAccent(mesage);

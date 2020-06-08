@@ -32,6 +32,7 @@ com\ivietech\demo\dto\ItemDto.class
 com\ivietech\demo\dto\NewPassDto.class
 com\ivietech\demo\dao\OrderRepository.class
 com\ivietech\demo\controller\ProductController.class
+com\ivietech\demo\scheduled\ScheduledTasks.class
 com\ivietech\demo\entity\Payment.class
 com\ivietech\demo\controller\RegistrationController.class
 com\ivietech\demo\validation\RegValidator.class
@@ -53,7 +54,6 @@ com\ivietech\demo\beansping\ResourceConfig.class
 com\ivietech\demo\dao\UserRepository.class
 com\ivietech\demo\controller\CheckOutController.class
 com\ivietech\demo\entity\OrderDetails.class
-com\ivietech\demo\dto\UserDto.class
 com\ivietech\demo\validation\NewPasswordValidator.class
 com\ivietech\demo\service\BalanceService.class
 com\ivietech\demo\dto\UserRegistrationDto.class

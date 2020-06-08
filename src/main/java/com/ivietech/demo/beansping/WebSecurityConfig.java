@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**", "/js/**",
                         "/","/search/**" ,"/detail/**", "/img/**", "/img_b/**", "/uploads/**", "/viewCartDetail/**", "/viewproduct/**", "/cart/**").permitAll()
                 .antMatchers("/login/**","/login-error",
-                        "/passwordreset/**", "/passwordResetConfirm/**","/resetPassword/**",
+                       "/api/detail/**", "/passwordreset/**", "/passwordResetConfirm/**","/resetPassword/**",
                         "/registrationConfirm/**", "/register/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")

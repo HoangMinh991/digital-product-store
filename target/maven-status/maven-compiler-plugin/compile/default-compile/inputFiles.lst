@@ -29,7 +29,7 @@ C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dt
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\entity\Recharge.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\validation\EmailValidator.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\utils\RechargeIdGGenerator.java
-C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dto\UserDto.java
+C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\scheduled\ScheduledTasks.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dto\ItemDto.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\dao\RoLeRepository.java
 C:\Users\HoangMinh\Documents\GitHub\iviettech\src\main\java\com\ivietech\demo\model\app\Push.java
