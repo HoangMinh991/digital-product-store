@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.ivietech.demo.entity.User;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -54,4 +55,6 @@ public interface RechagerRepository extends JpaRepository<Recharge, String> {
             @Param("date_from") String date_from,
             @Param("date_to") String date_to,
             Pageable pageable);
+
+    public List<Recharge> findByStatus(String đang_đợi);
 }
