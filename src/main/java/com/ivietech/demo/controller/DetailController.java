@@ -65,11 +65,22 @@ public class DetailController {
             String typeName = request.getParameter("type");
             listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
         }
+        if (request.getParameter("type") != null && !request.getParameter("type").isEmpty() && 
+                request.getParameter("platform") != null && !request.getParameter("platform").isEmpty() ) {
+            String typeName = request.getParameter("type");
+            String platformName = request.getParameter("platform");
+            listProduct = productRepository.findAllByTypeAndPlatforms(typeName, platformName, PageRequest.of(page, size));
+        }
+        
+        if (request.getParameter("bestseller") != null && !request.getParameter("bestseller").isEmpty()) {
+            listProduct = productRepository.findAllByBestSeller(PageRequest.of(page, size));
+        }
+        if (request.getParameter("promotion") != null && !request.getParameter("promotion").isEmpty()) {
+            listProduct = productRepository.findAllByPromotion(PageRequest.of(page, size));
+        }
         if (request.getParameter("bestproduct") != null && !request.getParameter("bestproduct").isEmpty()) {
-            String typeName = request.getParameter("bestProduct");
             listProduct = productRepository.findAllByBestTrue(PageRequest.of(page, size));
         }
-
         model.addAttribute("listProduct", listProduct);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!"anonymousUser".equals(userName)) {

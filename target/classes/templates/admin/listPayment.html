@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace = "~{fragment/fragmentAdmin ::head}">
+    </head>
+    <body id="page-top">
+        <div id="wrapper">
+            <ul th:replace = "~{fragment/fragmentAdmin ::nav-info}">
+
+            </ul>
+            <div  id="content-wrapper" class="d-flex flex-column">
+                <div  id="content">
+                    <nav th:replace = "~{fragment/fragmentAdmin ::header}">
+
+                    </nav>
+                    <div class="container-fluid">
+                        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+                        <p class="mb-4"></p>
+                    </div>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <div class="dataTables_wrapper dt-bootstrap4">
+                                    <div class="row">
+
+                                        <div class="col-sm-12">
+                                            <a th:href="@{/admin/payment/create}"/><button type="button" class="btn btn-primary">Tạo phương thức thanh toán mới</button></a>
+                                            <table class="table table-bordered dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Tên kênh thanh toán</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Số tài khoản</th>
+                                                        <th>Chủ tài khoản</th>
+                                                        <th>Khả dụng</th>
+                                                        <th>Hành động</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <th:block th:each="payment, state :${payments}">
+                                                        <tr th:class="${state.odd}? 'hover_tr odd':'hover_tr even'" class=''>
+                                                            <td th:utext="${payment.id}">
+
+                                                            </td>
+                                                            <td th:utext="${payment.namePayment}">
+
+                                                            </td>
+                                                            <td>
+                                                                <img th:src="${payment.img}" width="100" height="100"/>
+
+                                                            </td>
+                                                            <td th:utext="${payment.namePerson}">
+
+                                                            </td>
+                                                            <td th:utext="${payment.bankNumber}">
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" th:checked="${payment.enabled}"/>
+
+                                                            </td>
+
+                                                            <td>
+                                                                <a th:href="@{/admin/payment/edit(id=${payment.id})}">
+                                                                    <button type="button" class="btn btn-info"><i class="far fa-edit"></i></button></a>
+                                                                <a th:href="@{/admin/payment/delete(id=${payment.id})}">
+                                                                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button></a>
+
+                                                            </td>
+
+                                                        </tr>
+                                                    </th:block>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <footer th:replace = "~{fragment/fragmentAdmin ::footer}">
+
+                </footer>
+            </div>
+        </div>
+        <script th:src="@{/js/jquery.min.js}"></script>
+        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/js/jquery.easing.min.js}"></script>
+        <script th:src="@{/js/sb-admin-2.min.js}"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

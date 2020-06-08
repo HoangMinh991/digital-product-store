@@ -8,6 +8,7 @@ package com.ivietech.demo.dao;
 import com.ivietech.demo.entity.User;
 import com.ivietech.demo.entity.Orders;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,7 +30,7 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
 
     @Query(
             value = "SELECT * FROM orders o WHERE o.user_id = :user_id and o.id LIKE CONCAT('%',:code_order,'%') and o.total_money >= :total_from "
-            + "and o.total_money <= :total_to and o.created_datetime >= :date_from and o.created_datetime < :date_to",
+            + "and o.total_money <= :total_to and o.created_datetime >= :date_from and o.created_datetime <= :date_to",
             nativeQuery = true
     )
     public Page<Orders> listOrderSearch(@Param("user_id") long user_id,
@@ -58,5 +59,8 @@ public interface OrderRepository extends JpaRepository<Orders, String> {
             nativeQuery = true
     )
     public Page<Orders> listOrderAdmin(Pageable pageable);
+
+    public Page<Orders> findByUser(User user, Pageable of);
+
 
 }

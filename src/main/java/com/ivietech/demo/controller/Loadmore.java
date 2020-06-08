@@ -46,7 +46,7 @@ public class Loadmore {
         Page<ProductDto> listProduct = null;
 
         int page = 0; //default page number is 0 (yes it is weird)
-        int size = 4; //default page size is 10
+        int size = 8; //default page size is 10
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }

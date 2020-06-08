@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace = "~{fragment/fragment ::head}">
+
+    </head>
+    <body>
+        <div class="top-header">
+            <div class="container">
+                <div class="text-right" style="padding:5px 0;float: right">
+                    Hỗ trợ 1900 633 305
+                </div>
+            </div>
+        </div>
+        <header th:replace = "~{fragment/fragment ::header}"> 
+
+        </header>
+
+        <div class="container">
+            <div th:replace = "~{fragment/fragment ::menutop}">
+
+            </div>
+            <style>
+                .banner-home .menu-2 .header-menu div.nav-menu {
+                    display: none;
+                    height: auto;
+                    margin: auto;
+                    width: 100%;
+                }
+            </style>
+            <script th:src="@{/js/node.js}"></script>
+            <style xmlns="">
+                .btn_acction_edit {
+                    display: none;
+                    margin-left: 14px;
+                }
+
+                .info_edit {
+                    display: none;
+                }
+
+                .checkbox {
+                    display: inline-flex ;
+                }
+            </style>
+            <style>
+                .camera-cover {
+                    opacity: 0.8;
+                    color: white;
+                }
+
+                .cover-hidden {
+                    position: absolute;
+                    right: 3px;
+                    top: 3px;
+                    background-color: black;
+                    border: 1px solid white;
+                    color: white;
+                    width: 150px;
+                    padding: 8px;
+                    opacity: 0.75;
+                    border-radius: 4px;
+                    text-align: center;
+                    display: none;
+                    cursor: pointer;
+                }
+
+                .camera-cover-hidden {
+                    float: left;
+                    margin-top: 2px;
+                }
+
+                .img-container img {
+                    max-width: 80%;
+                }
+
+                body .container {
+                    margin-top: 0;
+                }
+
+
+            </style>
+        </div>
+        <div class="container">
+
+            <div th:replace = "~{fragment/fragment ::user}">
+
+            </div>
+            <div class="container-body ">
+                <div class="container-body ">
+
+                    <div class="container-body-container" style="float:none;width:100%;">
+                        <span class="gradient-text">NẠP TIỀN VÀO TÀI KHOẢN</span>
+                        <hr>
+                            <p><b>Phương thức nạp tiền:</b></p>
+                            <div class="list-group">
+                                <th:block th:each="payment:${payments}">
+                                    <th:block th:if="${payment.enabled}">
+                                        <button  id="css-payment" type="button" data-toggle="collapse" th:data-target="${'#'+payment.namePayment}" style="padding: 10px 0;" class="list-group-item list-group-item-action">
+                                            <div class="table-responsive-md" style="overflow:hidden; border: 0;margin-bottom: 0px;">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr style="background-color:transparent;">
+                                                            <td rowspan="2" class="text-center" style="width:60px;min-width:50px;vertical-align: middle;">
+                                                                <img th:src="${payment.img}" height="40px" width="40px">
+                                                            </td>
+                                                            <td>
+                                                                <span style="font-size:14px;"><strong>Chuyển khoản qua <span th:text='${payment.namePayment}'></span></strong></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span style="font-size:12px;" th:text='${payment.description}'></span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </button>
+                                        <div class="content-payment collapse"  th:id="${payment.namePayment}" style ="block">
+                                            <div class="panel-group" id="momo-surcharge-block">
+                                                <div class="panel panel-default">
+
+                                                    <div class="panel-body">
+                                                        <form method="post" th:action="@{/user/recharge}" th:object="${rechagerDto}" >
+                                                            <label class="col-sm-2 control-label" for="input-coupon">Nhập số Tiền:</label>
+                                                            <div class="col-sm-10">
+                                                                <div class="input-group">
+                                                                    <input th:field="*{money}" type="number" placeholder="Vui lòng nhập số tiền" class="form-control">
+                                                                        <span class="input-group-btn">
+                                                                            <button  type="sumit" class="btn btn-primary">Nạp tiền qua <span th:text='${payment.namePayment}'></span></button>
+                                                                        </span>
+                                                                </div>
+                                                                <input th:value='${payment.id}' type="hidden" th:name="idPayment" th:id="idPayment"/>
+                                                            </div>
+                                                            <div class="img-responsive text-center" style="margin-top: 30px">
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${payment.enabled}">
+                                        <button disabled  id="css-payment" type="button" data-toggle="collapse" th:data-target="${'#'+payment.namePayment}" style="padding: 10px 0;" class="list-group-item list-group-item-action">
+                                            <div class="table-responsive-md" style="overflow:hidden; border: 0;margin-bottom: 0px;">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr style="background-color:transparent;">
+                                                            <td rowspan="2" class="text-center" style="width:60px;min-width:50px;vertical-align: middle;">
+                                                                <img th:src="${payment.img}" height="40px" width="40px">
+                                                            </td>
+                                                            <td>
+                                                                <span style="font-size:14px;"><strong>Chuyển khoản qua <span th:text='${payment.namePayment}'></span></strong></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><span style="font-size:12px;"> Phương thức thanh toán đang được bảo trì</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </button>
+
+                                    </th:block>
+                                </th:block>
+
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+    <footer th:replace = "~{fragment/fragment ::footer}">
+    </footer>
+</html>
+
