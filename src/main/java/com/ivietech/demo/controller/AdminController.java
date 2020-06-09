@@ -472,6 +472,14 @@ public class AdminController {
             size = Integer.parseInt(request.getParameter("size"));
         }
         Page<Orders> listOrder = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
+        List<Orders> temp = new ArrayList<Orders>();
+        int totalPages = listOrder.getTotalPages();
+        for (int i = 0; i < totalPages; i++) {
+            Page<Orders> listOrderAdminSearch = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(i, size));
+            List<Orders> content = listOrderAdminSearch.getContent();
+            temp.addAll(content);
+        }
+        model.addAttribute("listOrderHidden", temp);
         model.addAttribute("listOrder", listOrder);
 //        Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
 //        model.addAttribute("listProduct", productDto);

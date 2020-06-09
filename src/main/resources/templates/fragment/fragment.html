@@ -204,11 +204,11 @@
             <div class="search-form">
                 <form th:action="@{/search}" method="get">
                     <div class="search-control">
-                    <input type="text" class="search-box" name="name" value="" placeholder="Tìm theo sản phẩm, chủng loại, nền tảng">
-                        <button class="search-btn" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>>
-                </div>
+                        <input type="text" class="search-box" name="name" value="" placeholder="Tìm theo sản phẩm, chủng loại, nền tảng">
+                            <button class="search-btn" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>>
+                    </div>
                 </form>
 
             </div>
@@ -336,15 +336,20 @@
                                             </tr>
                                             <tr>
 
-                                                <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
-                                                </td>
+
                                                 <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                    </td>
                                                     <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">
                                                         </span><i class="icon-coin-dollar" style="color: black"></i></td>
                                                 </th:block>
                                                 <th:block sec:authorize="isAuthenticated()">
-                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
-                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                    <th:block th:if="${session.order.total_order > user.balance.money}">
+                                                        <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                        </td>
+                                                        <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                            </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                    </th:block>
                                                 </th:block>
 
                                             </tr>
@@ -590,13 +595,13 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
                 <div class="item-game-wrapper">
                     <div class="img">
-                        <a th:href="@{/viewproduct(productId=${product.id})}">
+                        <a th:href="@{/viewproduct(productId=${product.id})}" target="_blank">
                             <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
                         </a>
                     </div>
                     <div class="item-info">
                         <div class="item-title">
-                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}"></a>
+                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}" target="_blank"></a>
                         </div>
 
                         <div class="item-price">
@@ -654,14 +659,14 @@
             </div>
             <div class="account-name">
                 <div class="full-name" style="text-transform: capitalize;" th:text="${user.name}"></div>
-                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
+                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')} + 'đ'"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
             </div>
         </div>
         <div class="account-info">
             <div class="account-info-item">Username: <span style="text-transform: capitalize;" th:text="${user.userName}"></span></div>
             <div class="account-info-item">Ngày đăng kí: <span  th:utext="${#dates.format(user.createdDatetime, 'dd-MM-yyyy HH:mm')}"></span></div>
             <div class="account-info-item"><span >Member</span></div>
-            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar"></i></span></div>
+            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')} + 'đ'"></span> <i class="icon-coin-dollar"></i></span></div>
         </div>
     </div>
 
