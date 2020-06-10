@@ -59,6 +59,7 @@
                                             <div class="filter-title" >Số tiền đến</div>
                                             <input type="text"  th:name="filter_total_to" value="" placeholder="Số tiền đến" id="input-amount-to" class="form-control" />
                                             <div class="button-group">
+                                                <div class="filter-title"></div>
                                                 <input class="btn-green-bg" id="button-filter" type="submit" value="Tìm kiếm"/>
                                             </div>
                                         </div>
@@ -67,6 +68,48 @@
                                 </div>
                             </form>
                         </div>
+                        <table id="selectedColumn1" class="table table-bordered dataTable" style="display:none">
+                            <thead>
+                                <tr>
+                                    <th>Mã hóa đơn</th>
+                                    <th>Ngày tạo hóa đơn</th>
+                                    <th>Tổng tiền hóa đơn</th>
+                                    <th>Trạng thái</th>
+                                    <th>User Id</th>
+                                    <th class="noEx1">Xem chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <th:block th:each="order :${listOrderHidden}">
+                                    <tr>
+                                        <td th:utext="${order.id}">
+
+                                        </td>
+
+                                        <td th:utext="${#dates.format(order.createdDatetime, 'dd-MM-yyyy HH:mm')}">
+
+                                        </td>
+                                        <td th:utext="${order.totalMoney}">
+
+                                        </td>
+                                        <td>
+                                            <th:block th:if='${order.status}'>
+                                                Thành công
+                                            </th:block>
+                                            <th:block th:unless='${order.status}'>
+                                                Thất bại
+                                            </th:block>
+
+                                        </td>
+                                        <td th:utext="${order.user.id}">
+                                        </td>
+                                        <td class="noEx1">
+                                            <a th:href="@{/admin/order/detail(orderId=${order.id})}">Xem</a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                            </tbody>
+                        </table>
                         <div class="row">
 
                             <div class="table-responsive">
@@ -81,8 +124,8 @@
                                                         <th>Ngày tạo hóa đơn</th>
                                                         <th>Tổng tiền hóa đơn</th>
                                                         <th>Trạng thái</th>
-                                                        <th>Username</th>
-                                                        <th>Xem chi tiết</th>
+                                                        <th>User Id</th>
+                                                        <th class="noEx1">Xem chi tiết</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -107,9 +150,9 @@
                                                                 </th:block>
 
                                                             </td>
-                                                            <td th:utext="${order.user.userName}">
+                                                            <td th:utext="${order.user.id}">
                                                             </td>
-                                                            <td>
+                                                            <td class="noEx1">
                                                                 <a th:href="@{/admin/order/detail(orderId=${order.id})}">Xem</a>
                                                             </td>
                                                         </tr>
@@ -151,6 +194,9 @@
                                                     </li>
                                                 </ul>
                                             </nav>
+
+                                            <p></p>
+                                            <button onclick="myFunction()" class="btn btn-success">Export to Excel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -166,16 +212,21 @@
                 </footer>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('#selectedColumn').DataTable();
-            });
-        </script>
         <script th:src="@{/js/jquery.min.js}"></script>
+        <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+        <script type="text/javascript">
+                                                function myFunction() {
+                                                    $('#selectedColumn1').table2excel({
+                                                        exclude: ".noEx1",
+                                                        name: "My Bio",
+                                                        filename: "Biodata"
+                                                    });
+                                                }
+        </script>
         <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
         <script th:src="@{/js/jquery.easing.min.js}"></script>
         <script th:src="@{/js/sb-admin-2.min.js}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+
     </body>
 </html>

@@ -71,14 +71,7 @@
                                         </th:block>
                                     </div>
                                 </div>
-                                <div class="sp-info-top-item col-md-4 col-xs-4 col-sm-4">
-                                    <div class="sp-info-top-item-icon"><img style="width: 35px;" src="https://divineshop.vn/assets/resources/item-icon-3.png"></div>
-                                    <div class="text-wrap">
-                                        <div class="text">Link gốc</div>
-                                        <p><a href="" target="_blank" rel="nofollow">Sản phẩm</a>
-                                        </p>
-                                    </div>
-                                </div>
+                                
                             </div>
                             <div class="sp-price-text">Giá sản phẩm</div>
                             <div class="sp-price-new">
@@ -116,8 +109,7 @@
 
                             </div>
                             <hr/>
-                            <div class="tags"><img src="./assets/resources/tags.png"><b>Tag:</b>
-                            </div>
+
                         </div>
                     </div>
                     <div class="sp-body-info clearfix">
@@ -129,7 +121,7 @@
                             <div class="fontSize-title">Chi tiết sản phẩm</div>
                         </div>
                         <div class="description-container">
-
+                            <div th:utext="${productDto.description}"></div>
 
                         </div>
                     </div>

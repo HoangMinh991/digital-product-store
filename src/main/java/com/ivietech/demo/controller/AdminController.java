@@ -164,6 +164,7 @@ public class AdminController {
         product.setName(productDto.getName());
         product.setPriceNew(productDto.getPriceNew());
         product.setPriceOld(productDto.getPriceOld());
+        product.setDescription(productDto.getDescription());
         product.setType(typeRepository.findByName(productDto.getTypeName()));
         product.setPlatforms(plaformRepository.findByName(productDto.getPlatformsName()));
         product.setBest(productDto.isBest());
@@ -495,7 +496,7 @@ public class AdminController {
         return "redirect:/admin/payment/view";
     }
 
-    @GetMapping("/admin/order/view")
+   @GetMapping("/admin/order/view")
     public String orderView(@RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
             @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,
@@ -510,7 +511,15 @@ public class AdminController {
         if (request.getParameter("size") != null && !request.getParameter("size").isEmpty()) {
             size = Integer.parseInt(request.getParameter("size"));
         }
-        Page<Orders> listOrder = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size, Sort.by("created_datetime").descending()));
+        Page<Orders> listOrder = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size, Sort.by("total_money").descending()));
+        List<Orders> temp = new ArrayList<Orders>();
+        int totalPages = listOrder.getTotalPages();
+        for (int i = 0; i < totalPages; i++) {
+            Page<Orders> listOrderAdminSearch = orderRepository.listOrderAdminSearch(order_id, total_from, total_to, date_from, date_to, PageRequest.of(i, size, Sort.by("total_money").descending()));
+            List<Orders> content = listOrderAdminSearch.getContent();
+            temp.addAll(content);
+        }
+        model.addAttribute("listOrderHidden", temp);
         model.addAttribute("listOrder", listOrder);
 //        Page<ProductDto> productDto = productRepository.findAllProductDto(PageRequest.of(page, size));
 //        model.addAttribute("listProduct", productDto);

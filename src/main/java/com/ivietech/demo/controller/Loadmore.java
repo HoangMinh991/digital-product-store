@@ -71,7 +71,7 @@ public class Loadmore {
                 listProduct = productRepository.findAllByType(typeName, PageRequest.of(page, size));
             }
         }
-        if (request.getParameter("productPromotion") != null && !request.getParameter("productPromotion").isEmpty()) {
+        if (request.getParameter("promotion") != null && !request.getParameter("promotion").isEmpty()) {
             listProduct = productRepository.findAllByPromotion(PageRequest.of(page, size));
         }
         model.addAttribute("listProduct", listProduct);

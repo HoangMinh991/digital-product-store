@@ -49,21 +49,21 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c GROUP BY p.id HAVING SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END) > 2 ORDER BY COUNT(p.id)")
     public Page<ProductDto> findAllByBestSeller( PageRequest of);
     
-    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name,p.best) "
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name,p.best,p.description) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.id =?1  GROUP BY p.id")
     public Optional<ProductDto> findProductDtoById (String id);
     
-    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best,p.description) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c "
             + "WHERE p.id like %?1% AND  p.name like %?2% AND p.priceNew > ?3 AND p.priceNew < ?4  AND p.type.name like %?5% AND p.platforms.name like %?6% GROUP BY p.id")
     public Page<ProductDto> findAllProductDto(String idProduct,String nameProduct, long priceLow, long priceHigh,String typeName, String platformName, PageRequest of);
     
-    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best,p.description) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c WHERE p.priceNew < p.priceOld GROUP BY p.id")
     public Page<ProductDto> findAllByPromotion(PageRequest of);
     
     
-    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best) "
+    @Query("SELECT new com.ivietech.demo.dto.ProductDto(p.id, p.img, p.name, p.priceNew, p.priceOld, COUNT(c.id) - SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END), SUM(CASE WHEN c.orderDetails IS NOT NULL THEN 1 ELSE 0 END),p.type.name,p.platforms.name, p.best,p.description) "
             + "FROM Product AS p LEFT OUTER JOIN p.listCodeGiftCard AS c "
             + "WHERE p.id like %?1% OR  p.name like %?2% OR p.type.name like %?3% OR p.platforms.name like %?4% GROUP BY p.id")
     public Page<ProductDto> findAllProductDto(String idProduct,String nameProduct,String typeName, String platformName, PageRequest of);

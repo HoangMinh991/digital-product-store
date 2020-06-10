@@ -98,7 +98,7 @@
             </div>
         </div>
         <input id="pageGame" value="2" type="hidden"></input>
-        <div class="view-more btn-aqua" id="loadMoreProduct1">Tải thêm sản phẩm</div>
+        <div class="view-more btn-aqua" id="loadMoreProduct4">Tải thêm sản phẩm</div>
         <hr>
     </div>
     <div class="container padd-0">
@@ -106,7 +106,7 @@
             <h2>Sản phẩm khuyến mãi</h2>
             <a th:href="@{/detail(promotion='true')}">Xem chi tiết</a>
         </div>
-        <div class="list-container">
+        <div class="list-container productPromotion">
             <div class="row service">
                 <th:block th:replace = "~{fragment/fragment ::listProduct(${listPromotion})}">
 
@@ -126,28 +126,28 @@
 <script>
     $("#loadMoreProduct1").click(function () {
         var page = $("#pageBest").val();
-        loadMore(page, '', '', '1', '','', 'bestproduct');
-        $("#pageBest").val(+page+1);
+       loadMore(page, '', '', '1', '', '', 'bestproduct',"#loadMoreProduct1");
+        $("#pageBest").val(+page + 1);
     });
     $("#loadMoreProduct2").click(function () {
         var page = $("#pageBestSell").val();
-        loadMore(page, '', '', '', '1','', 'bestSell');
-        $("#pageBestSell").val(+page+1);
+        loadMore(page, '', '', '', '1', '', 'bestSell',"#loadMoreProduct2");
+        $("#pageBestSell").val(+page + 1);
     });
     $("#loadMoreProduct3").click(function () {
         var page = $("#pageGiftCard").val();
-        loadMore(page, 'Gift card', 'Steam', '', '','', 'giftcardsteam');
-         $("#pageGiftCard").val(+page+1);
+        loadMore(page, 'Gift card', 'Steam', '', '', '', 'giftcardsteam',"#loadMoreProduct3");
+        $("#pageGiftCard").val(+page + 1);
     });
     $("#loadMoreProduct4").click(function () {
         var page = $("#pageGame").val();
-        loadMore(page, 'Game', '', '', '','', 'game');
-        $("#pageGame").val(+page+1);
+        loadMore(page, 'Game', '', '', '', '', 'game',"#loadMoreProduct4");
+        $("#pageGame").val(+page + 1);
     });
     $("#loadMoreProduct5").click(function () {
         var page = $("#promotion").val();
-        loadMore(page, '', '', '', '', '1', 'productPromotion');
-        $("#promotion").val(+page+1);
+        loadMore(page, '', '', '', '', '1', 'productPromotion',"#loadMoreProduct5");
+        $("#promotion").val(+page + 1);
     });
 </script>
 </html>
