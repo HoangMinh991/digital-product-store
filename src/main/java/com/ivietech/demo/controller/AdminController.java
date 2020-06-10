@@ -164,6 +164,7 @@ public class AdminController {
         product.setName(productDto.getName());
         product.setPriceNew(productDto.getPriceNew());
         product.setPriceOld(productDto.getPriceOld());
+        product.setDescription(productDto.getDescription());
         product.setType(typeRepository.findByName(productDto.getTypeName()));
         product.setPlatforms(plaformRepository.findByName(productDto.getPlatformsName()));
         product.setBest(productDto.isBest());
@@ -495,7 +496,7 @@ public class AdminController {
         return "redirect:/admin/payment/view";
     }
 
-    @GetMapping("/admin/order/view")
+   @GetMapping("/admin/order/view")
     public String orderView(@RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
             @RequestParam(value = "filter_total_from", required = false, defaultValue = "0") long total_from,

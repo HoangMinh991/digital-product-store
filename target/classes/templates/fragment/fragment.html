@@ -340,15 +340,19 @@
                                             </tr>
                                             <tr>
 
-                                                <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
-                                                </td>
                                                 <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                    </td>
                                                     <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">
                                                         </span><i class="icon-coin-dollar" style="color: black"></i></td>
                                                 </th:block>
                                                 <th:block sec:authorize="isAuthenticated()">
-                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
-                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                    <th:block th:if="${session.order.total_order > user.balance.money}">
+                                                        <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                        </td>
+                                                        <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                            </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                    </th:block>
                                                 </th:block>
 
                                             </tr>

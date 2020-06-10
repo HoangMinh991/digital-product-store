@@ -40,9 +40,11 @@ public class Product implements Serializable {
     private String name;
     private long priceNew;
     private long priceOld;
+    @Column(length = 3000)
+    private String description;
     @ManyToOne
     private Platforms platforms;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Type type;
     private boolean best;
     @OneToMany(mappedBy ="product")
@@ -110,6 +112,14 @@ public class Product implements Serializable {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isBest() {

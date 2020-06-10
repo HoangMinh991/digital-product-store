@@ -95,12 +95,12 @@
                         <th:block th:each="item: ${orders.orderDetails}">
                             <div class="col-md-12 hidden-sm hidden-xs item">
                                 <div class="col-md-2">
-                                    <a th:href="@{/viewproduct(productId=${item.product.id})}" target="_blank">
+                                    <a th:href="@{/viewproduct(productId=${item.product.id})}">
                                         <img th:src="${item.product.img}">
                                     </a>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="" target="_blank" class="title" th:text="${item.product.name}">Name </a>
+                                    <a th:href="@{/viewproduct(productId=${item.product.id})}" class="title" th:text="${item.product.name}">Name </a>
                                     <div class="key-game">
                                         <div><strong>Key Game</strong></div>
                                         <div style="margin-top: 5px;cursor: copy;">
@@ -113,7 +113,6 @@
                                
                                 <div class="col-md-3 text-right">
                                     <div style="font-size: 16px;margin-bottom: 5px;font-weight: bold;margin-bottom:10px;" th:text="${#numbers.formatDecimal(item.product.priceNew, 0, 'POINT', 0, 'POINT')}+ 'VNĐ '">13.000 VNĐ</div>
-                                    <a href=""  target="_blank" data-toggle="tooltip" title="Nhập key" class="btn btn-danger">Nhập key</a>
                                 </div>
                             </div>
                             

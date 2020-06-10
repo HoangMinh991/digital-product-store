@@ -103,7 +103,7 @@
                                                             <a th:href="@{/cart/updateGiam(productId=${item.productDto.id})}"><button class="btn btn-default bootstrap-touchspin-down btn-quantity" type="button">-</button></a>
                                                         </span>
                                                         <span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
-                                                        <input name="" type="tel" class="form-control quantity-r2 quantity js-quantity-product quantity-input input-quantity-pc" min="0" data-js-qty="" th:value="${item.quantity}" style="display: block;text-align: center;">
+                                                        <input name="" type="tel" class="form-control quantity-r2 quantity js-quantity-product quantity-input input-quantity-pc" min="0" data-js-qty="" readonly="" th:value="${item.quantity}" style="display: block;text-align: center;">
                                                             <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
                                                             <span class="input-group-btn">
                                                                 <a th:href="@{/cart/updateTang(productId=${item.productDto.id})}"><button class="btn btn-default bootstrap-touchspin-up btn-quantity" type="button">+</button></a>

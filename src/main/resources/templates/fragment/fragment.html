@@ -340,7 +340,6 @@
                                             </tr>
                                             <tr>
 
-
                                                 <th:block sec:authorize="!isAuthenticated()">
                                                     <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
                                                     </td>
@@ -599,13 +598,13 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
                 <div class="item-game-wrapper">
                     <div class="img">
-                        <a th:href="@{/viewproduct(productId=${product.id})}" target="_blank">
+                        <a th:href="@{/viewproduct(productId=${product.id})}">
                             <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
                         </a>
                     </div>
                     <div class="item-info">
                         <div class="item-title">
-                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}" target="_blank"></a>
+                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}"></a>
                         </div>
 
                         <div class="item-price">
@@ -663,14 +662,12 @@
             </div>
             <div class="account-name">
                 <div class="full-name" style="text-transform: capitalize;" th:text="${user.name}"></div>
-                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')} + 'đ'"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
+                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
             </div>
         </div>
         <div class="account-info">
             <div class="account-info-item">Username: <span style="text-transform: capitalize;" th:text="${user.userName}"></span></div>
             <div class="account-info-item">Ngày đăng kí: <span  th:utext="${#dates.format(user.createdDatetime, 'dd-MM-yyyy HH:mm')}"></span></div>
-            <div class="account-info-item"><span >Member</span></div>
-            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')} + 'đ'"></span> <i class="icon-coin-dollar"></i></span></div>
             <div class="account-info-item"><span sec:authorize="hasRole('ADMIN')" >ADMIN</span></div>
             <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar"></i></span></div>
         </div>

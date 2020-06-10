@@ -25,6 +25,7 @@ public class ProductDto implements Serializable {
     private String typeName;
     private String platformsName;
     private boolean best;
+    private String description;
 
     public ProductDto(String id, String img, String name, long priceNew, long priceOld, long numberCode) {
         this.id = id;
@@ -45,7 +46,7 @@ public class ProductDto implements Serializable {
         this.numberOrderCode = numberOrderCode;
     }
 
-    public ProductDto(String id, String img, String name, long priceNew, long priceOld, long numberCode, long numberOrderCode, String typeName, String platformsName, boolean best) {
+    public ProductDto(String id, String img, String name, long priceNew, long priceOld, long numberCode, long numberOrderCode, String typeName, String platformsName, boolean best, String description) {
         this.id = id;
         this.img = img;
         this.name = name;
@@ -56,11 +57,9 @@ public class ProductDto implements Serializable {
         this.typeName = typeName;
         this.platformsName = platformsName;
         this.best = best;
+        this.description = description;
     }
-
-   
     
-
     public ProductDto() {
     }
 

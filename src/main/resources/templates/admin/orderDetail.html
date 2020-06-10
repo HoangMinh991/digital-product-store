@@ -64,35 +64,7 @@
 
                                                 </tbody>
                                             </table>
-                                            <nav aria-label="Pagination" th:if="${listOrder.totalPages gt 0}">
-                                                <ul class="pagination justify-content-center font-weight-medium">
-                                                    <li class="page-item" th:classappend="${listOrder.number eq 0} ? 'disabled'">
-                                                        <a class="page-link svg-icon"
-                                                           th:href="@{/admin/order/view?page={id}(id=${listOrder.number lt 2 ? 1 : listOrder.number})}"
-                                                           aria-label="Previous">
-                                                            Lùi
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item" th:classappend="${i eq listOrder.number + 1} ? 'active'"
-                                                        th:each="i : ${#numbers.sequence( listOrder.number + 1, listOrder.totalPages > 10 + listOrder.number ? listOrder.number + 10 : listOrder.totalPages, 1)}">
-                                                        <a class="page-link" th:href="@{/admin/order/view?page={id}(id=${i})}" th:text="${i}"
-                                                           th:title="${'Page '+ i}"
-                                                           rel="tooltip"></a>
-                                                    </li>
-                                                    <li class="page-item disabled" th:if="${listOrder.number + 10 < listOrder.totalPages}">
-                                                        <a class="page-link svg-icon" href="#">
-                                                            <span data-feather="more-horizontal" width="20" height="20"></span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item" th:classappend="${listOrder.number + 1 eq listOrder.totalPages} ? 'disabled'">
-                                                        <a class="page-link svg-icon" th:href="@{/admin/order/view?page={id}(id=${listOrder.number + 2})}"
-                                                           aria-label="Next"
-                                                           title="Next Page" rel="tooltip">
-                                                            Tới
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
+                                            
                                         </div>
                                     </div>
                                 </div>
