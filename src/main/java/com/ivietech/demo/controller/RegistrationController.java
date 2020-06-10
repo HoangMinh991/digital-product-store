@@ -73,16 +73,17 @@ public class RegistrationController {
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             model.addAttribute("message", "auth.message.invalidToken");
-            return "/user/badUser";
+            return "/user/message";
         }
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             model.addAttribute("message", "auth.message.expired");
-            return "/user/badUser";
+            return "/user/message";
         }
         user.setEnabled(true);
         userService.saveRegisteredUser(user);
+        model.addAttribute("message", "Kích hoạt thành công");
         return "/user/message";
     }
 

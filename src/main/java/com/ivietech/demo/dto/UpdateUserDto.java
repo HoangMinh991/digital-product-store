@@ -5,6 +5,8 @@
  */
 package com.ivietech.demo.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -13,6 +15,12 @@ import lombok.Data;
  */
 @Data
 public class UpdateUserDto {
+
+    private String email;
+    private String userName;
+    @NotNull
+    @Size(min = 2, max = 30)
     private String name;
+    @NotNull
     private String phone;
 }

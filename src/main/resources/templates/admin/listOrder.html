@@ -1,4 +1,4 @@
-  
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -138,7 +138,7 @@
                                                             <td th:utext="${#dates.format(order.createdDatetime, 'dd-MM-yyyy HH:mm')}">
 
                                                             </td>
-                                                            <td th:utext="${order.totalMoney}">
+                                                            <td th:text="${#numbers.formatDecimal(order.totalMoney, 0, 'POINT', 0, 'POINT')}+ ' đ'">
 
                                                             </td>
                                                             <td>
@@ -212,20 +212,20 @@
                 </footer>
             </div>
         </div>
-        <script type="text/javascript">
-            function myFunction() {
-                $('#selectedColumn1').table2excel({
-                    exclude: ".noEx1",
-                    name: "My Bio",
-                    filename: "Biodata"
-                });
-            }
-        </script>
         <script th:src="@{/js/jquery.min.js}"></script>
+        <script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+        <script type="text/javascript">
+                                                function myFunction() {
+                                                    $('#selectedColumn1').table2excel({
+                                                        exclude: ".noEx1",
+                                                        name: "My Bio",
+                                                        filename: "Biodata"
+                                                    });
+                                                }
+        </script>
         <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
         <script th:src="@{/js/jquery.easing.min.js}"></script>
         <script th:src="@{/js/sb-admin-2.min.js}"></script>
-        <script th:src="@{/js/jquery.table2excel.js}"></script>
         <script th:src="@{/js/bootstrap.min.js}"></script>
 
     </body>

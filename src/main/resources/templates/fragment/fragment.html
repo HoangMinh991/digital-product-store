@@ -251,7 +251,11 @@
                                             Thông tin tài khoản
                                         </div>
                                     </a>
-
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/product/view}">
+                                        <div class="drop-link-menu-login">
+                                            Bảng quản trị
+                                        </div>
+                                    </a>
                                     <a th:href="@{/}" target="_blank">
                                         <div class="drop-link-menu-login">
                                             Liên hệ Fanpage
@@ -667,6 +671,8 @@
             <div class="account-info-item">Ngày đăng kí: <span  th:utext="${#dates.format(user.createdDatetime, 'dd-MM-yyyy HH:mm')}"></span></div>
             <div class="account-info-item"><span >Member</span></div>
             <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')} + 'đ'"></span> <i class="icon-coin-dollar"></i></span></div>
+            <div class="account-info-item"><span sec:authorize="hasRole('ADMIN')" >ADMIN</span></div>
+            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar"></i></span></div>
         </div>
     </div>
 
@@ -764,7 +770,7 @@
                         <div class="paragraph">SHOP</div>
                         <ul>
                             <li><a href="" target="_blank">Game bản quyền là gì?</a></li>
-                            <li><a href="" target="_blank">Giới thiệu Divine Shop</a></li>
+                            <li><a href="" target="_blank">Giới thiệu về shop</a></li>
                             <li><a href="" target="_blank">Điều khoản dịch vụ</a></li>
                             <li><a href="" target="_blank">Chính sách bảo mật</a></li>
                         </ul>
@@ -786,7 +792,7 @@
                             <li>
                                 <a href="/lien-he">Địa chỉ giao dịch trực tiếp</a>
                             </li>
-                            <li>Hotline: 9999 9999 9999 (7:00 - 24:00)</li>
+                            <li>Hotline: 9999 9999 (7:00 - 24:00)</li>
                             <li>Email: hotrodota247@gmail.com</li>
                             <li><a href="">Fanpage</a></li>
 

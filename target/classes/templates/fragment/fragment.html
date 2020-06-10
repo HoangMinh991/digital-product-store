@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+    <head th:fragment="head">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title th:text="${title}"></title>
+        <link rel="stylesheet" th:href="@{/css/header.css}"/>
+        <!-- css-->
+        <link rel="stylesheet" th:href="@{/css/normalize.min.css}"/>
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js?t=1590675110"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?t=1590675110" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
+        <!-- js-->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css?t=1590675110"/>
+        <link rel="stylesheet" th:href="@{/css/slick-theme.css}"/>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js?t=1590675110"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js?t=1590675110" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"/>
+        <link href="https://fonts.googleapis.com/css?family=Anton&amp;display=swap&amp;t=1590675110" rel="stylesheet"/>
+
+        <link th:href="@{/css/animate.css}" type="text/css" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/fancybox.css}" type="text/css" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/popupwindow.css}" type="text/css" rel="stylesheet" media="screen"/>
+        <script th:src="@{/js/moment.js}" type="text/javascript"></script>
+        <link href="https://hgeqic7azi.vcdn.com.vn/catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css?t=1590921996" type="text/css" rel="stylesheet" media="screen">
+            <script th:src="@{/js/fancybox.js}" type="text/javascript"></script>
+            <script src="https://hgeqic7azi.vcdn.com.vn/catalog/view/javascript/jquery/datetimepicker/moment.js?t=1590921996" type="text/javascript"></script>
+            <script src="https://hgeqic7azi.vcdn.com.vn/catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js?t=1590921996" type="text/javascript"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js?t=1590675110"></script>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css?t=1590675110" rel="stylesheet"/>
+            <link rel="stylesheet" th:href="@{/css/css.css}"/>
+            <link rel="stylesheet" th:href="@{/css/common.css}"/>
+            <script th:src="@{/js/common.min.js}"></script>
+            <script th:src="@{/js/common.js}"></script>
+    </head>
+    <header class="home-page fixed-header" th:fragment="header">
+        <nav id="sidebar" class="navbar">
+            <div id="dismiss">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content">
+                    <li class="mt-0 collapsed" style="background-color: #4267B2">
+                        <div class="header-btn text-white">
+                            <th:block sec:authorize="isAuthenticated()">
+                                <div class="row">
+                                    <div class="col-xs-2 padd-0" style=" margin-top: 5px;">
+                                        <img class="img-fit" id="avatar-profile2" style="border-radius: 50%;" th:src="@{/img/default.png}">
+                                    </div>
+                                    <div class="col-xs-10">
+                                        <div class="text-white">
+                                            <a th:href="@{/user/info}" class="text-white" style="text-transform: capitalize;"></a>
+                                        </div>
+                                        <div class="text-white">
+                                            <a th:href="@{/user/info}" th:text="${'Số dư: ' + user.balance.money}" class="text-white">
+                                            </a>
+                                            <i class="icon-coin-dollar" style="position: unset"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                            <th:block sec:authorize="!isAuthenticated()">
+                                <i class="fas fa-user-circle" style="font-size: 30px;"></i>
+                                <span class="text-white">
+                                    <a th:href="@{login}" class="text-white">Đăng nhập </a>
+                                    <br>
+                                        <small style="margin: 40px;">Xem nhiều thông tin hơn</small>
+                                </span>
+                            </th:block>
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/}"><i class="fa fa-home icon-font18"></i>Trang chủ</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/user/recharge}"><i class="fa fa-plus-circle icon-font18"></i>Nạp Tiền</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/user/order}"><i class="fa fa-shopping-cart icon-font18"></i>Lịch sử đơn hàng</a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/user/transaction}"><i class="fa fa-search-dollar"></i>Lịch sử nạp tiền</a>
+                    </li>
+
+                    <li data-toggle="collapse" data-target="#danh-muc" class="collapsed">
+                        <a><i class="fa fa-bars icon-font18"></i>Danh mục sản phẩm <i class="fa fa-angle-down"></i></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="danh-muc">
+                        <li>Loại hình</li>
+                        <li>
+                            <ul>
+                                <th:block th:each="type:${listType}">
+                                    <li>
+                                        <a th:href="@{/detail?type={typeName}(typeName=${type.name})}"
+                                           th:text=${type.name}>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </ul>
+
+                        </li>
+                        <li>Nền tảng</li>
+                        <li>
+                            <ul>
+                                <th:block th:each="platform:${listPlatforms}">
+                                    <li>
+                                        <a th:href="@{/detail?platform={platformName}(platformName=${platform.name})}"
+                                           th:text=${platform.name}>
+                                        </a>
+                                    </li>
+                                </th:block>
+                            </ul>
+
+                        </li>
+                    </ul>
+                    <hr/>
+                    <li>
+                        <a th:href="@{/}"><i class="fab fa-hotjar"></i>Mua nhiều trong 24h</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="fas fa-award"></i>ĐANG KHUYẾN MẠI</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="far fa-credit-card"></i>Hình thức thanh toán</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}"><i class="fas fa-gamepad"></i>Hướng dẫn mua hàng</a>
+                    </li>
+
+                    <hr/>
+                    <li style="margin: 0;"><a href="tel:1900633305" style="font-size: 17px;"><i class="fa fa-phone"></i>HOTLINE: 1900 633 305 </a></li>
+                    <hr/>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li>
+                            <a th:href="@{/logout}"><i class="fa fa-sign-out-alt icon-font18"></i>Đăng xuất</a>
+                        </li>
+                    </th:block>
+
+                </ul>
+            </div>
+        </nav>
+        <div class="overlay"></div>
+        <script th:src="@{/js/jquery.autocomplete.js}" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#filter_name").autocomplete("getdata.php?lan=vi", {
+                    width: 450,
+                    resultsClass: "ac_results col-lg-7",
+                    matchContains: true
+                });
+
+                $("#home-cart").hover(
+                        function () {
+                            $('#dropdown-detail-cart').css("display", "block");
+                        }, function () {
+                    $('#dropdown-detail-cart').css("display", "none");
+                }
+                );
+
+                $(".home-mini-profile").hover(
+                        function () {
+                            $('.drop-mini-profile').css("display", "block");
+                        }, function () {
+                    $('.drop-mini-profile').css("display", "none");
+                }
+                );
+
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#dismiss, .overlay').on('click', function () {
+                    $('#sidebar').removeClass('active');
+                    $('.overlay').removeClass('active');
+                    $('body').css('position', 'unset');
+                });
+
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').addClass('active');
+                    $('.overlay').addClass('active');
+                    $('.collapse.in').toggleClass('in');
+                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                    $('body').css('position', 'fixed');
+                });
+            });
+        </script>
+        <div class="header-container container">
+            <div id="sidebarCollapse" class="btn-menu">
+                <i class="fas fa-bars" style="font-size: 20px; vertical-align: middle"></i>
+            </div>
+            <div class="logo"><a th:href="@{/}"><h2 style="margin-right: 10px;width: 60px">DEMO</h2>
+                    <div style="width: 100px;"></div></a></div>
+            <div class="search-form">
+                <form th:action="@{/search}" method="get">
+                    <div class="search-control">
+                        <input type="text" class="search-box" name="name" value="" placeholder="Tìm theo sản phẩm, chủng loại, nền tảng">
+                            <button class="search-btn" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>>
+                    </div>
+                </form>
+
+            </div>
+            <div class="cart-mobile">
+                <div class="align-items-center d-flex" id="update-cart-mobile">
+                    <a th:href="@{/viewCartDetail}"><i class="fas fa-shopping-cart cart-size-mobile"></i> <span class="quantity_mobile" th:text="${session.order}?${session.order.total_quantity}:'0'"></span></a>
+                </div>
+            </div>
+            <div class="header-btn">
+                <div class="header-btn d-flex flex-row">
+                    <div class="d-flex align-items-center ml-1">
+                        <th:block sec:authorize="isAuthenticated()">
+                            <div class="dropdown home-mini-profile" style="width: 100%">
+                                <div class="avatar">
+                                    <a th:href="@{user/info}"><img class="header-avatar" id="header-avatar" th:src="@{/img/default.png}" alt="Avatar"></a>
+                                    <a th:href="@{user/info}" th:text='${user.name}' data-toggle="dropdown" class="dropdown-toggle text-white" id="dropdownMenuLink"
+                                       aria-expanded="false" style="padding: 0 10px;text-transform: capitalize;"></a>
+                                </div>
+                                <div class="dropdown-menu drop-mini-profile" aria-labelledby="dropdownMenuLink">
+                                    <div class="menu-login-head">
+                                        <b>SỐ DƯ TÀI KHOẢN</b>
+                                        <br>
+                                            <div class="menu-login-head-wallet">
+                                                <div class="d-flex">
+                                                    <i class="icon-wallet icon-wallet-login"></i>
+                                                    <div class="balance"> <span th:text="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'" style="color: #000"> </span> <i class="icon-coin-dollar" style="color:#000;"></i></div>
+                                                </div>
+                                            </div>
+                                            <a th:href="@{/user/recharge}" class="btn btn_recharge">NẠP THÊM</a>
+
+                                    </div>
+                                    <a th:href="@{/user/order}">
+                                        <div class="drop-link-menu-login">
+                                            Lịch sử mua hàng
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{/user/info}">
+                                        <div class="drop-link-menu-login">
+                                            Thông tin tài khoản
+                                        </div>
+                                    </a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/product/view}">
+                                        <div class="drop-link-menu-login">
+                                            Bảng quản trị
+                                        </div>
+                                    </a>
+                                    <a th:href="@{/}" target="_blank">
+                                        <div class="drop-link-menu-login">
+                                            Liên hệ Fanpage
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{/logout}">
+                                        <div class="menu-logout">
+                                            Đăng xuất
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-right" style="display: none;">
+                                <li><a th:href="@{/user/order}" style="color:black">Lịch sử đơn hàng</a></li>
+                                <li><a th:href="@{/user/transaction}" style="color:black">Giao dịch</a></li>
+                            </ul>
+                        </th:block>
+                        <th:block sec:authorize="!isAuthenticated()">
+                            <a th:href="@{/login}" class="text-white">Đăng nhập </a>
+                            <span>/</span>
+                            <a th:href="@{/register}" class="text-white">Đăng kí</a>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div id="home-cart" class="dropdown dropdown-header shopping-cart">
+                    <div data-toggle="dropdown" data-loading-text="Đang tải..." class="heading dropdown-toggle"
+                         aria-expanded="false">
+                        <div class="align-items-center d-flex" id="update-cart">
+                            <i class="fas fa-shopping-cart cart-size text-white"></i><b class="cart-text">Giỏ hàng</b><span class="quantity" th:text="${session.order}?${session.order.total_quantity}:'0'">0</span>
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu drop-mini-cart" id="dropdown-detail-cart">
+                        <div class="text-cart-current">
+                            Giỏ hàng hiện tại
+                        </div>
+
+                        <th:block th:if="${session.order}">
+                            <li class="dropdown-item padding-table-cart">
+                                <table class="table" id="detail_cart">
+                                    <tbody>
+                                        <tr th:each="iteam: ${session.order.items}">
+                                            <td class="text-left hide-text-option-cart">
+                                                Tên sản phẩm:   <a th:href="@{/viewproduct(productId = ${iteam.productDto.id})}" th:text="${iteam.productDto.name}"></a>
+
+                                            </td>
+                                            <td class="text-right"><i style="color: black">Số lượng: <span style="color:darkolivegreen;font-weight:bold" th:text="${iteam.quantity}"></span></i></td>
+                                            <td class="text-right" th:text="${#numbers.formatDecimal(iteam.productDto.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
+                                            <td class="text-center"><a th:href=" @{/cart/remove(productId=${iteam.productDto.id})}" title="Loại bỏ"
+                                                                       class="btn btn-danger btn-xs remove"><i class="fa fa-times text-remove"></i>
+                                                </a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li class="dropdown-item padding-table-cart">
+                                <div class="total-cart">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-right"><strong>Thành tiền</strong></td>
+                                                <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right"><strong>Tổng đơn hàng</strong></td>
+                                                <td class="text-right" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'"></td>
+                                            </tr>
+                                            <tr>
+
+
+                                                <td class="text-right"><strong>Số dư hiện tại: </strong>
+                                                </td>
+                                                <th:block sec:authorize="isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                                <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(0, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                            </tr>
+                                            <tr>
+
+                                                <td class="text-right"><strong>Tổng tiền phải nạp thêm: </strong>
+                                                </td>
+                                                <th:block sec:authorize="!isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+                                                <th:block sec:authorize="isAuthenticated()">
+                                                    <td class="text-right"><span  style="color: black" th:text="${#numbers.formatDecimal(session.order.total_order-user.balance.money, 0, 'POINT', 0, 'POINT')}+ ' đ'">
+                                                        </span><i class="icon-coin-dollar" style="color: black"></i></td>
+                                                </th:block>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p class="checkout">
+
+                                        <a class="btn btn_cart_bottom" th:href="@{/viewCartDetail}" style="width: 50%;"><i class="fa fa-eye icon-cart-bottom"></i>
+                                            Xem chi tiết giỏ hàng
+                                        </a>
+
+                                        <a class="btn btn-primary" style="color:#fff; width: 50%; padding: 6px 30px 6px 30px; background-image:linear-gradient(to right, #5db8ec 0%, #2584e4 51%) !important "
+                                           th:href="@{/user/recharge}"><i class="fa fa-wallet"></i>
+                                            Nạp tiền
+                                        </a>
+                                        <br>
+                                    </p>
+                                </div>
+                            </li>
+                        </th:block>
+                        <th:block th:unless="${session.order}">
+                            <li class="dropdown-item" id="no_product">
+                                <table class="table ">
+                                    <tr>
+                                        <td class="text-center">Không có sản phẩm trong giỏ hàng!</td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div th:fragment="menutop">
+        <div class="home-page banner-home common-menu-top" style="background-color: #f7f7f7;margin-bottom: 15px;">
+            <div class="menu-2" style="margin-top: 0">
+                <div class="container padd-0" style="margin-top: 6px;">
+                    <div class="menu-catalog">
+                        <div class="header-menu dropdown" id="category-product">
+                            <div class="bar-btn">
+                                <i class="fas fa-bars"></i><span>Danh mục sản phẩm</span>
+                            </div>
+                            <div class="dropdown-menu drop-category nav-menu" aria-labelledby="dropdownMenuLink">
+                                <ul>
+                                    <li>Loại hình</li>
+                                    <li>
+                                        <ul>
+                                            <th:block th:each="type:${listType}">
+                                                <li>
+                                                    <a th:href="@{/detail (type=${type.name})}"
+                                                       th:text=${type.name}>
+                                                    </a>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+
+                                    </li>
+                                    <li>Nền tảng</li>
+                                    <li>
+                                        <ul>
+                                            <th:block th:each="platform:${listPlatforms}">
+                                                <li>
+                                                    <a th:href="@{/detail (platform=${platform.name})}"
+                                                       th:text=${platform.name}>
+                                                    </a>
+                                                </li>
+                                            </th:block>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="right-menu">
+                            <div class="row menu-tab-all">
+                                <div class="quick-menu head-link">
+                                    <a th:href="@{/}"><i class="fab fa-hotjar"></i><span>Mua nhiều trong 24h</span></a>
+                                </div>
+                                <div class="quick-menu head-link">
+                                    <a th:href="@{/}"><i class="fas fa-award"></i><span>ĐANG KHUYẾN MẠI</span></a>
+                                </div>
+                                <div class="quick-menu head-link">
+                                    <a th:href="@{/}"><i class="far fa-credit-card"></i><span>Hình thức thanh toán</span></a>
+                                </div>
+                                <div class="quick-menu head-link">
+                                    <a th:href="@{/}"><i class="fas fa-gamepad"></i><span>Hướng dẫn mua hàng</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-page banner-home" style="background-color: #f7f7f7" th:fragment="menuIndex">
+        <div class="menu-2" style="margin-top: 0">
+            <div class="container padd-0" style="margin-top: 6px;">
+                <div id="alert-position"></div>
+                <div class="menu-catalog">
+                    <div class="header-menu">
+                        <div class="bar-btn">
+                            <i class="fas fa-bars"></i><span>Danh mục sản phẩm</span>
+                        </div>
+                        <div class="nav-menu">
+                            <ul>
+                                <li>Loại hình</li>
+                                <li>
+                                    <ul>
+                                        <th:block th:each="type:${listType}">
+                                            <li>
+                                                <a th:href="@{/detail (type=${type.name})}"
+                                                   th:text=${type.name}>
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+
+                                </li>
+                                <li>Nền tảng</li>
+                                <li>
+                                    <ul>
+                                        <th:block th:each="platform:${listPlatforms}">
+                                            <li>
+                                                <a th:href="@{/detail (platform=${platform.name})}"
+                                                   th:text=${platform.name}>
+                                                </a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="right-menu">
+                        <div class="row menu-tab-all">
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fab fa-hotjar"></i><span>Mua nhiều trong 24h</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fas fa-award"></i><span>ĐANG KHUYẾN MẠI</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="far fa-credit-card"></i><span>Hình thức thanh toán</span></a>
+                            </div>
+                            <div class="quick-menu head-link">
+                                <a th:href="@{/}"><i class="fas fa-gamepad"></i><span>Hướng dẫn mua hàng</span></a>
+                            </div>
+                        </div>
+                        <div class="row slider-container" style="max-width: 797px;">
+                            <div class="col col-md-8 col-sm-12 col-xs-12 col-lg-8">
+                                <div class="home-slider">
+                                    <div>
+                                        <a href=""><img th:src="@{/img_b/Battlepass525x300.png}" alt="TI10"></a>
+                                    </div>
+                                    <div>
+                                        <a href=""><img th:src="@{/img_b/ItunesWALLet-525x300.png}" alt="Itunes"></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $('.home-slider').slick({
+                                    autoplay: true,
+                                    autoplaySpeed: 5000,
+                                    dots: true,
+                                    infinite: true,
+                                    speed: 500,
+                                    arrows: true,
+                                });
+                            </script>
+                            <div class="row sub-banner">
+                                <div class="col col-md-4 col-sm-6 col-xs-6 col-lg-4">
+                                    <a class="w-100" href=""><img  th:src="@{/img_b/GARENA1.png}" alt="Garena Bonus"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-6 col-xs-6 col-lg-4">
+                                    <a class="w-100" href=""><img th:src="@{/img_b/ITUNES1.png}" class="height-banner-home check_img_errs img-banner" alt="Gói nạp Itunes"></a>
+                                </div>
+                            </div>
+                            <div class="row banner_bottom">
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href="/"><img th:src="@{/img_b/STEAM1.png}"  alt="Phân phối gói nạp Steam Wallet"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href=""><img th:src="@{/img_b/FREEPIK1.png}" alt="Tài khoản"></a>
+                                </div>
+                                <div class="col col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                                    <a href=""><img th:src="@{/img_b/Nạp thể viettel.png}" alt="Viettel"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="search">
+        <form th:action="@{/detail/search}" method="get">
+            <div class="search-header" id="content">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 mb-15 ">
+                        <input th:name="filter_product_name" type="text" value="" placeholder="Nhập tên sản phẩm" class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-md-2 mb-15 ">
+                        <select th:name="filter_type_name"  class="form-control">
+                            <option value="" selected>Tất cả danh mục</option>
+                            <option th:each="type : ${listType}"
+                                    th:value="${type.name}"
+                                    th:utext="${type.name}"/>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-2 mb-15">
+                        <select th:name="filter_plaform_name"  class="form-control">
+                            <option value="" selected>Tất cả danh mục</option>
+                            <option th:each="Platform : ${listPlatforms}"
+                                    th:value="${Platform.name}"
+                                    th:utext="${Platform.name}"/>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-2 mb-15">
+                        <input th:name="filter_price_from" type="number" value="" placeholder="Giá bắt đầu" class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-md-2 mb-1">
+                        <input th:name="filter_price_to" type="number" value="" placeholder="Giá kết thúc" class="form-control">
+                    </div>
+                    <div class="col-lg-2 col-md-2 mb-1">
+                        <button type="submit" class="btn-success">Tìm kiếm</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+    <th:block th:fragment="listProduct(listProduct)">
+        <th:block th:each="product :${listProduct}">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item-frames">
+                <div class="item-game-wrapper">
+                    <div class="img">
+                        <a th:href="@{/viewproduct(productId=${product.id})}">
+                            <img th:src="${product.img}" th:alt="${product.name}" th:title="${product.name}" />
+                        </a>
+                    </div>
+                    <div class="item-info">
+                        <div class="item-title">
+                            <a th:href="@{/viewproduct(productId=${product.id})}" th:text="${product.name}"></a>
+                        </div>
+
+                        <div class="item-price">
+                            <p class="price">
+                                <span class="cur-p" th:text="${#numbers.formatDecimal(product.priceNew, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                <th:block th:if ="${product.priceNew < product.priceOld}">
+                                    <span class="old-p" th:text="${#numbers.formatDecimal(product.priceOld, 0, 'POINT', 0, 'POINT')}+ ' đ'"></span>
+                                    <span class="dis-p" th:text="${'-' + #numbers.formatDecimal(100-product.priceNew*1.0 / product.priceOld * 100, 0, 'POINT', 0, 'POINT')}+ '%'"></span>
+                                </th:block>
+                            </p>
+
+                        </div>
+                        <th:block th:if="${product.numberCode > 0}">
+                            <div class="item-btn-a">
+                                <a th:href="@{/cart/buy(productId=${product.id})}"><i class="fas fa-shopping-cart"></i></a>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${product.numberCode == 0}">
+                            <div class="item-btn-a">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </th:block>
+
+                        <th:block th:if="${product.numberCode > 0}">
+                            <a class="item-btn" th:href="@{/cart/buy(productId=${product.id},fast=1)}"  style="margin-top: 10px">Mua ngay</a>
+                        </th:block>
+                        <th:block th:if="${product.numberCode == 0}">
+                            <div class="out_of_stock">Hết hàng</div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+
+    <div class="container-header" style="top: 5px" th:fragment="user">
+        <div class="img" style="background-image: url('https://divineshop.vn/assets/resources/bao-mat/banner.png?rand=640907'); background-position: center center;
+             background-size: cover; ">
+            <input type="file" id="cover" style="display: none;" onchange="getFileDataCover(this);" />
+            <div class="cover-img" style="height: 100%">
+                <div class="up-cover" id="up-cover" style="position: absolute; right: 15px; top: 5px;display: none">
+                    <i class="fa fa-camera fa-2x camera-cover"></i>
+                </div>
+
+                <div class="cover-hidden">
+                    <i class="fa fa-camera camera-cover-hidden"></i> &nbsp; Cập nhật ảnh bìa
+                </div>
+            </div>
+        </div>
+        <div class="account-title">
+            <input type="file" id="avatar" style="display: none;" />
+            <div class="account-img">
+                <div class="up-avatar" id="up-avatar"><i class="fa fa-camera"></i></div>
+                <img class="img-fit" id="avatar-profile" style="border-radius: 50%;" th:src="@{/img/default.png}">
+            </div>
+            <div class="account-name">
+                <div class="full-name" style="text-transform: capitalize;" th:text="${user.name}"></div>
+                <div class="account-balance">Số dư hiện tại: <span><span th:utext="${#numbers.formatDecimal(user.balance.money, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar" style="color:#fff;"></i></span></div>
+            </div>
+        </div>
+        <div class="account-info">
+            <div class="account-info-item">Username: <span style="text-transform: capitalize;" th:text="${user.userName}"></span></div>
+            <div class="account-info-item">Ngày đăng kí: <span  th:utext="${#dates.format(user.createdDatetime, 'dd-MM-yyyy HH:mm')}"></span></div>
+            <div class="account-info-item"><span sec:authorize="hasRole('ADMIN')" >ADMIN</span></div>
+            <div class="account-info-item">Tổng tiền: <span> <span th:utext="${#numbers.formatDecimal(user.balance.totalMoney, 0, 'POINT', 0, 'POINT')}"></span> <i class="icon-coin-dollar"></i></span></div>
+        </div>
+    </div>
+
+    <div class="container-body-side" th:fragment="menu-side">
+        <a class="side-item" th:href="@{/user/info}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-info fa-2x"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Thông tin tài khoản</b>
+                </div>
+                <div>Quản lí thông tin cá nhân</div>
+            </div>
+        </a>
+        <a class="side-item"  th:href="@{/user/order}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-shopping-cart fa-2x" style="color: #f4b844;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Lịch sử đơn hàng</b>
+                </div>
+                <div>Thông tin sản phẩm đã mua</div>
+            </div>
+        </a>
+        <a class="side-item"  th:href="@{/user/transaction}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-dollar-sign fa-2x" style="color: #48a163;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Lịch sử nạp tiền</b>
+                </div>
+                <div>Thông tin nạp tiền</div>
+            </div>
+        </a>
+        <a class="side-item" th:href="@{/user/changePassword}">
+            <div class="side-item-icon fix-width-icon">
+                <i class="fas fa-key fa-2x" style="color: #ad4025;"></i>
+            </div>
+            <div class="side-item-title">
+                <div><b>Thay đổi mật khẩu</b>
+                </div>
+                <div>Cập nhật mật khẩu mới</div>
+            </div>
+        </a>
+    </div>
+
+
+    <footer th:fragment="footer">
+        <div class="footer-top" style="margin-top:20px;">
+            <div class="container mt-0">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 flex-row">
+                        <div class="img">
+                            <img th:src="@{/img/service1.png}" style="max-width:50px;" alt="GIAO HÀNG SIÊU TỐC">
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">GIAO HÀNG SIÊU TỐC</span>
+                            <p style="font-size:13px;">Hệ thống giao hàng tự động chỉ trong 3 phút</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 flex-row">
+                        <div class="img">
+                            <img th:src="@{/img/service2.png}" style="max-width:50px;" alt="BẢO HÀNH NHANH CHÓNG">
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">BẢO HÀNH NHANH CHÓNG</span>
+                            <p style="font-size:13px;">Mọi yêu cầu hỗ trợ sẽ được đội ngũ tư vấn giải quyết trực tiếp.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 flex-row">
+                        <div class="img">
+                            <img th:src="@{/img/service3.png}" style="max-width:50px;" alt="UY TÍN 5 SAO">
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">UY TÍN 5 SAO</span>
+                            <p style="font-size:13px;">Uy tín đã được khẳng định </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 flex-row">
+                        <div class="img">
+                            <img th:src="@{/img/service4.png}" style="max-width:50px;" alt="HỖ TRỢ TẬN TÌNH">
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <span style="font-size:13px;font-weight:bold;text-transform:uppercase;">HỖ TRỢ TẬN TÌNH</span>
+                            <p style="font-size:13px;">Hệ thống hỗ trợ online liên tục từ 8h - 24h</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-body">
+            <div class="container">
+                <div class="row position-relative service">
+                    <div class="col-md-6 col-lg-3 flex-column">
+                        <div class="paragraph">SHOP</div>
+                        <ul>
+                            <li><a href="" target="_blank">Game bản quyền là gì?</a></li>
+                            <li><a href="" target="_blank">Giới thiệu về shop</a></li>
+                            <li><a href="" target="_blank">Điều khoản dịch vụ</a></li>
+                            <li><a href="" target="_blank">Chính sách bảo mật</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 col-lg-2 flex-column">
+                        <div class="paragraph">TÀI KHOẢN</div>
+                        <ul>
+                            <li>
+                                <a th:href="@{/viewCartDetail}">Giỏ hàng</a>
+                            </li>
+                            <li><a th:href="@{/register}">Đăng kí</a></li>
+                            <li><a th:href="@{/login}">Đăng nhập</a></li>
+                            <li><a href="">Chế độ bảo hành</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 col-lg-3 flex-column">
+                        <div class="paragraph">LIÊN HỆ</div>
+                        <ul>
+                            <li>
+                                <a href="/lien-he">Địa chỉ giao dịch trực tiếp</a>
+                            </li>
+                            <li>Hotline: 9999 9999 (7:00 - 24:00)</li>
+                            <li>Email: hotrodota247@gmail.com</li>
+                            <li><a href="">Fanpage</a></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</html>

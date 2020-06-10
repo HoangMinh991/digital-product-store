@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -84,31 +85,35 @@ public class UserController {
         User user = userRepository.findByUserName(userName);
         model.addAttribute("user", user);
         model.addAttribute("value", user.getBalance().getMoney());
+        UpdateUserDto updateUserDto = new UpdateUserDto();
+        updateUserDto.setEmail(user.getEmail());
+        updateUserDto.setName(user.getName());
+        updateUserDto.setUserName(user.getUserName());
+        updateUserDto.setPhone(user.getPhone());
+        model.addAttribute("userDto", updateUserDto);
         model.addAttribute("title", "Thông tin tài khoản");
         return "/user/userInfo";
     }
 
     @PostMapping("/user/update")
     @PreAuthorize("hasRole('READ_PRIVILEGE')")
-    public String updateUser(Model model, BindingResult result, @Valid UpdateUserDto updateUserDto) {
+    public String updateUser( @ModelAttribute("userDto") @Valid UpdateUserDto userDto, BindingResult result,Model model,
+            RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "user/userInfo1";
+            return "user/userInfo";
         }
-        List<Platforms> listPlatforms = plaformRepository.findAll();
-        List<Type> listType = typeRepository.findAll();
-        model.addAttribute("listPlatforms", listPlatforms);
-        model.addAttribute("listType", listType);
+        
         User user = userRepository.findByUserName(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
-        user.setPhone(updateUserDto.getPhone());
-        user.setName(updateUserDto.getName());
-        model.addAttribute("mesage", "Cập nhật thông tin thành công");
+        user.setPhone(userDto.getPhone());
+        user.setName(userDto.getName());
+        redirectAttributes.addFlashAttribute("message", "Cập nhật thông tin thành công");
         userRepository.save(user);
-        return "/user/userInfo";
+        return "redirect:/user/info";
     }
 
-     @RequestMapping("/user/order")
+    @RequestMapping("/user/order")
     public String viewSearchOrder(
             @RequestParam(value = "filter_order_id", required = false, defaultValue = "") String order_id,
             @RequestParam(value = "filter_date_added_from", required = false, defaultValue = "1999-1-1") String date_from,
@@ -123,7 +128,8 @@ public class UserController {
         if (request.getParameter("page") != null && !request.getParameter("page").isEmpty()) {
             page = Integer.parseInt(request.getParameter("page")) - 1;
         }
-        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(),order_id, total_from, total_to, date_from, date_to, PageRequest.of(page, size));
+        Page<Orders> listOrderSearch = orderRepository.listOrderSearch(user.getId(), order_id, total_from, total_to, date_from,
+                date_to, PageRequest.of(page, size, Sort.by("created_datetime").descending()));
         double total = 0;
         for (Orders order : listOrderSearch) {
             total += order.getTotalMoney();
@@ -194,7 +200,7 @@ public class UserController {
         }
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUserName(userName);
-        Page<Recharge> recharges = rechagerRepository.findRechargeSearchForUser(user.getId(), rechargeId,status, total_from, total_to, date_from, date_to, PageRequest.of(page, size,Sort.by("id").descending()));
+        Page<Recharge> recharges = rechagerRepository.findRechargeSearchForUser(user.getId(), rechargeId, status, total_from, total_to, date_from, date_to, PageRequest.of(page, size, Sort.by("id").descending()));
         model.addAttribute("user", user);
         List<Platforms> listPlatforms = plaformRepository.findAll();
         List<Type> listType = typeRepository.findAll();
@@ -202,7 +208,6 @@ public class UserController {
         model.addAttribute("recharges", recharges);
         return "user/viewTransaction";
     }
-
 
     @GetMapping("/user/changePassword")
     public String changePassword(Model model) {

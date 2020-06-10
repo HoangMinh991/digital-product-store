@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace = "~{fragment/fragment ::head}">
+
+    </head>
+    <body>
+        <div class="top-header">
+            <div class="container">
+                <div class="text-right" style="padding:5px 0;float: right">
+                    Hỗ trợ 1900 633 305
+                </div>
+            </div>
+        </div>
+        <header th:replace = "~{fragment/fragment ::header}"> 
+        </header>
+        <div th:replace = "~{fragment/fragment ::menutop}">
+        </div>
+        <script th:src="@{/js/node.js}"></script>
+        <style>
+            .banner-home .menu-2 .header-menu div.nav-menu {
+                display: none;
+                height: auto;
+                margin: auto;
+                width: 100%;
+            }
+        </style>
+        <div class="container">
+            <div style="text-align:center;margin-bottom:22px;">
+                <strong><h4></h4></strong>
+            </div>
+            <div th:replace = "~{fragment/fragment ::search}">
+            </div>
+            <div>
+                <hr/>
+            </div>
+            <div class="list-sp">
+                <div class="next-page" style="display:none;">1</div>
+                <div class="row fix-margin">
+                    <th:block th:replace = "~{fragment/fragment ::listProduct(${listProduct})}">
+                    </th:block>
+                </div>
+                <nav aria-label="" style="text-align:center">
+                    <ul class="pagination">
+
+                        <th:block th:each="i :${#numbers.sequence(1, listProduct.totalPages, 1)}">
+                            <th:block th:if="${(i < (listProduct.number+5))&&(i > (listProduct.number-5))}">
+                                <li th:classappend="${i eq listProduct.number + 1} ? 'active'" class="page-item">
+                                    <a class="page-link" th:href="@{/detail/search (page=${i},filter_product_name=${param.filter_product_name},filter_price_from=${param.filter_price_from},
+                                       filter_price_to=${param.filter_price_to},filter_type_name=${param.filter_type_name},filter_plaform_name=${param.filter_plaform_name})}" th:text="${i}"></a></li>
+                            </th:block>
+                        </th:block>
+                        <li class="page-item"><a class="page-link" th:href="@{/detail/search (page=${listProduct.number +2},filter_product_name=${param.filter_product_name},filter_price_from=${param.filter_price_from},
+                                       filter_price_to=${param.filter_price_to},filter_type_name=${param.filter_type_name},filter_plaform_name=${param.filter_plaform_name})}">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </body>
+    <footer th:replace = "~{fragment/fragment ::footer}">
+    </footer>
+</html>

@@ -176,8 +176,6 @@ public class CartController {
 
     @GetMapping("/cart/buy")
     public String addToCart(Model model, HttpServletRequest request) {
-
-        System.out.println(request.getRequestURL().toString());
         //System.out.println(request.toString());
         int quantity = 1;
         String id;
@@ -235,10 +233,8 @@ public class CartController {
                     return "redirect:/viewCartDetail";
                 }
             }
-            if (request.getParameter("quantity") != null) {
-                return "redirect:/viewproduct?productId=" + request.getParameter("productId");
-            }
-            return "redirect:/";
+            String referer = request.getHeader("Referer");
+            return "redirect:" +referer;
         } else {
             return "error";
         }
